@@ -14,6 +14,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
+import arc.util.Align;
 import arc.util.Log;
 
 import mindustry.Vars;
@@ -81,6 +82,18 @@ public class MdtCoreItemsQuickBar {
      */
     private static final float itemSize = 36f;
 
+    /** 详情页中间物品表格宽度。 */
+    private static final float dialogGridWidth = 520f;
+
+    /** 详情页右侧 hover 预览区宽度。 */
+    private static final float hoverPreviewWidth = 230f;
+
+    /** 右侧 hover 预览中的大图尺寸。 */
+    private static final float hoverPreviewIconSize = 132f;
+
+    /** 中间表格里物品名称可用的最大宽度。 */
+    private static final float compactItemNameWidth = 62f;
+
 
     /** 保存详情页排序方式。 */
     private static final String sortSettingsKey =
@@ -100,6 +113,12 @@ public class MdtCoreItemsQuickBar {
 
     /** 搜索框引用，供“清除”按钮使用。 */
     private TextField searchField;
+
+    /** 详情页右侧 hover 预览区域。 */
+    private Table hoverPreviewTable;
+
+    /** 当前右侧正在预览的物品。 */
+    private Item hoveredItem;
 
     /** 每个物品的搜索索引缓存，避免每次按键都重新做拼音转换。 */
     private final ObjectMap<Item, String> searchIndexCache = new ObjectMap<>();
@@ -554,7 +573,10 @@ public class MdtCoreItemsQuickBar {
         dialog.cont.row();
 
         /*
-         * 实际物品列表放 ScrollPane。
+         * 下方主体：
+         *
+         * 左侧/中间：可滚动的物品表格；
+         * 右侧：hover 物品预览，显示完整名称和大号贴图。
          */
         dialogItemTable = new Table();
         dialogItemTable.top();
@@ -566,11 +588,27 @@ public class MdtCoreItemsQuickBar {
         pane.setFadeScrollBars(false);
         pane.setScrollingDisabled(true, false);
 
-        dialog.cont.add(pane)
-                .width(520f)
-                .maxHeight(500f)
+        hoverPreviewTable = new Table();
+        hoverPreviewTable.top();
+        hoverPreviewTable.background(Styles.black6);
+
+        dialog.cont.table(body -> {
+                    body.top();
+
+                    body.add(pane)
+                            .width(dialogGridWidth)
+                            .maxHeight(500f)
+                            .growY();
+
+                    body.add(hoverPreviewTable)
+                            .width(hoverPreviewWidth)
+                            .minHeight(500f)
+                            .growY()
+                            .padLeft(8f);
+                })
                 .growY();
 
+        showHoverPreview(null);
         rebuildItemTable();
     }
 
@@ -582,6 +620,7 @@ public class MdtCoreItemsQuickBar {
         if (dialogItemTable == null) return;
 
         dialogItemTable.clear();
+        showHoverPreview(null);
 
         Seq<Item> visible = getFilteredAndSortedItems();
 
@@ -635,11 +674,21 @@ public class MdtCoreItemsQuickBar {
                                  * 中间两行：
                                  * 第一行物品名称；
                                  * 第二行实时核心库存数量。
+                                 *
+                                 * 表格里的名称固定宽度，过长时自动截断为“...”；
+                                 * 完整名称通过右侧 hover 预览显示。
                                  */
                                 button.table(info -> {
                                     info.left();
 
-                                    info.add(item.localizedName)
+                                    Label compactName =
+                                            new Label(item.localizedName);
+
+                                    compactName.setEllipsis(true);
+
+                                    info.add(compactName)
+                                            .width(compactItemNameWidth)
+                                            .maxWidth(compactItemNameWidth)
                                             .left();
 
                                     info.row();
@@ -660,6 +709,29 @@ public class MdtCoreItemsQuickBar {
                                                 : "[gray]○[]"
                                 ).padLeft(4f);
 
+                                /*
+                                 * 鼠标移入按钮时，在详情页右侧显示完整信息。
+                                 */
+                                button.hovered(() ->
+                                        showHoverPreview(item)
+                                );
+
+                                /*
+                                 * 从按钮真正离开时清空右侧预览。
+                                 *
+                                 * enter/exit 事件在按钮子元素之间切换时也可能触发，
+                                 * 因此 post 到下一帧再用 hasMouse() 判断，避免闪烁。
+                                 */
+                                button.exited(() ->
+                                        Core.app.post(() -> {
+                                            if (hoveredItem == item &&
+                                                    !button.hasMouse()) {
+
+                                                showHoverPreview(null);
+                                            }
+                                        })
+                                );
+
                             },
                             Styles.flatTogglet,
                             () -> toggle(item)
@@ -675,6 +747,80 @@ public class MdtCoreItemsQuickBar {
                 table.row();
             }
         }
+    }
+
+    /**
+     * 更新详情页右侧的 hover 预览。
+     *
+     * <p>item 为 null 时显示占位提示；否则显示大号贴图和完整本地化名称。
+     * 完整名称启用自动换行，不受中间表格的省略号限制。</p>
+     */
+    private void showHoverPreview(Item item) {
+        hoveredItem = item;
+
+        if (hoverPreviewTable == null) {
+            return;
+        }
+
+        hoverPreviewTable.clear();
+        hoverPreviewTable.top();
+
+        if (item == null) {
+            Label hint = new Label(
+                    "[lightgray]将鼠标移到物品上\n查看完整名称和大图[]"
+            );
+
+            hint.setWrap(true);
+            hint.setAlignment(Align.center);
+
+            hoverPreviewTable.add(hint)
+                    .width(hoverPreviewWidth - 30f)
+                    .padTop(30f)
+                    .padLeft(15f)
+                    .padRight(15f);
+
+            return;
+        }
+
+        Image previewImage =
+                new Image(item.uiIcon);
+
+        hoverPreviewTable.add(previewImage)
+                .size(hoverPreviewIconSize)
+                .padTop(28f)
+                .padBottom(18f);
+
+        hoverPreviewTable.row();
+
+        Label fullName =
+                new Label(item.localizedName);
+
+        /*
+         * 右侧显示完整名称：
+         * 固定可用宽度 + setWrap(true)，长名称自动换行。
+         */
+        fullName.setWrap(true);
+        fullName.setAlignment(
+                Align.center,
+                Align.center
+        );
+
+        hoverPreviewTable.add(fullName)
+                .width(hoverPreviewWidth - 30f)
+                .padLeft(15f)
+                .padRight(15f)
+                .padBottom(12f);
+
+        hoverPreviewTable.row();
+
+        /*
+         * 顺带保留实时数量，方便 hover 时直接确认库存。
+         */
+        hoverPreviewTable.label(() ->
+                "[lightgray]" +
+                        getFormattedAmount(item) +
+                        "[]"
+        ).padTop(2f);
     }
 
     /**

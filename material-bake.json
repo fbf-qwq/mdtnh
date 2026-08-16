@@ -33,7 +33,11 @@
         { "id": "frame", "file": "templates/frame-gray.png" },
         { "id": "fine-wire", "file": "templates/fine-wire-gray.png" },
         { "id": "wire-1", "file": "templates/wire-1-gray.png" },
-        { "id": "fluid-pipe-medium", "file": "templates/fluid-pipe-medium-gray.png" }
+        { "id": "fluid-pipe-micro", "file": "templates/fluid-pipe-micro-gray.png" },
+        { "id": "fluid-pipe-small", "file": "templates/fluid-pipe-small-gray.png" },
+        { "id": "fluid-pipe-medium", "file": "templates/fluid-pipe-medium-gray.png" },
+        { "id": "fluid-pipe-large", "file": "templates/fluid-pipe-large-gray.png" },
+        { "id": "fluid-pipe-giant", "file": "templates/fluid-pipe-giant-gray.png" }
       ],
       "variants": [
         { "id": "iron", "tint": "#C0C0C0FF" },
