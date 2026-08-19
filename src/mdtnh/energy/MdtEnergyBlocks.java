@@ -1,5 +1,6 @@
 package mdtnh.energy;
 
+import arc.Core;
 import mindustry.content.Items;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -17,10 +18,10 @@ public final class MdtEnergyBlocks {
 
     public static void load() {
         exampleGenerator = new MdtEnergyBlock("example-generator") {{
-            localizedName = "示例发电机";
-            description =
+            localizedName = Core.bundle.get("block.example-generator.name", "示例发电机");
+            description = Core.bundle.get("block.example-generator.description",
                     "点击后可分别设置启停、输出电压、每秒增能速度和最大输出电流，"
-                    + "用于测试欠压、正常供电、过压与限流行为。";
+                            + "用于测试欠压、正常供电、过压与限流行为。");
             fallbackRegion = "combustion-generator";
             role = EnergyRole.generator;
 
@@ -61,10 +62,10 @@ public final class MdtEnergyBlocks {
         }};
 
         exampleWire = new MdtEnergyBlock("example-wire") {{
-            localizedName = "示例导线";
-            description =
-                    "自动连接四周同队的示例电力方块。最高承受 128 V，"
-                    + "每格最多通过 16 A，每个 1 A 包损失 0.05 V；超限会烧毁。";
+            localizedName = Core.bundle.get("block.example-wire.name", "示例导线");
+            description = Core.bundle.get("block.example-wire.description",
+                    "自动连接四周同队的示例电力方块。最高承受128V，"
+                            + "每格最多通过16A，每个1A包损失0.05V；超限会烧毁。");
             fallbackRegion = "power-node";
             role = EnergyRole.wire;
 
@@ -87,10 +88,9 @@ public final class MdtEnergyBlocks {
         }};
 
         exampleConsumer = new MdtEnergyBlock("example-consumer") {{
-            localizedName = "示例用电器";
-            description =
-                    "相当于每秒自动减少 48 J 的 12 V 电池；"
-                    + "每秒最多接收 6 A。";
+            localizedName = Core.bundle.get("block.example-consumer.name", "示例用电器");
+            description = Core.bundle.get("block.example-consumer.description",
+                    "相当于每秒自动减少48J的12V电池；每秒最多接收6A。");
             fallbackRegion = "arc";
             role = EnergyRole.consumer;
 
@@ -113,10 +113,10 @@ public final class MdtEnergyBlocks {
         }};
 
         exampleBattery = new MdtEnergyBlock("example-battery") {{
-            localizedName = "示例电池";
-            description =
-                    "储存 12000 J；每秒最多输入 10 A、输出 10 A。"
-                    + "只向用电器放电，避免电池互相来回传输。";
+            localizedName = Core.bundle.get("block.example-battery.name", "示例电池");
+            description = Core.bundle.get("block.example-battery.description",
+                    "储存12000J；每秒最多输入10A、输出10A。"
+                            + "只向用电器放电，避免电池互相来回传输。");
             fallbackRegion = "battery";
             role = EnergyRole.battery;
 

@@ -11,7 +11,6 @@ import mdtnh.energy.MdtEnergySystem;
 import mdtnh.gen.MineralVeins;
 import mdtnh.gen.ModPlanet;
 import mdtnh.gen.ModSectors;
-import mdtnh.fluidSystem.GT.GTFluid;
 import mdtnh.gen.block.ModOre;
 import mdtnh.graphics.MdtMaterialDraw;
 import mdtnh.modui.buildui.MdtBuildMenuContent;
@@ -19,7 +18,6 @@ import mdtnh.modui.buildui.MdtBuildMenuFragment;
 import mdtnh.modui.itemui.MdtCoreItemsQuickBar;
 
 import mdtnh.transport.MdtTransportBlocks;
-import mdtnh.turret.MdtAmmoTurretsExample;
 import mdtnh.turret.MdtImplementedTurrets;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.mod.Mod;
@@ -74,7 +72,6 @@ public class MainMod extends Mod {
         MineralVeins.load();
         Component.load();
         ModCrafters.load();
-        MdtAmmoTurretsExample.load();
         MdtImplementedTurrets.load();
         VoltageExampleMachines.load();
         MdtTransportBlocks.load();

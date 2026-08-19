@@ -327,8 +327,9 @@ public class MdtEnergyBlock extends Block {
                 int maximum = Math.max(0, energy.energySpec().maxWireCurrentA);
 
                 return new Bar(
-                        () -> "Current: " + energy.nodeState.currentA
-                                + " / " + maximum + " A",
+                        () -> Core.bundle.format("mdt.bar.current",
+                                energy.nodeState.currentA,
+                                maximum),
                         () -> Color.valueOf("ffd37f"),
                         () -> maximum <= 0
                                 ? 0f
@@ -341,8 +342,9 @@ public class MdtEnergyBlock extends Block {
                 float capacity = energy.energySpec().capacityJ;
 
                 return new Bar(
-                        () -> "Energy: " + Math.round(energy.nodeState.energyJ)
-                                + " / " + Math.round(capacity) + " J",
+                        () -> Core.bundle.format("mdt.bar.energy",
+                                Math.round(energy.nodeState.energyJ),
+                                Math.round(capacity)),
                         () -> Color.valueOf("ffd37f"),
                         () -> capacity <= 0f
                                 ? 0f
@@ -357,8 +359,9 @@ public class MdtEnergyBlock extends Block {
                         Math.max(runtime.maxInputA, energy.configuredMaxOutputA()));
 
                 return new Bar(
-                        () -> "I/O: " + energy.nodeState.inputA
-                                + " A in, " + energy.nodeState.outputA + " A out",
+                        () -> Core.bundle.format("mdt.bar.io",
+                                energy.nodeState.inputA,
+                                energy.nodeState.outputA),
                         () -> Color.valueOf("84f491"),
                         () -> Math.min(1f,
                                 Math.max(energy.nodeState.inputA, energy.nodeState.outputA)
@@ -370,12 +373,16 @@ public class MdtEnergyBlock extends Block {
                 addBar("mdt-generator-config", build -> {
                     MdtEnergyBuild energy = (MdtEnergyBuild) build;
 
+                    String status = energy.generatorEnabled
+                            ? Core.bundle.get("mdt.generator.on", "[green]ON[]")
+                            : Core.bundle.get("mdt.generator.off", "[red]OFF[]");
+
                     return new Bar(
-                            () -> (energy.generatorEnabled ? "[green]ON[] " : "[red]OFF[] ")
-                                    + Strings.fixed(energy.configuredVoltageV, 2) + " V, "
-                                    + Strings.fixed(energy.configuredGenerationJPerSecond, 1)
-                                    + " J/s, "
-                                    + energy.configuredMaxOutputA + " A",
+                            () -> Core.bundle.format("mdt.bar.generator.config",
+                                    status,
+                                    Strings.fixed(energy.configuredVoltageV, 2),
+                                    Strings.fixed(energy.configuredGenerationJPerSecond, 1),
+                                    energy.configuredMaxOutputA),
                             () -> energy.generatorEnabled
                                     ? Color.valueOf("84f491")
                                     : Color.valueOf("ff6655"),
@@ -622,18 +629,18 @@ public class MdtEnergyBlock extends Block {
 
             table.defaults().pad(4f).left();
 
-            CheckBox enabledBox = new CheckBox("启用发电与输出");
+            CheckBox enabledBox = new CheckBox(Core.bundle.get("mdtnh.energy.config.enable", "启用发电与输出"));
             enabledBox.setChecked(generatorEnabled);
             table.add(enabledBox).colspan(2).left();
             table.row();
 
-            table.add("输出电压 (V)");
+            table.add(Core.bundle.get("mdtnh.energy.config.voltage", "输出电压 (V)"));
             TextField voltageField =
                     new TextField(Strings.fixed(configuredVoltageV, 3));
             table.add(voltageField).width(150f);
             table.row();
 
-            table.add("增能速度 (J/s)");
+            table.add(Core.bundle.get("mdtnh.energy.config.rate", "增能速度 (J/s)"));
             TextField rateField =
                     new TextField(Strings.fixed(
                             configuredGenerationJPerSecond,
@@ -642,13 +649,13 @@ public class MdtEnergyBlock extends Block {
             table.add(rateField).width(150f);
             table.row();
 
-            table.add("最大输出电流 (A)");
+            table.add(Core.bundle.get("mdtnh.energy.config.current", "最大输出电流 (A)"));
             TextField currentField =
                     new TextField(Integer.toString(configuredMaxOutputA));
             table.add(currentField).width(150f);
             table.row();
 
-            table.button("应用", () -> {
+            table.button(Core.bundle.get("mdtnh.energy.config.apply", "应用"), () -> {
                 float nextVoltage =
                         parseFloat(voltageField.getText(), configuredVoltageV);
                 float nextRate =
@@ -667,7 +674,7 @@ public class MdtEnergyBlock extends Block {
                 ));
             }).width(105f);
 
-            table.button("恢复默认", () -> configure(null))
+            table.button(Core.bundle.get("mdtnh.energy.config.reset", "恢复默认"), () -> configure(null))
                     .width(105f);
         }
 

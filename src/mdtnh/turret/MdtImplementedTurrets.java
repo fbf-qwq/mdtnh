@@ -1,11 +1,13 @@
 package mdtnh.turret;
 
+import arc.Core;
 import mdtnh.ModItems;
 import mdtnh.ModLiquids;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.entities.bullet.ArtilleryBulletType;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.type.Category;
 import mindustry.type.Item;
@@ -33,6 +35,10 @@ public final class MdtImplementedTurrets {
     public static Block excitation;    // 激发
     public static Block broadsword;    // 阔剑
 
+    // 新增正式炮台（原演示炮台转为正式）
+    public static Block accumulatedBolt; // 蓄积-螺栓
+    public static Block steamWhistle;    // 气鸣
+
     private MdtImplementedTurrets() {}
 
     public static void load() {
@@ -51,12 +57,12 @@ public final class MdtImplementedTurrets {
         Item steelGranule = ModItems.get("steel", "nugget");
 
         // ============================================================
-        // 蒸汽
+        // 蒸汽炮台（原有）
         // ============================================================
 
         accumulated = new MdtSteamItemTurret("accumulated") {{
-            localizedName = "蓄积";
-            description = "以蒸汽蓄力发射金属螺栓；无限穿透，每穿透一次剩余伤害减半。";
+            localizedName = Core.bundle.get("turret.accumulated.name", "蓄积");
+            description = Core.bundle.get("turret.accumulated.description", "以蒸汽蓄力发射金属螺栓；无限穿透，每穿透一次剩余伤害减半。");
 
             size = 2;
             health = 620;
@@ -65,7 +71,6 @@ public final class MdtImplementedTurrets {
             rotateSpeed = 3f;
             shootCone = 8f;
 
-            // 蓄力。
             shoot.firstShotDelay = 42f;
             moveWhileCharging = false;
             reloadWhileCharging = false;
@@ -82,42 +87,42 @@ public final class MdtImplementedTurrets {
             ammoPerShot = 1;
 
             ammo(
-                copperIngot, new HalvingPierceBulletType(6.2f, 95f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 46f;
-                    width = 8f;
-                    height = 16f;
-                    damageRetention = 0.5f;
-                    minDamage = 1f;
-                }},
-                bronzeIngot, new HalvingPierceBulletType(6.5f, 120f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 46f;
-                    width = 9f;
-                    height = 17f;
-                    damageRetention = 0.5f;
-                    minDamage = 1f;
-                }},
-                ironIngot, new HalvingPierceBulletType(6.8f, 145f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 46f;
-                    width = 9f;
-                    height = 18f;
-                    damageRetention = 0.5f;
-                    minDamage = 1f;
-                }}
+                    copperIngot, new HalvingPierceBulletType(6.2f, 95f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 46f;
+                        width = 8f;
+                        height = 16f;
+                        damageRetention = 0.5f;
+                        minDamage = 1f;
+                    }},
+                    bronzeIngot, new HalvingPierceBulletType(6.5f, 120f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 46f;
+                        width = 9f;
+                        height = 17f;
+                        damageRetention = 0.5f;
+                        minDamage = 1f;
+                    }},
+                    ironIngot, new HalvingPierceBulletType(6.8f, 145f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 46f;
+                        width = 9f;
+                        height = 18f;
+                        damageRetention = 0.5f;
+                        minDamage = 1f;
+                    }}
             );
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 90,
-                Items.lead, 70,
-                Items.graphite, 35
+                    Items.copper, 90,
+                    Items.lead, 70,
+                    Items.graphite, 35
             ));
         }};
 
         ironWave = new MdtSteamItemTurret("iron-wave") {{
-            localizedName = "铁浪";
-            description = "以蒸汽快速发射金属粒，可对地/对空。";
+            localizedName = Core.bundle.get("turret.iron-wave.name", "铁浪");
+            description = Core.bundle.get("turret.iron-wave.description", "以蒸汽快速发射金属粒，可对地/对空。");
 
             size = 2;
             health = 560;
@@ -138,37 +143,37 @@ public final class MdtImplementedTurrets {
             ammoPerShot = 1;
 
             ammo(
-                copperGranule, new BasicBulletType(5.2f, 11f) {{
-                    ammoMultiplier = 1f;
-                    width = height = 6f;
-                    lifetime = 34f;
-                }},
-                bronzeGranule, new BasicBulletType(5.5f, 14f) {{
-                    ammoMultiplier = 1f;
-                    width = height = 6.5f;
-                    lifetime = 34f;
-                }},
-                ironGranule, new BasicBulletType(5.8f, 18f) {{
-                    ammoMultiplier = 1f;
-                    width = height = 7f;
-                    lifetime = 34f;
-                    armorMultiplier = 0.85f;
-                }}
+                    copperGranule, new BasicBulletType(5.2f, 11f) {{
+                        ammoMultiplier = 1f;
+                        width = height = 6f;
+                        lifetime = 34f;
+                    }},
+                    bronzeGranule, new BasicBulletType(5.5f, 14f) {{
+                        ammoMultiplier = 1f;
+                        width = height = 6.5f;
+                        lifetime = 34f;
+                    }},
+                    ironGranule, new BasicBulletType(5.8f, 18f) {{
+                        ammoMultiplier = 1f;
+                        width = height = 7f;
+                        lifetime = 34f;
+                        armorMultiplier = 0.85f;
+                    }}
             );
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 75,
-                Items.lead, 50
+                    Items.copper, 75,
+                    Items.lead, 50
             ));
         }};
 
         thrower = new MdtSteamItemTurret("thrower") {{
-            localizedName = "抛掷";
-            description = "投掷金属锭进行抛射轰击；消耗大量蒸汽，仅对地。";
+            localizedName = Core.bundle.get("turret.thrower.name", "抛掷");
+            description = Core.bundle.get("turret.thrower.description", "投掷金属锭进行抛射轰击；消耗大量蒸汽，仅对地。");
 
             size = 3;
             health = 980;
-            range = 240f; // 接近当前原版 Hail 的弹道距离。
+            range = 240f;
             minRange = 45f;
             reload = 85f;
             rotateSpeed = 2.2f;
@@ -186,48 +191,144 @@ public final class MdtImplementedTurrets {
             maxAmmo = 24;
             ammoPerShot = 1;
 
-            // “金属锭”没有进一步限定材料，这里给出铁/钢/钨三个可配置档位。
             ammo(
-                ironIngot, new ArtilleryBulletType(3f, 65f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 80f;
-                    width = height = 13f;
-                    splashDamage = 55f;
-                    splashDamageRadius = 28f;
-                    knockback = 1.2f;
-                }},
-                steelIngot, new ArtilleryBulletType(3f, 90f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 80f;
-                    width = height = 14f;
-                    splashDamage = 75f;
-                    splashDamageRadius = 30f;
-                    knockback = 1.4f;
-                }},
-                tungstenIngot, new ArtilleryBulletType(3f, 120f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 80f;
-                    width = height = 15f;
-                    splashDamage = 100f;
-                    splashDamageRadius = 32f;
-                    knockback = 1.6f;
-                }}
+                    ironIngot, new ArtilleryBulletType(3f, 65f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 80f;
+                        width = height = 13f;
+                        splashDamage = 55f;
+                        splashDamageRadius = 28f;
+                        knockback = 1.2f;
+                    }},
+                    steelIngot, new ArtilleryBulletType(3f, 90f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 80f;
+                        width = height = 14f;
+                        splashDamage = 75f;
+                        splashDamageRadius = 30f;
+                        knockback = 1.4f;
+                    }},
+                    tungstenIngot, new ArtilleryBulletType(3f, 120f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 80f;
+                        width = height = 15f;
+                        splashDamage = 100f;
+                        splashDamageRadius = 32f;
+                        knockback = 1.6f;
+                    }}
             );
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 150,
-                Items.lead, 120,
-                Items.graphite, 80
+                    Items.copper, 150,
+                    Items.lead, 120,
+                    Items.graphite, 80
             ));
         }};
 
         // ============================================================
-        // LV
+        // 新增正式炮台：蓄积-螺栓（原演示）
+        // ============================================================
+        accumulatedBolt = new MdtSteamItemTurret("accumulated-bolt") {{
+            localizedName = Core.bundle.get("turret.accumulated-bolt.name", "蓄积-螺栓");
+            description = Core.bundle.get("turret.accumulated-bolt.description", "金属锭作为弹药，蒸汽只负责提供射击能量。");
+
+            size = 2;
+            health = 520;
+            range = 220f;
+            reload = 70f;
+
+            energyCapacityJ = 360f;
+            energyPerShotJ = 90f;
+
+            liquidCapacity = 24f;
+            joulesPerSteamUnit = 72f;
+            maxSteamUsePerSecond = 2f;
+            steam = ModLiquids.steam;
+
+            maxAmmo = 18;
+            ammoPerShot = 1;
+
+            ammo(
+                    copperIngot, new BasicBulletType(5.5f, 55f) {{
+                        ammoMultiplier = 1f;
+                        width = 9f;
+                        height = 14f;
+                        pierce = true;
+                    }},
+                    bronzeIngot, new BasicBulletType(5.8f, 70f) {{
+                        ammoMultiplier = 1f;
+                        width = 10f;
+                        height = 15f;
+                        pierce = true;
+                    }},
+                    ironIngot, new BasicBulletType(6.1f, 85f) {{
+                        ammoMultiplier = 1f;
+                        width = 10f;
+                        height = 16f;
+                        pierce = true;
+                    }}
+            );
+
+            requirements(Category.turret, ItemStack.with(
+                    Items.copper, 70,
+                    Items.lead, 45
+            ));
+        }};
+
+        // ============================================================
+        // 新增正式炮台：气鸣（蒸汽弹药）
+        // ============================================================
+        steamWhistle = new MdtSteamLiquidTurret("steam-whistle") {{
+            localizedName = Core.bundle.get("turret.steam-whistle.name", "气鸣");
+            description = Core.bundle.get("turret.steam-whistle.description", "蒸汽既进入能量转换器，也作为喷射弹药。");
+
+            size = 2;
+            health = 460;
+            range = 110f;
+            reload = 3f;
+            targetAir = false;
+            targetGround = true;
+            recoil = 0f;
+            inaccuracy = 5f;
+            shootCone = 50f;
+
+            liquidCapacity = 24f;
+
+            energyCapacityJ = 180f;
+            energyPerShotJ = 6f;
+
+            steam = ModLiquids.steam;
+            joulesPerSteamUnit = 72f;
+            maxSteamUsePerSecond = 2.5f;
+
+            steamReserveForAmmo = -1f;
+
+            ammo(
+                    ModLiquids.steam,
+                    new LiquidBulletType(ModLiquids.steam) {{
+                        ammoMultiplier = 4f;
+                        damage = 8f;
+                        knockback = 0.9f;
+                        drag = 0.01f;
+                        speed = 3.5f;
+                        lifetime = 34f;
+                        collidesAir = false;
+                    }}
+            );
+
+            requirements(Category.turret, ItemStack.with(
+                    Items.copper, 55,
+                    Items.lead, 35
+            ));
+        }};
+
+        // ============================================================
+        // LV 电力炮台
         // ============================================================
 
         electricArc = new MdtArcTurret("electric-arc") {{
-            localizedName = "电击";
-            description = "尖端放电同时攻击范围内多个敌人；目标越多，实际耗电越高。";
+            localizedName = Core.bundle.get("turret.electric-arc.name", "电击");
+            description = Core.bundle.get("turret.electric-arc.description", "尖端放电同时攻击范围内多个敌人；目标越多，实际耗电越高。");
 
             size = 2;
             health = 530;
@@ -250,15 +351,15 @@ public final class MdtImplementedTurrets {
             maxTargets = 0;
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 85,
-                Items.lead, 55,
-                Items.silicon, 30
+                    Items.copper, 85,
+                    Items.lead, 55,
+                    Items.silicon, 30
             ));
         }};
 
         magneticRail = new MdtElectricItemTurret("magnetic-rail") {{
-            localizedName = "磁轨";
-            description = "通过电磁铁加速钢粒攻击，最多穿透 3 个目标。";
+            localizedName = Core.bundle.get("turret.magnetic-rail.name", "磁轨");
+            description = Core.bundle.get("turret.magnetic-rail.description", "通过电磁铁加速钢粒攻击，最多穿透3个目标。");
 
             size = 3;
             health = 980;
@@ -279,27 +380,27 @@ public final class MdtImplementedTurrets {
             ammoPerShot = 1;
 
             ammo(
-                steelGranule, new BasicBulletType(8.5f, 92f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 36f;
-                    width = height = 9f;
-                    pierce = true;
-                    pierceBuilding = true;
-                    pierceCap = 3;
-                    armorMultiplier = 0.65f;
-                }}
+                    steelGranule, new BasicBulletType(8.5f, 92f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 36f;
+                        width = height = 9f;
+                        pierce = true;
+                        pierceBuilding = true;
+                        pierceCap = 3;
+                        armorMultiplier = 0.65f;
+                    }}
             );
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 160,
-                Items.lead, 110,
-                Items.silicon, 80
+                    Items.copper, 160,
+                    Items.lead, 110,
+                    Items.silicon, 80
             ));
         }};
 
         dispersal = new MdtElectricTurret("dispersal") {{
-            localizedName = "驱散";
-            description = "发出强风击退敌人，对空军产生更强击退。";
+            localizedName = Core.bundle.get("turret.dispersal.name", "驱散");
+            description = Core.bundle.get("turret.dispersal.description", "发出强风击退敌人，对空军产生更强击退。");
 
             size = 3;
             health = 840;
@@ -330,15 +431,15 @@ public final class MdtImplementedTurrets {
             }};
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 130,
-                Items.lead, 80,
-                Items.silicon, 45
+                    Items.copper, 130,
+                    Items.lead, 80,
+                    Items.silicon, 45
             ));
         }};
 
         electrode = new MdtElectricItemTurret("electrode") {{
-            localizedName = "电极";
-            description = "发射带正/负电荷的金属粒；正负电荷相遇会触发高额电击伤害。";
+            localizedName = Core.bundle.get("turret.electrode.name", "电极");
+            description = Core.bundle.get("turret.electrode.description", "发射带正/负电荷的金属粒；正负电荷相遇会触发高额电击伤害。");
 
             size = 3;
             health = 930;
@@ -358,36 +459,36 @@ public final class MdtImplementedTurrets {
             ammoPerShot = 1;
 
             ammo(
-                copperGranule, new BasicBulletType(6f, 30f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 38f;
-                    width = height = 8f;
-                    status = MdtTurretStatusEffects.positiveCharge;
-                    statusDuration = 60f * 5f;
-                }},
-                ironGranule, new BasicBulletType(6f, 34f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 38f;
-                    width = height = 8f;
-                    status = MdtTurretStatusEffects.negativeCharge;
-                    statusDuration = 60f * 5f;
-                }}
+                    copperGranule, new BasicBulletType(6f, 30f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 38f;
+                        width = height = 8f;
+                        status = MdtTurretStatusEffects.positiveCharge;
+                        statusDuration = 60f * 5f;
+                    }},
+                    ironGranule, new BasicBulletType(6f, 34f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 38f;
+                        width = height = 8f;
+                        status = MdtTurretStatusEffects.negativeCharge;
+                        statusDuration = 60f * 5f;
+                    }}
             );
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 170,
-                Items.lead, 120,
-                Items.silicon, 95
+                    Items.copper, 170,
+                    Items.lead, 120,
+                    Items.silicon, 95
             ));
         }};
 
         // ============================================================
-        // MV
+        // MV 电力炮台
         // ============================================================
 
         excitation = new MdtElectricTurret("excitation") {{
-            localizedName = "激发";
-            description = "持续索敌单个目标的远程激光；目标越远，伤害越低。";
+            localizedName = Core.bundle.get("turret.excitation.name", "激发");
+            description = Core.bundle.get("turret.excitation.description", "持续索敌单个目标的远程激光；目标越远，伤害越低。");
 
             size = 2;
             health = 720;
@@ -396,11 +497,6 @@ public final class MdtImplementedTurrets {
             rotateSpeed = 3.2f;
             shootCone = 5f;
 
-            /*
-             * 炮台.txt 没有给 MV 的具体电压窗口。
-             * 这里不覆盖 voltageV/minInputVoltageV/maxInputVoltageV；
-             * 接入正式 MV 电网前请按你的等级表设置。
-             */
             maxInputA = 8;
 
             energyCapacityJ = 760f;
@@ -421,19 +517,19 @@ public final class MdtImplementedTurrets {
             }};
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 190,
-                Items.lead, 130,
-                Items.silicon, 140
+                    Items.copper, 190,
+                    Items.lead, 130,
+                    Items.silicon, 140
             ));
         }};
 
         // ============================================================
-        // HV
+        // HV 电力炮台
         // ============================================================
 
         broadsword = new MdtElectricItemTurret("broadsword") {{
-            localizedName = "阔剑";
-            description = "向前方扇形区域一次性发射大量钢粒。";
+            localizedName = Core.bundle.get("turret.broadsword.name", "阔剑");
+            description = Core.bundle.get("turret.broadsword.description", "向前方扇形区域一次性发射大量钢粒。");
 
             size = 4;
             health = 1650;
@@ -444,10 +540,6 @@ public final class MdtImplementedTurrets {
             recoil = 4f;
             shake = 2f;
 
-            /*
-             * 炮台.txt 没有给 HV 的具体电压窗口。
-             * 这里同样只实现能源消耗机制，不擅自定义 HV 电压。
-             */
             maxInputA = 16;
 
             energyCapacityJ = 1800f;
@@ -456,25 +548,24 @@ public final class MdtImplementedTurrets {
             maxAmmo = 180;
             ammoPerShot = 1;
 
-            // 每一颗钢粒都独立扣 1 个粒 + 14 J。
             consumeAmmoOnce = false;
             shoot = new ShootSpread(24, 2.35f);
 
             ammo(
-                steelGranule, new BasicBulletType(6.6f, 260f) {{
-                    ammoMultiplier = 1f;
-                    lifetime = 33f;
-                    width = height = 7.5f;
-                    knockback = 0.45f;
-                    armorMultiplier = 0.8f;
-                }}
+                    steelGranule, new BasicBulletType(6.6f, 260f) {{
+                        ammoMultiplier = 1f;
+                        lifetime = 33f;
+                        width = height = 7.5f;
+                        knockback = 0.45f;
+                        armorMultiplier = 0.8f;
+                    }}
             );
 
             requirements(Category.turret, ItemStack.with(
-                Items.copper, 320,
-                Items.lead, 240,
-                Items.silicon, 220,
-                Items.titanium, 160
+                    Items.copper, 320,
+                    Items.lead, 240,
+                    Items.silicon, 220,
+                    Items.titanium, 160
             ));
         }};
     }

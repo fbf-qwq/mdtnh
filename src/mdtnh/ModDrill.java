@@ -101,10 +101,10 @@ public class ModDrill extends Block {
     @Override
     public void setBars(){
         super.setBars();
-        addBar("process",(ModDrillBuilding build)->new Bar(
-                ()->"process",
-                ()->Color.valueOf("ffd37f"),
-                ()->build.progress/drillTime
+        addBar("process", (ModDrillBuilding build) -> new Bar(
+                () -> Core.bundle.get("mdt.process.bar", "进度"),
+                () -> Color.valueOf("ffd37f"),
+                () -> build.progress / drillTime
         ));
     }
 

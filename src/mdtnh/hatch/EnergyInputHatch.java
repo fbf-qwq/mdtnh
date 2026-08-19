@@ -1,5 +1,6 @@
 package mdtnh.hatch;
 
+import arc.Core;
 import arc.graphics.Color;
 import mdtnh.energy.EnergySpec;
 import mdtnh.energy.EnergyState;
@@ -49,7 +50,9 @@ public class EnergyInputHatch extends Hatch {
         addBar("mdt-energy", raw -> {
             EnergyInputHatchBuild build = (EnergyInputHatchBuild) raw;
             return new Bar(
-                    () -> "Energy: " + Math.round(build.energyState.energyJ) + " / " + Math.round(energySpec.capacityJ) + " J",
+                    () -> Core.bundle.format("mdtnh.hatch.energy.bar",
+                            Math.round(build.energyState.energyJ),
+                            Math.round(energySpec.capacityJ)),
                     () -> Color.valueOf("ffd37f"),
                     () -> build.energyState.fraction(energySpec)
             );
@@ -58,17 +61,18 @@ public class EnergyInputHatch extends Hatch {
         if (electricGridEnabled) {
             addBar("mdt-energy-input", raw -> {
                 EnergyInputHatchBuild build = (EnergyInputHatchBuild) raw;
+                String ignored = build.energyState.ignoredInputA > 0
+                        ? " | " + Core.bundle.format("mdt.io.ignored", build.energyState.ignoredInputA)
+                        : "";
                 return new Bar(
-                        () -> "Input: " + build.energyState.inputA + " A | "
-                                + Math.round(build.energyState.lastInputVoltageV * 10f) / 10f + " V"
-                                + " [" + energySpec.minInputVoltageV + "~"
-                                + energySpec.maxInputVoltageV + " V]"
-                                + (build.energyState.ignoredInputA > 0
-                                ? " | ignored " + build.energyState.ignoredInputA : ""),
+                        () -> Core.bundle.format("mdtnh.hatch.input.bar",
+                                build.energyState.inputA,
+                                Math.round(build.energyState.lastInputVoltageV * 10f) / 10f,
+                                energySpec.minInputVoltageV,
+                                energySpec.maxInputVoltageV,
+                                ignored),
                         () -> Color.valueOf("84f491"),
-                        () -> energySpec.maxInputA <= 0
-                                ? 0f
-                                : Math.min(1f, build.energyState.inputA / (float) energySpec.maxInputA)
+                        () -> energySpec.maxInputA <= 0 ? 0f : Math.min(1f, build.energyState.inputA / (float) energySpec.maxInputA)
                 );
             });
         }

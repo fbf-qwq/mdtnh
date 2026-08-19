@@ -72,7 +72,6 @@ public class RecipeCrafter extends GenericCrafter {
 
     public RecipeCrafter(String name) {
         super(name);
-        // 默认作为只接收能量的消费者，正常输入范围为 10V 到 14V。
         energySpec.role = EnergySpec.Role.consumer;
         energySpec.voltageV = 12f;
         energySpec.minInputVoltageV = 10f;
@@ -85,7 +84,6 @@ public class RecipeCrafter extends GenericCrafter {
         update = true;
         solid = true;
         hasItems = true;
-        // 工厂可能包含液体输入/输出配方，始终创建液体模块。
         hasLiquids = true;
         buildType = MDTFactoryBuild::new;
         drawer = new DrawDefault();
@@ -98,10 +96,6 @@ public class RecipeCrafter extends GenericCrafter {
         saveConfig = true;
         copyConfig = true;
 
-        /*
-         * 配置值只保存配方组索引。切换组时清除当前配方与进度，
-         * 防止把上一组尚未完成的生产进度带入另一组。
-         */
         config(Integer.class, (MDTFactoryBuild build, Integer groupIdx) -> {
             build.selectedGroup = groupIdx;
             build.currentRecipe = -1;
@@ -109,12 +103,6 @@ public class RecipeCrafter extends GenericCrafter {
         });
     }
 
-    /**
-     * 整理配方组并为未指定图标名称的组分配默认图集名称。
-     *
-     * <p>当调用方只填写 recipes 而没有填写 groups 时，会自动生成一个 default 组，
-     * 使单数组配置也能走统一的分组逻辑。</p>
-     */
     @Override
     public void load() {
         super.load();
@@ -126,47 +114,30 @@ public class RecipeCrafter extends GenericCrafter {
         }
     }
 
-    /** @return 运行时实际使用的配方组数组。 */
     public RecipeGroup[] getEffectiveGroups() {
         return groups;
     }
 
-    /** @return 当前工厂是否使用蒸汽向内部缓存充能。 */
     public boolean usesSteamEnergy() {
         return energySource == EnergySource.steam;
     }
 
-    /** @return 当前工厂是否直接使用外部电网。 */
     public boolean usesElectricEnergy() {
         return energySource == EnergySource.electricity;
     }
 
-    /** @return 当前工厂是否为不消耗能源的手动机器。 */
     public boolean usesManualEnergy() {
         return energySource == EnergySource.manual;
     }
 
-    /**
-     * 一条可执行配方。
-     *
-     * <p>energyPerCraftJ 表示从进度 0 到 1 完整执行一次所需的总能量。
-     * 运行时会按本 tick 完成的工作比例均匀扣除，而不是完成时一次性扣除。</p>
-     */
     public static class Recipe {
         public ItemStack[] inputItems;
         public LiquidStack[] inputLiquids;
         public ItemStack[] outputItems;
         public LiquidStack[] outputLiquids;
-        /** 完成一次配方所需的基础 tick 数。 */
         public float craftTime;
-
-        /** 完成一次配方所需的总能量，单位为焦耳。 */
         public float energyPerCraftJ;
-
-        /** 该派生配方最初要求的最低电压等级；普通配方可为 null。 */
         public VoltageTier minimumVoltageTier;
-
-        /** 当前配方实际运行所在的机器电压等级；普通配方可为 null。 */
         public VoltageTier executionVoltageTier;
 
         public Recipe(ItemStack[] inputItems, LiquidStack[] inputLiquids,
@@ -184,23 +155,11 @@ public class RecipeCrafter extends GenericCrafter {
             this.energyPerCraftJ = energyPerCraftJ;
         }
 
-        /**
-         * 设置该配方完成一次所需的总能量。
-         *
-         * @param joules 总能耗；负数会被限制为 0
-         * @return 当前配方，便于使用链式配置
-         */
         public Recipe energy(float joules) {
             this.energyPerCraftJ = Math.max(0f, joules);
             return this;
         }
 
-        /**
-         * 深复制配方数组，并替换运行时间与能耗。
-         *
-         * <p>物品堆和液体堆均重新创建，注册器可以安全地为不同电压机器生成独立配方，
-         * 不会因后续修改某台机器的配方而污染其他机器。</p>
-         */
         public Recipe copyWith(float newCraftTime, float newEnergyPerCraftJ) {
             Recipe result = new Recipe(
                     copyItems(inputItems),
@@ -235,24 +194,20 @@ public class RecipeCrafter extends GenericCrafter {
             return result;
         }
 
-        /** 创建只有物品输入和单物品输出的配方。 */
         public static Recipe items(ItemStack[] in, ItemStack out, float time) {
             return new Recipe(in, new LiquidStack[]{},
                     out == null ? null : new ItemStack[]{out}, null, time);
         }
 
-        /** 创建只有物品输入和多种物品输出的配方。 */
         public static Recipe items(ItemStack[] in, ItemStack[] out, float time) {
             return new Recipe(in, new LiquidStack[]{}, out, null, time);
         }
 
-        /** 创建同时支持物品与液体输入、多种物品与多种液体输出的配方。 */
         public static Recipe withLiquid(ItemStack[] in, LiquidStack[] liqIn,
                                         ItemStack[] out, LiquidStack[] liqOut, float time) {
             return new Recipe(in, liqIn, out, liqOut, time);
         }
 
-        /** 创建同时支持物品与液体输入、单物品与单液体输出的配方。 */
         public static Recipe withLiquid(ItemStack[] in, LiquidStack[] liqIn,
                                         ItemStack out, LiquidStack liqOut, float time) {
             return new Recipe(in, liqIn,
@@ -261,7 +216,6 @@ public class RecipeCrafter extends GenericCrafter {
                     time);
         }
 
-        /** @return 用于状态条显示的默认产物名称；没有产物时返回 null。 */
         public String primaryOutputName() {
             if (outputItems != null && outputItems.length > 0) return outputItems[0].item.localizedName;
             if (outputLiquids != null && outputLiquids.length > 0) return outputLiquids[0].liquid.localizedName;
@@ -269,12 +223,6 @@ public class RecipeCrafter extends GenericCrafter {
         }
     }
 
-    /**
-     * 配方选择界面中的一个分组。
-     *
-     * <p>name 用于本地化键 {@code group.<name>}；Texture_name 指向模组图集中的
-     * 可选图标；recipes 保存该组按顺序尝试的配方。</p>
-     */
     public static class RecipeGroup {
         public String name;
         public TextureRegion icon;
@@ -294,48 +242,44 @@ public class RecipeCrafter extends GenericCrafter {
         }
     }
 
-    /**
-     * 注册能源缓存、每秒输入输出电流和当前配方进度三种状态条。
-     */
     @Override
     public void setBars() {
         super.setBars();
 
         if (!usesManualEnergy()) {
             addBar("mdt-energy", (MDTFactoryBuild build) -> new Bar(
-                    () -> "Energy: " + Math.round(build.energyState.energyJ)
-                            + " / " + Math.round(energySpec.capacityJ) + " J",
+                    () -> Core.bundle.format("mdt.energy.bar",
+                            Math.round(build.energyState.energyJ),
+                            Math.round(energySpec.capacityJ)),
                     () -> Color.valueOf("ffd37f"),
-                    () -> energySpec.capacityJ <= 0f
-                            ? 0f
-                            : Math.min(1f, build.energyState.energyJ / energySpec.capacityJ)
+                    () -> energySpec.capacityJ <= 0f ? 0f : Math.min(1f, build.energyState.energyJ / energySpec.capacityJ)
             ));
         }
 
         if (usesSteamEnergy()) {
             addBar("mdt-steam", (MDTFactoryBuild build) -> new Bar(
-                    () -> "Steam: " + Math.round(build.liquids.get(steamLiquid) * 10f) / 10f
-                            + " / " + Math.round(liquidCapacity * 10f) / 10f,
+                    () -> Core.bundle.format("mdt.steam.bar",
+                            Math.round(build.liquids.get(steamLiquid) * 10f) / 10f,
+                            Math.round(liquidCapacity * 10f) / 10f),
                     () -> Color.lightGray,
-                    () -> steamLiquid == null || liquidCapacity <= 0f
-                            ? 0f
-                            : Math.min(1f, build.liquids.get(steamLiquid) / liquidCapacity)
+                    () -> steamLiquid == null || liquidCapacity <= 0f ? 0f : Math.min(1f, build.liquids.get(steamLiquid) / liquidCapacity)
             ));
         } else if (usesElectricEnergy()) {
             addBar("mdt-energy-io", (MDTFactoryBuild build) -> {
                 int maximum = Math.max(1, Math.max(energySpec.maxInputA, energySpec.maxOutputA));
+                String ignored = build.energyState.ignoredInputA > 0
+                        ? " | " + Core.bundle.format("mdt.io.ignored", build.energyState.ignoredInputA)
+                        : "";
                 return new Bar(
-                        () -> "I/O: " + build.energyState.inputA + " A in, "
-                                + build.energyState.outputA + " A out | "
-                                + Math.round(build.energyState.lastInputVoltageV * 10f) / 10f + " V"
-                                + " [" + energySpec.minInputVoltageV + "~"
-                                + energySpec.maxInputVoltageV + " V]"
-                                + (build.energyState.ignoredInputA > 0
-                                ? " | ignored " + build.energyState.ignoredInputA : ""),
+                        () -> Core.bundle.format("mdt.io.withvoltage",
+                                build.energyState.inputA,
+                                build.energyState.outputA,
+                                Math.round(build.energyState.lastInputVoltageV * 10f) / 10f,
+                                energySpec.minInputVoltageV,
+                                energySpec.maxInputVoltageV,
+                                ignored),
                         () -> Color.valueOf("84f491"),
-                        () -> Math.min(1f,
-                                Math.max(build.energyState.inputA, build.energyState.outputA)
-                                        / (float) maximum)
+                        () -> Math.min(1f, Math.max(build.energyState.inputA, build.energyState.outputA) / (float) maximum)
                 );
             });
         }
@@ -350,20 +294,17 @@ public class RecipeCrafter extends GenericCrafter {
                             Recipe r = group.recipes[build.currentRecipe];
                             String itemName = r.primaryOutputName();
                             if (itemName == null) itemName = "???";
-                            return groupName + " - " + itemName + " " + (int)(build.progress * 100) + "%";
+                            return Core.bundle.format("mdt.progress.bar", groupName, itemName, (int)(build.progress * 100));
                         }
-                        return groupName + " - 空闲";
+                        return groupName + " - " + Core.bundle.get("mdt.progress.idle", "空闲");
                     }
-                    return Core.bundle.get("rod.no-recipe", "无配方");
+                    return Core.bundle.get("mdt.progress.norecipe", "无配方");
                 },
                 () -> Pal.accent,
                 () -> build.progress
         ));
     }
 
-    /**
-     * 在方块信息面板中按配方组列出所有可能的物品和液体产物。
-     */
     @Override
     public void setStats() {
         super.setStats();
@@ -392,20 +333,9 @@ public class RecipeCrafter extends GenericCrafter {
         });
     }
 
-    /**
-     * 单个已放置工厂的运行实体。
-     *
-     * <p>继承 {@link GenericCrafterBuild} 以复用物品、液体、效率和输出接口，
-     * 同时实现 {@link MdtEnergyNode} 以接收 MDT 能源网络传入的离散电流包。</p>
-     */
     public class MDTFactoryBuild extends GenericCrafterBuild implements MdtEnergyNode {
-        /** 该工厂实例的内部能源缓存及上一秒电流统计。 */
         public final EnergyState energyState = new EnergyState();
-
-        /** 配置界面选中的配方组索引；-1 表示尚未选择。 */
         public int selectedGroup = -1;
-
-        /** 当前组中正在执行的配方索引；-1 表示当前没有可执行配方。 */
         public int currentRecipe = -1;
 
         @Override
@@ -428,11 +358,6 @@ public class RecipeCrafter extends GenericCrafter {
             return usesElectricEnergy();
         }
 
-        /**
-         * 将蒸汽按设定效率转换为内部缓存能量。
-         *
-         * <p>转换量同时受蒸汽库存、每秒吞吐量和剩余缓存空间限制，不会浪费蒸汽。</p>
-         */
         protected void convertSteamToEnergy() {
             if (!usesSteamEnergy()) return;
             SteamEnergyConverter.convert(
@@ -446,9 +371,6 @@ public class RecipeCrafter extends GenericCrafter {
             );
         }
 
-        /**
-         * 按 initialEnergyFraction 初始化新建筑的能源缓存。
-         */
         @Override
         public void created() {
             super.created();
@@ -456,18 +378,11 @@ public class RecipeCrafter extends GenericCrafter {
             energyState.energyJ = energySpec.capacityJ * fraction;
         }
 
-        /**
-         * 每 tick 选择可执行配方、按工作比例扣除能量并推进生产进度。
-         *
-         * <p>材料只在配方完成时扣除；能源则随进度逐 tick 消耗。能量不足时保留
-         * 当前进度并暂停，因此下一次获得能量后可以继续生产。</p>
-         */
         @Override
         public void updateTile() {
             convertSteamToEnergy();
             RecipeGroup[] groups = getEffectiveGroups();
 
-            // 持续尝试输出库存中的所有可能产物，避免切换配方组后旧产物滞留。
             for (RecipeGroup group : groups) {
                 for (Recipe r : group.recipes) {
                     if (r.outputItems != null) {
@@ -483,7 +398,6 @@ public class RecipeCrafter extends GenericCrafter {
                 }
             }
 
-            // 未选择有效配方组时清除生产状态，但仍允许已存在产物继续输出。
             if (selectedGroup < 0 || selectedGroup >= groups.length) {
                 progress = 0f;
                 currentRecipe = -1;
@@ -492,14 +406,12 @@ public class RecipeCrafter extends GenericCrafter {
 
             Recipe[] activeRecipes = groups[selectedGroup].recipes;
 
-            // 当前配方失去原料条件或产物空间后，重新进入配方选择流程。
             if (currentRecipe >= 0 && currentRecipe < activeRecipes.length) {
                 if (!hasAllMaterials(activeRecipes[currentRecipe]) || outputFull(activeRecipes[currentRecipe])) {
                     currentRecipe = -1;
                 }
             }
 
-            // 按数组顺序选择第一条同时满足原料与输出空间条件的配方。
             if (currentRecipe == -1) {
                 for (int i = 0; i < activeRecipes.length; i++) {
                     if (hasAllMaterials(activeRecipes[i]) && !outputFull(activeRecipes[i])) {
@@ -515,11 +427,6 @@ public class RecipeCrafter extends GenericCrafter {
                 craftTime = Math.max(0.0001f, active.craftTime);
 
                 if (shouldConsume()) {
-                    /*
-                     * 将本 tick 的有效工作量切成“推进到下一次完成点”的若干段。
-                     * 这样 craftTime 小于 1 tick 时可以在一个 tick 内完成多次生产，
-                     * 同时每一段都先检查材料、输出空间和能源，避免提前扣除无法执行的工作量。
-                     */
                     float remainingWorkTicks = Math.max(0f, delta() * efficiency);
                     int safety = 0;
                     while (remainingWorkTicks > 0.000001f && safety++ < 10000) {
@@ -561,9 +468,6 @@ public class RecipeCrafter extends GenericCrafter {
             }
         }
 
-        /**
-         * 结算一次已完成配方的物品、液体输入与输出。
-         */
         protected void craft(Recipe recipe) {
             if (recipe.inputItems != null) {
                 for (ItemStack stack : recipe.inputItems) items.remove(stack.item, stack.amount);
@@ -572,20 +476,17 @@ public class RecipeCrafter extends GenericCrafter {
                 for (LiquidStack stack : recipe.inputLiquids) liquids.remove(stack.liquid, stack.amount);
             }
             if (recipe.outputItems != null) {
-                // 按产物数量逐个 offload，尊重多物品输出的 amount。
                 for (ItemStack stack : recipe.outputItems) {
                     for (int i = 0; i < stack.amount; i++) offload(stack.item);
                 }
             }
             if (recipe.outputLiquids != null) {
-                // 直接写入液体模块，绕开 acceptLiquid（产物液体通常不在输入配方中）。
                 for (LiquidStack stack : recipe.outputLiquids) {
                     liquids.add(stack.liquid, stack.amount);
                 }
             }
         }
 
-        /** 判断内部物品和液体模块是否包含配方要求的全部原料。 */
         private boolean hasAllMaterials(Recipe r) {
             if (r.inputItems != null) {
                 for (ItemStack stack : r.inputItems) if (items.get(stack.item) < stack.amount) return false;
@@ -596,11 +497,6 @@ public class RecipeCrafter extends GenericCrafter {
             return true;
         }
 
-        /**
-         * 判断任一产物对应的内部存储是否已经达到方块容量。
-         *
-         * <p>该判断按当前产物类型检查已有数量，不预留完整产出数量。</p>
-         */
         private boolean outputFull(Recipe r) {
             if (r.outputItems != null) {
                 for (ItemStack stack : r.outputItems) {
@@ -615,9 +511,6 @@ public class RecipeCrafter extends GenericCrafter {
             return false;
         }
 
-        /**
-         * 只接收至少一条已注册配方会使用的物品。
-         */
         @Override
         public boolean acceptItem(Building source, Item item) {
             for (RecipeGroup group : getEffectiveGroups()) {
@@ -632,9 +525,6 @@ public class RecipeCrafter extends GenericCrafter {
             return false;
         }
 
-        /**
-         * 只接收至少一条已注册配方会使用的液体。
-         */
         @Override
         public boolean acceptLiquid(Building source, Liquid liquid) {
             if (usesSteamEnergy() && liquid == steamLiquid) {
@@ -653,12 +543,6 @@ public class RecipeCrafter extends GenericCrafter {
             return false;
         }
 
-        /**
-         * 构建配方组选择界面。
-         *
-         * <p>图标优先使用 Texture_name 指向的模组图集区域；读取失败时回退到该组
-         * 第一条配方的产物图标，仍无法获得图标时显示 error 区域。</p>
-         */
         @Override
         public void buildConfiguration(Table table) {
             table.clear();
@@ -696,7 +580,6 @@ public class RecipeCrafter extends GenericCrafter {
                 if (icon == null || icon == errorRegion) icon = errorRegion;
                 group.icon = icon;
 
-                // 复制默认按钮样式，避免影响 Mindustry 全局共享样式对象。
                 TextureRegionDrawable drawable = new TextureRegionDrawable(icon);
                 ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(Styles.defaulti);
                 style.imageUp = drawable;
@@ -713,21 +596,16 @@ public class RecipeCrafter extends GenericCrafter {
             }
         }
 
-        /** @return 需要由 Mindustry 保存和同步的配方组索引。 */
         @Override
         public Object config() {
             return selectedGroup;
         }
 
-        /**
-         * 存档格式版本 2 依次保存配方组索引和当前能源缓存。
-         */
         @Override
         public byte version() {
             return 2;
         }
 
-        /** 将配方组选择和能源状态追加到父类存档数据。 */
         @Override
         public void write(Writes write) {
             super.write(write);
@@ -735,11 +613,6 @@ public class RecipeCrafter extends GenericCrafter {
             energyState.write(write);
         }
 
-        /**
-         * 按存档版本恢复配置和能源状态。
-         *
-         * <p>版本 1 只包含配方组索引；缺少能源字段时按当前初始荷电比例初始化。</p>
-         */
         @Override
         public void read(Reads read, byte revision) {
             super.read(read, revision);

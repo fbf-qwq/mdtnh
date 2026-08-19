@@ -144,7 +144,7 @@ public final class MdtBuildMenuFragment {
         entryButton.name = entryName;
         categoryTable.add().size(50f);
         entryButton.update(() -> entryButton.setChecked(opened));
-        Vars.ui.addDescTooltip(entryButton, "MDT 多级建造菜单");
+        Vars.ui.addDescTooltip(entryButton, Core.bundle.get("mdtnh.menu.entry.tooltip", "MDT多级建造菜单"));
         categoryTable.invalidateHierarchy();
     }
 
@@ -205,7 +205,7 @@ public final class MdtBuildMenuFragment {
     private void buildHeader() {
         popup.table(header -> {
             if (current != registry.root) {
-                header.button("<", Styles.cleart, () -> {
+                header.button(Core.bundle.get("mdtnh.menu.back", "<"), Styles.cleart, () -> {
                     if (current.parent != null) {
                         current = current.parent;
                         rebuildPopup();
@@ -215,7 +215,7 @@ public final class MdtBuildMenuFragment {
                 header.add().size(42f);
             }
             header.add(getBreadcrumb()).left().growX().padLeft(6f).padRight(6f);
-            header.button("X", Styles.cleart, () -> opened = false).size(42f);
+            header.button(Core.bundle.get("mdtnh.menu.close", "X"), Styles.cleart, () -> opened = false).size(42f);
         }).growX();
     }
 
@@ -252,7 +252,7 @@ public final class MdtBuildMenuFragment {
         }
         buildBlocks(table);
         if (table.getChildren().isEmpty()) {
-            table.add("（该分类下暂无可用方块）").pad(10f);
+            table.add(Core.bundle.get("mdtnh.menu.empty", "（该分类下暂无可用方块）")).pad(10f);
         }
     }
 

@@ -1,5 +1,6 @@
 package mdtnh.hatch;
 
+import arc.Core;
 import arc.graphics.Color;
 import mdtnh.ModLiquids;
 import mdtnh.energy.SteamEnergyConverter;
@@ -42,12 +43,11 @@ public class SteamInputHatch extends EnergyInputHatch {
         addBar("mdt-steam", raw -> {
             SteamInputHatchBuild build = (SteamInputHatchBuild) raw;
             return new Bar(
-                    () -> "Steam: " + Math.round(build.liquids.get(steamLiquid) * 10f) / 10f
-                            + " / " + Math.round(liquidCapacity * 10f) / 10f,
+                    () -> Core.bundle.format("mdt.steam.bar",
+                            Math.round(build.liquids.get(steamLiquid) * 10f) / 10f,
+                            Math.round(liquidCapacity * 10f) / 10f),
                     () -> Color.lightGray,
-                    () -> steamLiquid == null || liquidCapacity <= 0f
-                            ? 0f
-                            : Math.min(1f, build.liquids.get(steamLiquid) / liquidCapacity)
+                    () -> steamLiquid == null || liquidCapacity <= 0f ? 0f : Math.min(1f, build.liquids.get(steamLiquid) / liquidCapacity)
             );
         });
     }

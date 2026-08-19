@@ -264,7 +264,7 @@ public class MdtCoreItemsQuickBar {
                         Styles.clearNonei,
                         this::showDialog
                 ).size(42f)
-                .tooltip("物品快捷显示");
+                .tooltip(Core.bundle.get("mdtnh.quickbar.tooltip", "物品快捷显示"));
 
         /*
          * 中间：用户选择的快捷物品。
@@ -342,7 +342,7 @@ public class MdtCoreItemsQuickBar {
 
         if (items.isEmpty()) {
             quickItems.button(
-                    "选择物品",
+                    Core.bundle.get("mdtnh.quickbar.select", "选择物品"),
                     Icon.add,
                     Styles.flatt,
                     this::showDialog
@@ -400,7 +400,7 @@ public class MdtCoreItemsQuickBar {
      * 创建二级物品菜单。
      */
     private void buildDialog() {
-        dialog = new BaseDialog("物品显示设置");
+        dialog = new BaseDialog(Core.bundle.get("mdtnh.quickbar.dialog.title", "物品显示设置"));
 
         /*
          * 关闭按钮。
@@ -411,7 +411,7 @@ public class MdtCoreItemsQuickBar {
          * 重置为默认值。
          */
         dialog.buttons.button(
-                "恢复默认",
+                Core.bundle.get("mdtnh.quickbar.reset", "恢复默认"),
                 Icon.refresh,
                 () -> {
                     resetDefaults();
@@ -425,7 +425,7 @@ public class MdtCoreItemsQuickBar {
          * 用户可在 MDTNH 分类中修改详情页快捷键。
          */
         dialog.buttons.button(
-                "快捷键设置",
+                Core.bundle.get("mdtnh.quickbar.keybind", "快捷键设置"),
                 Icon.settings,
                 () -> {
                     dialog.hide();
@@ -450,10 +450,8 @@ public class MdtCoreItemsQuickBar {
         dialog.cont.clear();
 
         dialog.cont.label(() ->
-                "[lightgray]选择需要显示在顶部快捷栏中的物品。[]\n" +
-                        "[lightgray]打开详情快捷键：[accent]" +
-                        getShortcutName() +
-                        "[]"
+                Core.bundle.format("mdtnh.quickbar.dialog.hint",
+                        getShortcutName())
         ).pad(10f);
 
         dialog.cont.row();
@@ -473,11 +471,11 @@ public class MdtCoreItemsQuickBar {
         dialog.cont.table(search -> {
                     search.left();
 
-                    search.add("搜索：")
+                    search.add(Core.bundle.get("mdtnh.quickbar.search.label", "搜索："))
                             .padRight(6f);
 
                     searchField = new TextField(searchText);
-                    searchField.setMessageText("名称 / 拼音 / 首字母");
+                    searchField.setMessageText(Core.bundle.get("mdtnh.quickbar.search.hint", "名称 / 拼音 / 首字母"));
 
                     searchField.changed(() -> {
                         searchText = searchField.getText();
@@ -489,7 +487,7 @@ public class MdtCoreItemsQuickBar {
                             .height(42f);
 
                     search.button(
-                                    "清除",
+                                    Core.bundle.get("mdtnh.quickbar.clear", "清除"),
                                     Styles.flatt,
                                     () -> {
                                         searchText = "";
@@ -516,7 +514,7 @@ public class MdtCoreItemsQuickBar {
         dialog.cont.table(actions -> {
 
             actions.button(
-                    "全部选择",
+                    Core.bundle.get("mdtnh.quickbar.selectAll", "全部选择"),
                     Icon.ok,
                     Styles.flatt,
                     () -> {
@@ -531,7 +529,7 @@ public class MdtCoreItemsQuickBar {
             ).growX().row();
 
             actions.button(
-                    "全部清除",
+                    Core.bundle.get("mdtnh.quickbar.clearAll", "全部清除"),
                     Icon.cancel,
                     Styles.flatt,
                     () -> {
@@ -626,9 +624,9 @@ public class MdtCoreItemsQuickBar {
 
         if (resultCountLabel != null) {
             resultCountLabel.setText(
-                    "显示 " + visible.size +
-                            " / " + getAvailableItems().size +
-                            " 个物品"
+                    Core.bundle.format("mdtnh.quickbar.result.count",
+                            visible.size,
+                            getAvailableItems().size)
             );
         }
 
@@ -644,8 +642,8 @@ public class MdtCoreItemsQuickBar {
 
         if (items.isEmpty()) {
             table.add(
-                            "[lightgray]没有找到匹配的物品。\n" +
-                                    "可尝试名称、内部名、全拼或拼音首字母。[]"
+                            Core.bundle.get("mdtnh.quickbar.empty.search",
+                                    "[lightgray]没有找到匹配的物品。\n可尝试名称、内部名、全拼或拼音首字母。[]")
                     )
                     .width(480f)
                     .pad(30f);
@@ -767,7 +765,8 @@ public class MdtCoreItemsQuickBar {
 
         if (item == null) {
             Label hint = new Label(
-                    "[lightgray]将鼠标移到物品上\n查看完整名称和大图[]"
+                    Core.bundle.get("mdtnh.quickbar.hover.empty",
+                            "[lightgray]将鼠标移到物品上\n查看完整名称和大图[]")
             );
 
             hint.setWrap(true);
@@ -817,9 +816,8 @@ public class MdtCoreItemsQuickBar {
          * 顺带保留实时数量，方便 hover 时直接确认库存。
          */
         hoverPreviewTable.label(() ->
-                "[lightgray]" +
-                        getFormattedAmount(item) +
-                        "[]"
+                Core.bundle.format("mdtnh.quickbar.hover.amount",
+                        getFormattedAmount(item))
         ).padTop(2f);
     }
 
@@ -890,7 +888,7 @@ public class MdtCoreItemsQuickBar {
         if (openDetailsKey.value == null ||
                 openDetailsKey.value.key == null) {
 
-            return "未设置";
+            return Core.bundle.get("mdtnh.quickbar.shortcut.unset", "未设置");
         }
 
         return openDetailsKey.value.key.getName();
@@ -1077,14 +1075,14 @@ public class MdtCoreItemsQuickBar {
 
     private String getSortButtonText() {
         if (sortMode == SortMode.amountDesc) {
-            return "数量 ↓";
+            return Core.bundle.get("mdtnh.quickbar.sort.desc", "数量 ↓");
         }
 
         if (sortMode == SortMode.amountAsc) {
-            return "数量 ↑";
+            return Core.bundle.get("mdtnh.quickbar.sort.asc", "数量 ↑");
         }
 
-        return "默认顺序";
+        return Core.bundle.get("mdtnh.quickbar.sort.button", "默认顺序");
     }
 
     /**

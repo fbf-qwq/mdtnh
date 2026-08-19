@@ -1,5 +1,6 @@
 package mdtnh.transport;
 
+import arc.Core;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import mdtnh.ModItems;
@@ -63,11 +64,13 @@ public final class MdtTransportBlocks {
 
     private static void loadItemPipes() {
         for (GtTransportData.ItemPipeMaterial material : GtTransportData.ITEM_PIPES) {
+            String materialName = Core.bundle.get("material." + material.id, material.displayName);
             for (int i = 0; i < GtTransportData.ITEM_PIPE_SIZE_IDS.length; i++) {
                 float stacksPerSecond = material.stacksPerSecond[i];
                 if (Float.isNaN(stacksPerSecond)) continue;
 
                 String sizeId = GtTransportData.ITEM_PIPE_SIZE_IDS[i];
+                String sizeName = Core.bundle.get("pipe.size." + sizeId, GtTransportData.ITEM_PIPE_SIZE_NAMES[i]);
                 String form = "item-pipe-" + sizeId;
                 Item requirement = ModItems.get(material.id, form);
                 if (requirement == null) continue;
@@ -77,16 +80,14 @@ public final class MdtTransportBlocks {
 
                 MdtItemPipeBlock block = new MdtItemPipeBlock(name, itemsPerSecond);
                 applyPipeVisualScale(block, sizeId);
-                block.localizedName =
-                        GtTransportData.ITEM_PIPE_SIZE_NAMES[i]
-                                + material.displayName + "物品管道";
-                block.description =
-                        "GTNH 标定 " + format(stacksPerSecond) + " 组/s；"
-                                + "MDT 实际速度 " + format(itemsPerSecond) + " 物品/s。"
-                                + (itemsPerSecond > 32f
-                                ? " 使用塑钢带式打包，额定单包 "
-                                + block.packageSize + " 个物品、满负载 4 包/s。"
-                                : "");
+                block.localizedName = Core.bundle.format("pipe.item.name", sizeName, materialName);
+                block.description = Core.bundle.format("pipe.item.desc",
+                        format(stacksPerSecond),
+                        format(itemsPerSecond),
+                        itemsPerSecond > 32f ?
+                                Core.bundle.format("pipe.item.pack", block.packageSize) :
+                                ""
+                );
                 block.health = 90 + i * 15;
                 block.alwaysUnlocked = true;
                 block.buildVisibility = BuildVisibility.shown;
@@ -99,11 +100,13 @@ public final class MdtTransportBlocks {
 
     private static void loadFluidPipes() {
         for (GtTransportData.FluidPipeMaterial material : GtTransportData.FLUID_PIPES) {
+            String materialName = Core.bundle.get("material." + material.id, material.displayName);
             for (int i = 0; i < GtTransportData.FLUID_PIPE_SIZE_IDS.length; i++) {
                 float litersPerSecond = material.litersPerSecond[i];
                 if (Float.isNaN(litersPerSecond)) continue;
 
                 String sizeId = GtTransportData.FLUID_PIPE_SIZE_IDS[i];
+                String sizeName = Core.bundle.get("pipe.size." + sizeId, GtTransportData.FLUID_PIPE_SIZE_NAMES[i]);
                 String form = "fluid-pipe-" + sizeId;
                 Item requirement = ModItems.get(material.id, form);
                 if (requirement == null) continue;
@@ -118,20 +121,15 @@ public final class MdtTransportBlocks {
                         channels
                 );
                 applyFluidPipeVisualScale(block, sizeId);
-                block.localizedName =
-                        GtTransportData.FLUID_PIPE_SIZE_NAMES[i]
-                                + material.displayName + "流体管道";
-                block.description =
-                        "GTNH 基准流量 " + format(litersPerSecond) + " L/s；"
-                                + "MDT 实际速度 x"
-                                + format(MdtFluidPipeBlock.transportSpeedMultiplier)
-                                + " = " + format(block.litersPerSecond) + " L/s = "
-                                + format(block.mdtUnitsPerSecond) + " MDT流体单位/s；"
-                                + "输入与输出均受该速度限制；"
-                                + "GTNH 温度上限 " + material.maxTemperatureK + " K。"
-                                + (channels > 1
-                                ? " 独立流量通道：" + channels + "，每种流体分别限速。"
-                                : "");
+                block.localizedName = Core.bundle.format("pipe.fluid.name", sizeName, materialName);
+                block.description = Core.bundle.format("pipe.fluid.desc",
+                        format(litersPerSecond),
+                        format(MdtFluidPipeBlock.transportSpeedMultiplier),
+                        format(block.litersPerSecond),
+                        format(block.mdtUnitsPerSecond),
+                        material.maxTemperatureK,
+                        channels > 1 ? Core.bundle.format("pipe.fluid.channels", channels) : ""
+                );
                 block.health = 100 + i * 18;
                 block.alwaysUnlocked = true;
                 block.buildVisibility = BuildVisibility.shown;
@@ -156,6 +154,7 @@ public final class MdtTransportBlocks {
             int count,
             boolean cable
     ) {
+        String materialName = Core.bundle.get("material." + material.id, material.displayName);
         String form = (cable ? "cable-" : "wire-") + count;
         Item requirement = ModItems.get(material.id, form);
         if (requirement == null) return;
@@ -165,12 +164,15 @@ public final class MdtTransportBlocks {
         String name = "gt-" + material.id + "-" + form;
 
         MdtEnergyBlock block = new MdtEnergyBlock(name);
-        block.localizedName =
-                count + "x" + material.displayName + (cable ? "线缆" : "导线");
-        block.description =
-                "最大电压 " + material.maxVoltageV + " V；最大电流 "
-                        + maxCurrentA + " A；线损 " + format(lossV)
-                        + " V/格。电压或电流超限时烧毁。";
+        String wireOrCable = cable ?
+                Core.bundle.get("wire.suffix.cable", "线缆") :
+                Core.bundle.get("wire.suffix.wire", "导线");
+        block.localizedName = Core.bundle.format("wire.name", count, materialName, wireOrCable);
+        block.description = Core.bundle.format("pipe.wire.desc",
+                material.maxVoltageV,
+                maxCurrentA,
+                format(lossV)
+        );
         block.fallbackRegion = "power-node";
         block.role = MdtEnergyBlock.EnergyRole.wire;
 
