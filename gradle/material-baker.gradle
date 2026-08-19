@@ -18,7 +18,9 @@ import java.awt.image.BufferedImage
  * 6. 使用 manifest 记录自己生成过的文件，只清理这些文件，不碰手绘 sprite。
  */
 
-def materialBakeConfigFile = file("$projectDir/material-bake.json")
+def materialBakeRoot = rootProject.projectDir
+def materialBakeConfigFile = new File(materialBakeRoot, "material-bake.json")
+def materialBakeTransportConfigFile = new File(materialBakeRoot, "material-bake.transport.json")
 
 def readMaterialBakeConfig = {
     if (!materialBakeConfigFile.exists()) {
@@ -28,7 +30,34 @@ def readMaterialBakeConfig = {
         )
     }
 
-    return new JsonSlurper().parse(materialBakeConfigFile)
+    def baseConfig = new JsonSlurper().parse(materialBakeConfigFile)
+
+    /*
+     * Optional MDT transport extension.
+     *
+     * material-bake.transport.json only contributes recipes; global policy/source/output settings
+     * remain owned by the user's existing material-bake.json.
+     */
+    if (materialBakeTransportConfigFile.exists()) {
+        def transportConfig =
+                new JsonSlurper().parse(materialBakeTransportConfigFile)
+
+        def baseRecipes =
+                baseConfig.recipes instanceof List
+                        ? new ArrayList(baseConfig.recipes)
+                        : new ArrayList()
+
+        if (!(transportConfig.recipes instanceof List)) {
+            throw new GradleException(
+                    "material-bake.transport.json 必须包含 recipes 数组。"
+            )
+        }
+
+        baseRecipes.addAll(transportConfig.recipes)
+        baseConfig.recipes = baseRecipes
+    }
+
+    return baseConfig
 }
 
 def clampByte = { double value ->
@@ -210,6 +239,9 @@ tasks.register("bakeMaterialSprites") {
     description = "根据灰度模板、材质贴图和颜色配置生成静态 PNG。"
 
     inputs.file(materialBakeConfigFile)
+    if (materialBakeTransportConfigFile.exists()) {
+        inputs.file(materialBakeTransportConfigFile)
+    }
 
     outputs.upToDateWhen { false }
 
@@ -237,25 +269,40 @@ tasks.register("bakeMaterialSprites") {
 
         // ---------------------------------------
 
-        File sourceRoot = file(
-                config.sourceRoot ?: "material-source"
+        File sourceRoot = new File(
+                materialBakeRoot,
+                (config.sourceRoot ?: "material-source").toString()
         )
 
-        File outputRoot = file(
-                config.outputRoot ?: "assets/sprites"
+        File outputRoot = new File(
+                materialBakeRoot,
+                (config.outputRoot ?: "assets/sprites").toString()
         )
 
-        File manifestFile = file(
-                config.manifest ?: "$buildDir/material-baker/generated-files.txt"
+        File manifestFile = new File(
+                materialBakeRoot,
+                (config.manifest ?: "build/material-baker/generated-files.txt").toString()
         )
+
+        logger.lifecycle("[MaterialBaker] root       = ${materialBakeRoot}")
+        logger.lifecycle("[MaterialBaker] config     = ${materialBakeConfigFile}")
+        logger.lifecycle("[MaterialBaker] transport  = ${materialBakeTransportConfigFile.exists() ? materialBakeTransportConfigFile : '(not found)'}")
+        logger.lifecycle("[MaterialBaker] sourceRoot = ${sourceRoot}")
+        logger.lifecycle("[MaterialBaker] outputRoot = ${outputRoot}")
+        logger.lifecycle("[MaterialBaker] recipes    = ${config.recipes instanceof List ? config.recipes.size() : 0}")
 
         if (!sourceRoot.exists()) {
             throw new GradleException(
-                    "材质源目录不存在：${sourceRoot}"
+                    "材质源目录不存在：${sourceRoot}\n" +
+                            "期望目录相对于项目根目录：${materialBakeRoot}"
             )
         }
 
-        outputRoot.mkdirs()
+        if (!outputRoot.exists() && !outputRoot.mkdirs()) {
+            throw new GradleException(
+                    "无法创建材质输出目录：${outputRoot}"
+            )
+        }
         manifestFile.parentFile.mkdirs()
 
         Set<String> previousGenerated = new LinkedHashSet<>()
@@ -488,7 +535,7 @@ tasks.register("bakeMaterialSprites") {
                     generatedCount++
 
                     logger.lifecycle(
-                            "[MaterialBaker] ${recipeName}: ${relativeOutput}"
+                            "[MaterialBaker] WRITE ${recipeName}: ${outputFile.absolutePath}"
                     )
                     // ------------------------------
                 }
@@ -539,8 +586,13 @@ tasks.register("bakeMaterialSprites") {
         )
 
         logger.lifecycle(
-                "[MaterialBaker] 完成，共生成 ${generatedCount} 张 PNG。"
+                "[MaterialBaker] DONE generated=${generatedCount}, output=${outputRoot.absolutePath}"
         )
+        if (generatedCount == 0) {
+            logger.lifecycle(
+                    "[MaterialBaker] NOTE: generated=0 usually means every target already existed under existingFilePolicy='${existingFilePolicy}'."
+            )
+        }
     }
 }
 
@@ -605,7 +657,11 @@ tasks.register("cleanMaterialSprites") {
  * 自动挂到常见 Mindustry Java Mod 构建任务。
  */
 tasks.matching {
-    it.name == "jar" ||
+    it.name == "compileJava" ||
+            it.name == "processResources" ||
+            it.name == "classes" ||
+            it.name == "jar" ||
+            it.name == "build" ||
             it.name == "deploy" ||
             it.name == "dex"
 }.configureEach {

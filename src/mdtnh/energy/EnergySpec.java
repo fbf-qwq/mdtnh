@@ -73,6 +73,9 @@ public class EnergySpec {
      */
     public int maxOutputA = 0;
 
+    /** 导线允许承受的最高包电压；仅对 wire 角色生效。 */
+    public float maxWireVoltageV = Float.MAX_VALUE;
+
     /**
      * 导线每个模拟秒允许通过的最大电流包数量。
      *

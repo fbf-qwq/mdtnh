@@ -81,6 +81,7 @@ public final class MdtEnergySystem {
     public static boolean canConnect(MdtEnergyNode a, MdtEnergyNode b) {
         if (a == null || b == null) return false;
         if (!a.canConnectToElectricGrid() || !b.canConnectToElectricGrid()) return false;
+        if (a.energyBuilding().dead() || b.energyBuilding().dead()) return false;
         return a.energyBuilding().team == b.energyBuilding().team
                 && (a.isEnergyWire() || b.isEnergyWire());
     }
@@ -104,6 +105,7 @@ public final class MdtEnergySystem {
             state.lastInputVoltageV = 0f;
             state.ignoredInputA = 0;
             state.overvoltageA = 0;
+            state.wireBurnA = 0;
         }
 
         // 使用对象身份集合，避免建筑类自定义 equals/hashCode 影响节点去重。
@@ -344,10 +346,12 @@ public final class MdtEnergySystem {
     /**
      * 沿最小线损路径传输一个持续一秒的 1A 电流包。
      *
-     * <p>只要路径存在，包就会离开发送端：来源扣除一个输出电压对应的能量，
-     * 导线增加载流统计，接收端增加输入电流统计。随后才根据到达电压处理结果：</p>
+     * <p>只要路径存在，包就会离开发送端并逐格通过导线。导线先检查额定电压、
+     * 额定电流并扣除线损；若途中烧毁，包在该格终止。只有成功穿过整条线路后，
+     * 接收端才增加输入电流统计并处理到达电压：</p>
      *
      * <ul>
+     *     <li>导线过压/过流：烧毁第一根超限导线并终止该包；</li>
      *     <li>低于最低输入电压：丢弃该包，不增加接收端缓存；</li>
      *     <li>高于最高输入电压：清空缓存并摧毁接收建筑；</li>
      *     <li>处于输入区间且容量足够：把到达电压对应的能量写入缓存；</li>
@@ -366,19 +370,47 @@ public final class MdtEnergySystem {
         EnergyState sourceState = source.energyState();
         EnergyState sinkState = sink.energyState();
 
-        // 线路损失可能超过来源电压；到达端电压最低按 0V 处理。
-        float arrivalVoltage = Math.max(0f, srcSpec.voltageV - path.lossV);
-
         sourceState.energyJ = Math.max(0f, sourceState.energyJ - srcSpec.voltageV);
         sourceState.outputA++;
 
+        /*
+         * 电流包沿路径逐格通过导线。
+         *
+         * 电压判定使用“进入该导线格之前”的包电压，通过该格以后再扣线损。
+         * 电流判定使用本模拟秒已经通过该导线的 1A 包数量。
+         *
+         * 任意导线一旦过压或过流就立即烧毁，该包在此终止；来源已付出的能量以及
+         * 前序导线已经记录的电流不会回退。
+         */
+        float lineVoltage = srcSpec.voltageV;
+        for (MdtEnergyNode wire : path.wires) {
+            EnergySpec wireSpec = wire.energySpec();
+            EnergyState wireState = wire.energyState();
+
+            wireState.currentA++;
+
+            boolean voltageExceeded =
+                    lineVoltage > wireSpec.maxWireVoltageV + epsilon;
+            boolean currentExceeded =
+                    wireState.currentA > wireSpec.maxWireCurrentA;
+
+            if (voltageExceeded || currentExceeded) {
+                wireState.wireBurnA++;
+                wire.onWireOverload(
+                        lineVoltage,
+                        wireState.currentA,
+                        voltageExceeded,
+                        currentExceeded
+                );
+                return true;
+            }
+
+            lineVoltage = Math.max(0f, lineVoltage - wireSpec.wireLossV);
+        }
+
+        float arrivalVoltage = lineVoltage;
         sinkState.inputA++;
         sinkState.lastInputVoltageV = arrivalVoltage;
-
-        // 路径上的每根导线都已经通过了这个 1A 包。
-        for (MdtEnergyNode wire : path.wires) {
-            wire.energyState().currentA++;
-        }
 
         if (sinkSpec.isUndervoltage(arrivalVoltage)) {
             sinkState.ignoredInputA++;
@@ -403,8 +435,9 @@ public final class MdtEnergySystem {
     /**
      * 使用 Dijkstra 算法寻找来源到目标的最低总压降路径。
      *
-     * <p>只有来源和目标可以是普通设备，中间节点必须是导线。达到载流上限的导线
-     * 不参与本次寻路，因此后续电流包可以自动改走仍有容量的其他路径。</p>
+     * <p>只有来源和目标可以是普通设备，中间节点必须是导线。这里不会提前避开
+     * 已达到额定电流的导线：若下一个 1A 包使其过流，导线应实际烧毁，而不是被
+     * 调度器自动绕开。</p>
      */
     private static Path findPath(MdtEnergyNode source, MdtEnergyNode target) {
         Map<MdtEnergyNode, Float> distance = new HashMap<>();
@@ -431,11 +464,6 @@ public final class MdtEnergySystem {
 
             for (MdtEnergyNode neighbor : adjacentNodes(current)) {
                 if (!neighbor.isEnergyWire() && neighbor != target) continue;
-
-                if (neighbor.isEnergyWire()) {
-                    EnergySpec wireSpec = neighbor.energySpec();
-                    if (neighbor.energyState().currentA >= wireSpec.maxWireCurrentA) continue;
-                }
 
                 float addedLoss = neighbor.isEnergyWire()
                         ? neighbor.energySpec().wireLossV

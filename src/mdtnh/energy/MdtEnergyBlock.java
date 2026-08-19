@@ -3,17 +3,20 @@ package mdtnh.energy;
 import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.scene.ui.CheckBox;
 import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
+import arc.util.Log;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.Vars;
 import mindustry.gen.Building;
+import mindustry.graphics.Layer;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 
@@ -42,9 +45,50 @@ public class MdtEnergyBlock extends Block {
     public int maxOutputA = 1;
     public float generationJPerSecond = 0f;
     public float consumptionJPerSecond = 0f;
+    /** 导线额定最高包电压；普通设备不使用。 */
+    public float maxWireVoltageV = Float.MAX_VALUE;
     public int maxWireCurrentA = 1;
     public float wireLossV = 0f;
     public String fallbackRegion = "battery";
+
+    /**
+     * GT 导线/线缆的方向连接贴图。
+     *
+     * <p>导线只有两张贴图：</p>
+     * <ul>
+     *     <li>center：始终绘制；</li>
+     *     <li>edge：默认朝右，仅在对应方向存在电网连接时旋转并绘制。</li>
+     * </ul>
+     *
+     * <p>线缆先绘制“对应材料、对应粗细的导线”底层，再绘制一套仅按粗细区分、
+     * 所有材料共用的 cable center/edge 覆盖层。</p>
+     */
+    public boolean connectedWireSprites = false;
+
+    /** 导线底层中心贴图。 */
+    public String wireCenterRegionName;
+    /** 导线底层边缘贴图；原图默认朝右。 */
+    public String wireEdgeRegionName;
+    public TextureRegion wireCenterRegion;
+    public TextureRegion wireEdgeRegion;
+
+    /** 是否额外绘制线缆绝缘覆盖层。 */
+    public boolean cableWireSprites = false;
+    /** 同一粗细线缆共用的覆盖层中心贴图。 */
+    public String cableCenterRegionName;
+    /** 同一粗细线缆共用的覆盖层边缘贴图；原图默认朝右。 */
+    public String cableEdgeRegionName;
+    public TextureRegion cableCenterRegion;
+    public TextureRegion cableEdgeRegion;
+
+    public Color wireSpriteColor = Color.white.cpy();
+
+    /**
+     * edge 原图默认朝右，因此默认偏移为 0°。
+     * 如果美术资源的基准方向不同，可单独调整这两个偏移。
+     */
+    public float wireEdgeRotationOffsetDeg = 0f;
+    public float cableEdgeRotationOffsetDeg = 0f;
 
     /*
      * 可配置调试发电机。
@@ -116,14 +160,118 @@ public class MdtEnergyBlock extends Block {
         super.load();
         region = Core.atlas.find(fallbackRegion);
 
+        if (connectedWireSprites && role == EnergyRole.wire) {
+            /*
+             * 不直接使用生成器里写死的 "gt-..." 名称。
+             * Java 模组内容的实际 content name 可能已经带有模组命名空间前缀，
+             * 例如 mdtnh-gt-copper-wire-1。这里从最终的 name 推导 atlas 名，
+             * 从而和 Mindustry 实际打包后的 region 名保持一致。
+             */
+            String wireVisualBase = cableWireSprites
+                    ? name.replace("-cable-", "-wire-")
+                    : name;
+
+            wireCenterRegion = findWireRegion(
+                    wireCenterRegionName,
+                    wireVisualBase + "-center"
+            );
+            wireEdgeRegion = findWireRegion(
+                    wireEdgeRegionName,
+                    wireVisualBase + "-edge"
+            );
+
+            if (!wireCenterRegion.found()) {
+                Log.err("Missing MDT wire center sprite: @", wireVisualBase + "-center");
+            }
+            if (!wireEdgeRegion.found()) {
+                Log.err("Missing MDT wire edge sprite: @", wireVisualBase + "-edge");
+            }
+
+            if (cableWireSprites) {
+                String cableOverlayBase = sharedCableOverlayBase(name);
+
+                cableCenterRegion = findWireRegion(
+                        cableCenterRegionName,
+                        cableOverlayBase + "-center"
+                );
+                cableEdgeRegion = findWireRegion(
+                        cableEdgeRegionName,
+                        cableOverlayBase + "-edge"
+                );
+
+                if (!cableCenterRegion.found()) {
+                    Log.err("Missing MDT cable center sprite: @", cableOverlayBase + "-center");
+                }
+                if (!cableEdgeRegion.found()) {
+                    Log.err("Missing MDT cable edge sprite: @", cableOverlayBase + "-edge");
+                }
+            }
+
+            /*
+             * 不再把缺失的导线贴图替换成 power-node。
+             * 否则一旦资源名不匹配，就会出现“导线仍被渲染成电力节点”的假象。
+             */
+            if (wireCenterRegion.found()) {
+                region = wireCenterRegion;
+            }
+        }
+
         spec = new EnergySpec();
         spec.role = convertRole(role);
         spec.voltageV = voltageV;
         spec.capacityJ = capacityJ;
         spec.maxInputA = maxInputA;
         spec.maxOutputA = maxOutputA;
+        spec.maxWireVoltageV = maxWireVoltageV;
         spec.maxWireCurrentA = maxWireCurrentA;
         spec.wireLossV = wireLossV;
+    }
+
+    /**
+     * 查找导线相关 region。explicitName 允许调用方覆盖默认名称；
+     * 默认名称应当已经从最终 content name 推导，因此天然保留模组命名空间。
+     */
+    private TextureRegion findWireRegion(String explicitName, String defaultName) {
+        if (explicitName == null || explicitName.isEmpty()) {
+            return Core.atlas.find(defaultName);
+        }
+
+        TextureRegion explicit = Core.atlas.find(explicitName);
+        if (explicit.found()) return explicit;
+
+        // 若显式名称是未加命名空间的 gt-*，尝试补上当前方块使用的前缀。
+        int gtIndex = name.indexOf("gt-");
+        if (gtIndex > 0 && explicitName.startsWith("gt-")) {
+            TextureRegion namespaced = Core.atlas.find(
+                    name.substring(0, gtIndex) + explicitName
+            );
+            if (namespaced.found()) return namespaced;
+        }
+
+        return explicit;
+    }
+
+    /**
+     * 从实际线缆 content name 推导“同粗细共用”的覆盖贴图名称。
+     *
+     * 例如：
+     * mdtnh-gt-copper-cable-4 -> mdtnh-gt-cable-4
+     * gt-copper-cable-4       -> gt-cable-4
+     */
+    private static String sharedCableOverlayBase(String contentName) {
+        int gtIndex = contentName.indexOf("gt-");
+        int cableIndex = contentName.lastIndexOf("-cable-");
+
+        if (gtIndex >= 0 && cableIndex > gtIndex) {
+            String prefix = contentName.substring(0, gtIndex);
+            String count = contentName.substring(cableIndex + "-cable-".length());
+            return prefix + "gt-cable-" + count;
+        }
+
+        // 非标准名称时仍给出稳定后备规则。
+        int lastDash = contentName.lastIndexOf('-');
+        String count = lastDash >= 0 ? contentName.substring(lastDash + 1) : contentName;
+        return "gt-cable-" + count;
     }
 
     public boolean isWire() {
@@ -346,7 +494,7 @@ public class MdtEnergyBlock extends Block {
 
             boolean nextEnabled =
                     "1".equals(parts[0])
-                    || "true".equalsIgnoreCase(parts[0]);
+                            || "true".equalsIgnoreCase(parts[0]);
 
             float nextVoltage = parseFloat(parts[1], configuredVoltageV);
             float nextRate = parseFloat(
@@ -423,6 +571,7 @@ public class MdtEnergyBlock extends Block {
             runtimeSpec.maxOutputA = generatorEnabled
                     ? configuredMaxOutputA
                     : 0;
+            runtimeSpec.maxWireVoltageV = base.maxWireVoltageV;
             runtimeSpec.maxWireCurrentA = base.maxWireCurrentA;
             runtimeSpec.wireLossV = base.wireLossV;
         }
@@ -542,33 +691,100 @@ public class MdtEnergyBlock extends Block {
 
         @Override
         public void draw() {
-            if (isWire()) {
-                float fraction = energySpec().maxWireCurrentA <= 0
-                        ? 0f
-                        : Math.min(
-                                1f,
-                                nodeState.currentA
-                                        / (float) energySpec().maxWireCurrentA
-                        );
+            if (!isWire()) {
+                super.draw();
+                return;
+            }
 
-                Draw.color(Color.valueOf("ffd37f"));
-                Lines.stroke(1.2f + 1.8f * fraction);
+            if (connectedWireSprites
+                    && wireCenterRegion != null
+                    && wireCenterRegion.found()) {
+                drawConnectedWireSprites();
+                return;
+            }
 
+            // Legacy/debug fallback when no connected-sprite mode is requested.
+            float fraction = energySpec().maxWireCurrentA <= 0
+                    ? 0f
+                    : Math.min(
+                    1f,
+                    nodeState.currentA
+                            / (float) energySpec().maxWireCurrentA
+            );
+
+            Draw.color(Color.valueOf("ffd37f"));
+            Lines.stroke(1.2f + 1.8f * fraction);
+
+            if (tile != null) {
                 for (int direction = 0; direction < 4; direction++) {
                     Building nearby = tile.nearbyBuild(direction);
                     if (nearby instanceof MdtEnergyNode
                             && MdtEnergySystem.canConnect(
-                                    this,
-                                    (MdtEnergyNode) nearby
-                            )) {
+                            this,
+                            (MdtEnergyNode) nearby
+                    )) {
                         Lines.line(x, y, nearby.x, nearby.y);
                     }
                 }
-
-                Draw.reset();
             }
 
+            Draw.reset();
             super.draw();
+        }
+
+        private void drawConnectedWireSprites() {
+            Draw.color(wireSpriteColor);
+
+            // 底层：始终绘制导线中心；有连接的方向再绘制导线边缘。
+            Draw.z(Layer.blockUnder + 0.10f);
+            Draw.rect(wireCenterRegion, x, y);
+
+            Draw.z(Layer.blockUnder + 0.12f);
+            drawConnectedWireEdges(wireEdgeRegion, wireEdgeRotationOffsetDeg);
+
+            // 上层：仅线缆启用。所有同粗细线缆共用同一套覆盖贴图。
+            if (cableWireSprites) {
+                if (cableCenterRegion != null && cableCenterRegion.found()) {
+                    Draw.z(Layer.blockUnder + 0.20f);
+                    Draw.rect(cableCenterRegion, x, y);
+                }
+
+                Draw.z(Layer.blockUnder + 0.22f);
+                drawConnectedWireEdges(cableEdgeRegion, cableEdgeRotationOffsetDeg);
+            }
+
+            Draw.reset();
+        }
+
+        /**
+         * 绘制四周连接贴图。
+         *
+         * <p>Mindustry 的方向 0/1/2/3 依次对应右/上/左/下，因此当 edge 原图默认朝右时，
+         * 直接使用 direction * 90° 即可得到四个方向。</p>
+         */
+        private void drawConnectedWireEdges(
+                TextureRegion region,
+                float rotationOffset
+        ) {
+            if (region == null || !region.found() || tile == null) return;
+
+            for (int direction = 0; direction < 4; direction++) {
+                Building nearby = tile.nearbyBuild(direction);
+                if (!(nearby instanceof MdtEnergyNode)
+                        || !MdtEnergySystem.canConnect(
+                        this,
+                        (MdtEnergyNode) nearby
+                )) {
+                    continue;
+                }
+
+                Draw.rect(
+                        region,
+                        x,
+                        y,
+                        direction * 90f + rotationOffset
+                );
+            }
         }
 
         @Override

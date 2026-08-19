@@ -51,4 +51,19 @@ public interface MdtEnergyNode {
         energyState().energyJ = 0f;
         energyBuilding().kill();
     }
+    /**
+     * 处理导线超过额定电压或额定电流。
+     *
+     * <p>默认行为是直接烧毁该导线建筑。特殊线材可覆盖此方法实现保险丝、残骸等。</p>
+     */
+    default void onWireOverload(
+            float inputVoltageV,
+            int currentA,
+            boolean voltageExceeded,
+            boolean currentExceeded
+    ) {
+        energyState().energyJ = 0f;
+        energyBuilding().kill();
+    }
+
 }

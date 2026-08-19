@@ -3,6 +3,7 @@ package mdtnh;
 import arc.graphics.Color;
 import arc.util.Log;
 import mdtnh.material.MaterialDefinition;
+import mdtnh.transport.GtTransportData;
 import mindustry.type.Item;
 
 import java.util.*;
@@ -10,6 +11,7 @@ import java.util.*;
 public class ModItems {
 
     public static Map<String, Item> items = new HashMap<>();
+    public static Map<String, Color> materialColors = new HashMap<>();
     public static Item tinyPileOfDarkAsh;
 
     // ==================== 材料数据定义（完整列出） ====================
@@ -20,7 +22,7 @@ public class ModItems {
             {"iron",        "#C0C0C0", "mechanical"},
             {"copper",      "#B87333", "full"},
             {"lead",        "#6B6B6B", "basic"},
-            {"tin",         "#C0D0D0", "pipe"},
+            {"tin",         "#C0D0D0", "wire"},
 
             // 其余金属（按字母顺序）
             {"actinium",    "#C0C0C0", "mechanical"},
@@ -103,7 +105,7 @@ public class ModItems {
             {"thorium",     "#C0C0C0", "mechanical"},
             {"thulium",     "#C8C8C8", "mechanical"},
             {"titanium",    "#C8C8C8", "pipe"},
-            {"tungsten",    "#C8C8C8", "pipe"},
+            {"tungsten",    "#C8C8C8", "wire"},
             {"uranium",     "#C8C8C8", "mechanical"},
             {"vanadium",    "#C8C8C8", "mechanical"},
             {"ytterbium",   "#C8C8C8", "mechanical"},
@@ -120,8 +122,8 @@ public class ModItems {
             {"bronze",                                    "#B88040", "pipe"},
             {"cupronickel",                               "#C8C8B0", "wire"},
             {"electrum",                                  "#D8C850", "wire"},
-            {"invar",                                     "#B8B8B8", "pipe"},
-            {"kanthal",                                   "#A0A0A0", "pipe"},
+            {"invar",                                     "#B8B8B8", "mechanical"},
+            {"kanthal",                                   "#A0A0A0", "wire"},
             {"magnesiumAluminumAlloy",                    "#C8C8C8", "mechanical"},
             {"nichrome",                                  "#B8B8B8", "mechanical"},
             {"niobiumTitaniumAlloy",                      "#B8B8C0", "mechanical"},
@@ -136,7 +138,7 @@ public class ModItems {
             {"stainlessSteel",                            "#C8C8C8", "pipe"},
             {"steel",                                     "#A0A0A0", "pipe"},
             {"tinIronAlloy",                              "#B0B8B8", "mechanical"},
-            {"hastelloy",                                 "#A8A8A8", "pipe"},
+            {"hastelloy",                                 "#A8A8A8", "mechanical"},
             {"vanadiumGalliumAlloy",                      "#B0B0B0", "mechanical"},
             {"wroughtIron",                               "#787878", "mechanical"},
             {"iridiumOsmiumAlloy",                        "#B0B8C0", "mechanical"},
@@ -198,7 +200,11 @@ public class ModItems {
             registerMaterial(def);
         }
 
-        // 3. 特殊物品（独立于材料）
+        // 3. 按 GTNH 数据补齐精确的导线/线缆、流体管道和物品管道形态。
+        //    不依赖 MaterialDefinition 的整包模式，避免给材料误生成网站不存在的管道。
+        registerGtTransportForms();
+
+        // 4. 特殊物品（独立于材料）
         items.put("nano_swarm", new Item("nano-swarm", Color.valueOf("00FFAA")) {{
             radioactivity = 0.7f;
             cost = 5.0f;
@@ -228,6 +234,7 @@ public class ModItems {
     private static void registerMaterial(MaterialDefinition def) {
         String id = def.getId();
         Color base = def.getColor();
+        materialColors.put(id, base.cpy());
 
         for (String form : def.getForms()) {
             // 根据形态名称决定颜色乘数和 cost
@@ -312,6 +319,98 @@ public class ModItems {
             } else {
                 Log.warn("Duplicate item key: " + key);
             }
+        }
+    }
+
+
+    /**
+     * 根据 GTNH 表精确补齐运输形态。
+     *
+     * <p>这样既支持“同一种材料同时有线缆和管道”，也支持“只有部分管径”的材料，
+     * 而不会被 MaterialDefinition 的通用 mode 误扩展。</p>
+     */
+    private static void registerGtTransportForms() {
+        for (GtTransportData.WireMaterial material : GtTransportData.WIRES) {
+            for (int count : GtTransportData.WIRE_COUNTS) {
+                registerTransportForm(material.id, "wire-" + count);
+                registerTransportForm(material.id, "cable-" + count);
+            }
+        }
+
+        for (GtTransportData.FluidPipeMaterial material : GtTransportData.FLUID_PIPES) {
+            for (int i = 0; i < GtTransportData.FLUID_PIPE_SIZE_IDS.length; i++) {
+                if (!Float.isNaN(material.litersPerSecond[i])) {
+                    registerTransportForm(
+                            material.id,
+                            "fluid-pipe-" + GtTransportData.FLUID_PIPE_SIZE_IDS[i]
+                    );
+                }
+            }
+        }
+
+        for (GtTransportData.ItemPipeMaterial material : GtTransportData.ITEM_PIPES) {
+            for (int i = 0; i < GtTransportData.ITEM_PIPE_SIZE_IDS.length; i++) {
+                if (!Float.isNaN(material.stacksPerSecond[i])) {
+                    registerTransportForm(
+                            material.id,
+                            "item-pipe-" + GtTransportData.ITEM_PIPE_SIZE_IDS[i]
+                    );
+                }
+            }
+        }
+    }
+
+    /** 注册一个运输专用物品形态；若 mode 已经创建过该形态则保持原对象。 */
+    private static void registerTransportForm(String materialId, String form) {
+        String key = materialId + "_" + form;
+        if (items.containsKey(key)) return;
+
+        Color base = materialColors.get(materialId);
+        if (base == null) {
+            Log.warn("Cannot create transport form for unknown material: " + materialId);
+            return;
+        }
+
+        float colorMul = 1f;
+        float cost = 1f;
+
+        if (form.startsWith("wire-")) {
+            int count = Integer.parseInt(form.substring(5));
+            cost = 0.3f * count;
+        } else if (form.startsWith("cable-")) {
+            int count = Integer.parseInt(form.substring(6));
+            colorMul = 0.9f;
+            cost = 0.5f * count;
+        } else if (form.startsWith("fluid-pipe-")) {
+            String size = form.substring("fluid-pipe-".length());
+            colorMul = 0.8f;
+            cost = transportPipeCost(size);
+        } else if (form.startsWith("item-pipe-")) {
+            String size = form.substring("item-pipe-".length());
+            colorMul = 0.85f;
+            cost = transportPipeCost(size);
+        }
+
+        final float finalCost = cost;
+        Item item = new Item(
+                materialId + "-" + form,
+                base.cpy().mul(colorMul)
+        ) {{
+            this.cost = finalCost;
+        }};
+        items.put(key, item);
+    }
+
+    private static float transportPipeCost(String size) {
+        switch (size) {
+            case "micro":  return 0.5f;
+            case "small":  return 1.0f;
+            case "medium": return 2.0f;
+            case "large":  return 4.0f;
+            case "giant":  return 8.0f;
+            case "quad":   return 16.0f;
+            case "nine":   return 32.0f;
+            default:       return 1.0f;
         }
     }
 

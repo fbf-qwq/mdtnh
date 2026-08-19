@@ -54,6 +54,13 @@ public class EnergyState {
     public int overvoltageA;
 
     /**
+     * 上一个模拟秒因导线过压或过流而触发烧毁的电流包数量。
+     *
+     * <p>仅用于状态显示/调试，不参与存档。</p>
+     */
+    public int wireBurnA;
+
+    /**
      * 判断缓存能否一次性支付指定能量。
      *
      * @param amountJ 需要支付的能量，单位为焦耳

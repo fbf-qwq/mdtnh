@@ -63,8 +63,8 @@ public final class MdtEnergyBlocks {
         exampleWire = new MdtEnergyBlock("example-wire") {{
             localizedName = "示例导线";
             description =
-                    "自动连接四周同队的示例电力方块。每格最多通过 16 A，"
-                    + "每个 1 A 包损失 0.05 V。";
+                    "自动连接四周同队的示例电力方块。最高承受 128 V，"
+                    + "每格最多通过 16 A，每个 1 A 包损失 0.05 V；超限会烧毁。";
             fallbackRegion = "power-node";
             role = EnergyRole.wire;
 
@@ -72,6 +72,7 @@ public final class MdtEnergyBlocks {
             voltageV = 0f;
             maxInputA = 0;
             maxOutputA = 0;
+            maxWireVoltageV = 128f;
             maxWireCurrentA = 16;
             wireLossV = 0.05f;
 

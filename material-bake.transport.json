@@ -1,0 +1,363 @@
+{
+  "_comment": "Optional recipe extension loaded by the patched material-baker.gradle. Templates are grayscale; variants are baked to exact GT block atlas names.",
+  "recipes": [
+    {
+      "name": "MDT GT item pipes",
+      "mode": "multiply",
+      "mapping": "stretch",
+      "templates": [
+        {
+          "id": "item-pipe-micro-center-bottom",
+          "file": "transport/item-pipe/micro-center-bottom.png"
+        },
+        {
+          "id": "item-pipe-micro-edge-bottom",
+          "file": "transport/item-pipe/micro-edge-bottom.png"
+        },
+        {
+          "id": "item-pipe-micro-center-top",
+          "file": "transport/item-pipe/micro-center-top.png"
+        },
+        {
+          "id": "item-pipe-micro-edge-top",
+          "file": "transport/item-pipe/micro-edge-top.png"
+        },
+        {
+          "id": "item-pipe-small-center-bottom",
+          "file": "transport/item-pipe/small-center-bottom.png"
+        },
+        {
+          "id": "item-pipe-small-edge-bottom",
+          "file": "transport/item-pipe/small-edge-bottom.png"
+        },
+        {
+          "id": "item-pipe-small-center-top",
+          "file": "transport/item-pipe/small-center-top.png"
+        },
+        {
+          "id": "item-pipe-small-edge-top",
+          "file": "transport/item-pipe/small-edge-top.png"
+        },
+        {
+          "id": "item-pipe-medium-center-bottom",
+          "file": "transport/item-pipe/medium-center-bottom.png"
+        },
+        {
+          "id": "item-pipe-medium-edge-bottom",
+          "file": "transport/item-pipe/medium-edge-bottom.png"
+        },
+        {
+          "id": "item-pipe-medium-center-top",
+          "file": "transport/item-pipe/medium-center-top.png"
+        },
+        {
+          "id": "item-pipe-medium-edge-top",
+          "file": "transport/item-pipe/medium-edge-top.png"
+        },
+        {
+          "id": "item-pipe-large-center-bottom",
+          "file": "transport/item-pipe/large-center-bottom.png"
+        },
+        {
+          "id": "item-pipe-large-edge-bottom",
+          "file": "transport/item-pipe/large-edge-bottom.png"
+        },
+        {
+          "id": "item-pipe-large-center-top",
+          "file": "transport/item-pipe/large-center-top.png"
+        },
+        {
+          "id": "item-pipe-large-edge-top",
+          "file": "transport/item-pipe/large-edge-top.png"
+        },
+        {
+          "id": "item-pipe-giant-center-bottom",
+          "file": "transport/item-pipe/giant-center-bottom.png"
+        },
+        {
+          "id": "item-pipe-giant-edge-bottom",
+          "file": "transport/item-pipe/giant-edge-bottom.png"
+        },
+        {
+          "id": "item-pipe-giant-center-top",
+          "file": "transport/item-pipe/giant-center-top.png"
+        },
+        {
+          "id": "item-pipe-giant-edge-top",
+          "file": "transport/item-pipe/giant-edge-top.png"
+        }
+      ],
+      "variants": [
+        {
+          "id": "gt-aluminum",
+          "tint": "#D9DAD9"
+        },
+        {
+          "id": "gt-tin",
+          "tint": "#C0D0D0"
+        },
+        {
+          "id": "gt-brass",
+          "tint": "#C8A850"
+        },
+        {
+          "id": "gt-electrum",
+          "tint": "#D8C850"
+        },
+        {
+          "id": "gt-platinum",
+          "tint": "#D0D0D0"
+        },
+        {
+          "id": "gt-osmium",
+          "tint": "#B0C8D8"
+        },
+        {
+          "id": "gt-nickel",
+          "tint": "#C8C8C0"
+        },
+        {
+          "id": "gt-cobalt",
+          "tint": "#C8D0D8"
+        }
+      ],
+      "output": "{variant}-{template}.png"
+    },
+    {
+      "name": "MDT GT fluid pipes",
+      "mode": "multiply",
+      "mapping": "stretch",
+      "templates": [
+        {
+          "id": "fluid-pipe-micro-center-bottom",
+          "file": "transport/fluid-pipe/micro-center-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-micro-edge-bottom",
+          "file": "transport/fluid-pipe/micro-edge-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-micro-center-top",
+          "file": "transport/fluid-pipe/micro-center-top.png"
+        },
+        {
+          "id": "fluid-pipe-micro-edge-top",
+          "file": "transport/fluid-pipe/micro-edge-top.png"
+        },
+        {
+          "id": "fluid-pipe-small-center-bottom",
+          "file": "transport/fluid-pipe/small-center-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-small-edge-bottom",
+          "file": "transport/fluid-pipe/small-edge-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-small-center-top",
+          "file": "transport/fluid-pipe/small-center-top.png"
+        },
+        {
+          "id": "fluid-pipe-small-edge-top",
+          "file": "transport/fluid-pipe/small-edge-top.png"
+        },
+        {
+          "id": "fluid-pipe-medium-center-bottom",
+          "file": "transport/fluid-pipe/medium-center-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-medium-edge-bottom",
+          "file": "transport/fluid-pipe/medium-edge-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-medium-center-top",
+          "file": "transport/fluid-pipe/medium-center-top.png"
+        },
+        {
+          "id": "fluid-pipe-medium-edge-top",
+          "file": "transport/fluid-pipe/medium-edge-top.png"
+        },
+        {
+          "id": "fluid-pipe-large-center-bottom",
+          "file": "transport/fluid-pipe/large-center-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-large-edge-bottom",
+          "file": "transport/fluid-pipe/large-edge-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-large-center-top",
+          "file": "transport/fluid-pipe/large-center-top.png"
+        },
+        {
+          "id": "fluid-pipe-large-edge-top",
+          "file": "transport/fluid-pipe/large-edge-top.png"
+        },
+        {
+          "id": "fluid-pipe-giant-center-bottom",
+          "file": "transport/fluid-pipe/giant-center-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-giant-edge-bottom",
+          "file": "transport/fluid-pipe/giant-edge-bottom.png"
+        },
+        {
+          "id": "fluid-pipe-giant-center-top",
+          "file": "transport/fluid-pipe/giant-center-top.png"
+        },
+        {
+          "id": "fluid-pipe-giant-edge-top",
+          "file": "transport/fluid-pipe/giant-edge-top.png"
+        }
+      ],
+      "variants": [
+        {
+          "id": "gt-copper",
+          "tint": "#B87333"
+        },
+        {
+          "id": "gt-bronze",
+          "tint": "#B88040"
+        },
+        {
+          "id": "gt-steel",
+          "tint": "#A0A0A0"
+        },
+        {
+          "id": "gt-stainlessSteel",
+          "tint": "#C8C8C8"
+        },
+        {
+          "id": "gt-titanium",
+          "tint": "#C8C8C8"
+        },
+        {
+          "id": "gt-tungstenSteel",
+          "tint": "#808080"
+        },
+        {
+          "id": "gt-niobiumTitaniumAlloy",
+          "tint": "#B8B8C0"
+        },
+        {
+          "id": "gt-wroughtIron",
+          "tint": "#787878"
+        },
+        {
+          "id": "gt-europium",
+          "tint": "#C8C0B0"
+        },
+        {
+          "id": "gt-crudeBronzeAlloy",
+          "tint": "#A07848"
+        },
+        {
+          "id": "gt-maragingSteel300",
+          "tint": "#888888"
+        },
+        {
+          "id": "gt-hastelloyX",
+          "tint": "#888888"
+        },
+        {
+          "id": "gt-tungsten",
+          "tint": "#C8C8C8"
+        },
+        {
+          "id": "gt-lead",
+          "tint": "#6B6B6B"
+        }
+      ],
+      "output": "{variant}-{template}.png"
+    },
+    {
+      "name": "MDT GT wires and cables",
+      "mode": "multiply",
+      "mapping": "stretch",
+      "templates": [
+        {
+          "id": "wire-1-center",
+          "file": "transport/wire/1-center.png"
+        },
+        {
+          "id": "wire-1-edge",
+          "file": "transport/wire/1-edge.png"
+        },
+        {
+          "id": "wire-2-center",
+          "file": "transport/wire/2-center.png"
+        },
+        {
+          "id": "wire-2-edge",
+          "file": "transport/wire/2-edge.png"
+        },
+        {
+          "id": "wire-4-center",
+          "file": "transport/wire/4-center.png"
+        },
+        {
+          "id": "wire-4-edge",
+          "file": "transport/wire/4-edge.png"
+        },
+        {
+          "id": "wire-8-center",
+          "file": "transport/wire/8-center.png"
+        },
+        {
+          "id": "wire-8-edge",
+          "file": "transport/wire/8-edge.png"
+        },
+        {
+          "id": "wire-12-center",
+          "file": "transport/wire/12-center.png"
+        },
+        {
+          "id": "wire-12-edge",
+          "file": "transport/wire/12-edge.png"
+        },
+        {
+          "id": "wire-16-center",
+          "file": "transport/wire/16-center.png"
+        },
+        {
+          "id": "wire-16-edge",
+          "file": "transport/wire/16-edge.png"
+        }
+      ],
+      "variants": [
+        { "id": "gt-redAlloy", "tint": "#A04040" },
+        { "id": "gt-cobalt", "tint": "#C8D0D8" },
+        { "id": "gt-lead", "tint": "#6B6B6B" },
+        { "id": "gt-tin", "tint": "#C0D0D0" },
+        { "id": "gt-zinc", "tint": "#C8D0D8" },
+        { "id": "gt-solder", "tint": "#A8A8A8" },
+        { "id": "gt-iron", "tint": "#C0C0C0" },
+        { "id": "gt-nickel", "tint": "#C8C8C0" },
+        { "id": "gt-cupronickel", "tint": "#C8C8B0" },
+        { "id": "gt-copper", "tint": "#B87333" },
+        { "id": "gt-annealedCopper", "tint": "#B87333" },
+        { "id": "gt-kanthal", "tint": "#A0A0A0" },
+        { "id": "gt-gold", "tint": "#FFD700" },
+        { "id": "gt-electrum", "tint": "#D8C850" },
+        { "id": "gt-silver", "tint": "#C0C0C0" },
+        { "id": "gt-blueAlloy", "tint": "#4060A0" },
+        { "id": "gt-nichrome", "tint": "#B8B8B8" },
+        { "id": "gt-steel", "tint": "#A0A0A0" },
+        { "id": "gt-blackSteel", "tint": "#505050" },
+        { "id": "gt-titanium", "tint": "#C8C8C8" },
+        { "id": "gt-aluminum", "tint": "#D9DAD9" },
+        { "id": "gt-platinum", "tint": "#D0D0D0" },
+        { "id": "gt-tungstenSteel", "tint": "#808080" },
+        { "id": "gt-tungsten", "tint": "#C8C8C8" },
+        { "id": "gt-osmium", "tint": "#B0C8D8" },
+        { "id": "gt-highSpeedSteelG", "tint": "#909090" },
+        { "id": "gt-niobiumTitaniumAlloy", "tint": "#B8B8C0" },
+        { "id": "gt-vanadiumGalliumAlloy", "tint": "#B0B0B0" },
+        { "id": "gt-highSpeedSteelE", "tint": "#909090" },
+        { "id": "gt-iridiumOsmiumAlloy", "tint": "#B0B8C0" },
+        { "id": "gt-naquadahAlloy", "tint": "#808080" },
+        { "id": "gt-highSpeedSteelS", "tint": "#909090" }
+      ],
+      "output": "{variant}-{template}.png"
+    }
+  ]
+}
