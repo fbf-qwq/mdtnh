@@ -2,6 +2,7 @@ package mdtnh;
 
 import arc.Core;
 import mdtnh.energy.EnergySpec;
+import mdtnh.gen.block.SurveyRadarBlock;
 import mdtnh.hatch.EnergyInputHatch;
 import mdtnh.hatch.ItemInputHatch;
 import mdtnh.hatch.ItemOutputHatch;
@@ -15,9 +16,6 @@ import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.world.Block;
-import mindustry.world.blocks.production.GenericCrafter;
-import mindustry.world.consumers.ConsumeItemFlammable;
-import mindustry.world.draw.DrawDefault;
 import mindustry.world.meta.BuildVisibility;
 
 import java.util.HashMap;
@@ -55,6 +53,8 @@ public class ModCrafters {
 
     // ---------- 多方块核心 ----------
     public static MultiblockStructer poweredAltar;
+
+    public static SurveyRadarBlock radar;
 
     public static ModDrill testDrill;
 
@@ -285,5 +285,12 @@ public class ModCrafters {
 
         testDrill = new ModDrill("testdrill");
         testDrill.localizedName = Core.bundle.get("block.testdrill.name", "测试钻机");
+
+        radar = new SurveyRadarBlock("test-radar"){{
+            size = 2;
+            health = 300;
+            requirements(Category.crafting, ItemStack.with(Items.copper, 80, Items.silicon, 40));
+
+        }};
     }
 }
