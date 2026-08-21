@@ -20,6 +20,7 @@ import mdtnh.modui.buildui.MdtBuildMenuContent;
 import mdtnh.modui.buildui.MdtBuildMenuFragment;
 import mdtnh.modui.itemui.MdtCoreItemsQuickBar;
 
+import mdtnh.modui.recipeui.RecipeQueryUI;
 import mdtnh.transport.MdtTransportBlocks;
 import mdtnh.turret.MdtImplementedTurrets;
 import mindustry.game.EventType.ClientLoadEvent;
@@ -37,6 +38,11 @@ public class MainMod extends Mod {
         OreExplorationController.install();
         ModOreRender.install();
         OreExplorationOverlay.install();
+
+        RecipeQueryUI.registerKeybind();
+        RecipeQueryUI.install();
+        Log.info("MDTNH recipe query UI installed.");
+
 
 
         Events.on(ClientLoadEvent.class, event -> Core.app.post(() -> {

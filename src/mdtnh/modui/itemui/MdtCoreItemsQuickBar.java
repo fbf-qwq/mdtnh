@@ -17,6 +17,7 @@ import arc.struct.Seq;
 import arc.util.Align;
 import arc.util.Log;
 
+import mdtnh.modui.recipeui.RecipeQueryUI;
 import mindustry.Vars;
 import mindustry.content.Items;
 import mindustry.core.UI;
@@ -92,7 +93,7 @@ public class MdtCoreItemsQuickBar {
     private static final float hoverPreviewIconSize = 132f;
 
     /** 中间表格里物品名称可用的最大宽度。 */
-    private static final float compactItemNameWidth = 62f;
+    private static final float compactItemNameWidth = 68f;
 
 
     /** 保存详情页排序方式。 */
@@ -119,6 +120,15 @@ public class MdtCoreItemsQuickBar {
 
     /** 当前右侧正在预览的物品。 */
     private Item hoveredItem;
+
+    /**
+     * 详情页物品按钮 -> Item。
+     *
+     * 不再依赖 hovered()/exited() 事件判断鼠标位置；
+     * 每帧直接通过 Scene.hit(...) 找到鼠标下最深层元素，
+     * 再沿父节点回溯到对应的物品按钮。
+     */
+    private final ObjectMap<Element, Item> dialogHoverTargets = new ObjectMap<>();
 
     /** 每个物品的搜索索引缓存，避免每次按键都重新做拼音转换。 */
     private final ObjectMap<Item, String> searchIndexCache = new ObjectMap<>();
@@ -264,7 +274,7 @@ public class MdtCoreItemsQuickBar {
                         Styles.clearNonei,
                         this::showDialog
                 ).size(42f)
-                .tooltip(Core.bundle.get("mdtnh.quickbar.tooltip", "物品快捷显示"));
+                .tooltip(Core.bundle.get("mdtnh.quickbar.tooltip"));
 
         /*
          * 中间：用户选择的快捷物品。
@@ -342,11 +352,12 @@ public class MdtCoreItemsQuickBar {
 
         if (items.isEmpty()) {
             quickItems.button(
-                    Core.bundle.get("mdtnh.quickbar.select", "选择物品"),
+                    Core.bundle.get("mdtnh.quickbar.select"),
                     Icon.add,
                     Styles.flatt,
                     this::showDialog
-            ).height(itemSize);
+            ).minWidth(150f)
+                    .height(itemSize);
 
             return;
         }
@@ -391,6 +402,8 @@ public class MdtCoreItemsQuickBar {
         // 点击快捷物品打开统一的物品显示设置页。
         entry.clicked(this::showDialog);
 
+        RecipeQueryUI.bindHover(entry, item);
+
         table.add(entry)
                 .height(itemSize)
                 .tooltip(item.localizedName);
@@ -400,7 +413,7 @@ public class MdtCoreItemsQuickBar {
      * 创建二级物品菜单。
      */
     private void buildDialog() {
-        dialog = new BaseDialog(Core.bundle.get("mdtnh.quickbar.dialog.title", "物品显示设置"));
+        dialog = new BaseDialog(Core.bundle.get("mdtnh.quickbar.dialog.title"));
 
         /*
          * 关闭按钮。
@@ -411,7 +424,7 @@ public class MdtCoreItemsQuickBar {
          * 重置为默认值。
          */
         dialog.buttons.button(
-                Core.bundle.get("mdtnh.quickbar.reset", "恢复默认"),
+                Core.bundle.get("mdtnh.quickbar.reset"),
                 Icon.refresh,
                 () -> {
                     resetDefaults();
@@ -425,7 +438,7 @@ public class MdtCoreItemsQuickBar {
          * 用户可在 MDTNH 分类中修改详情页快捷键。
          */
         dialog.buttons.button(
-                Core.bundle.get("mdtnh.quickbar.keybind", "快捷键设置"),
+                Core.bundle.get("mdtnh.quickbar.keybind"),
                 Icon.settings,
                 () -> {
                     dialog.hide();
@@ -471,11 +484,11 @@ public class MdtCoreItemsQuickBar {
         dialog.cont.table(search -> {
                     search.left();
 
-                    search.add(Core.bundle.get("mdtnh.quickbar.search.label", "搜索："))
+                    search.add(Core.bundle.get("mdtnh.quickbar.search.label"))
                             .padRight(6f);
 
                     searchField = new TextField(searchText);
-                    searchField.setMessageText(Core.bundle.get("mdtnh.quickbar.search.hint", "名称 / 拼音 / 首字母"));
+                    searchField.setMessageText(Core.bundle.get("mdtnh.quickbar.search.hint"));
 
                     searchField.changed(() -> {
                         searchText = searchField.getText();
@@ -487,7 +500,7 @@ public class MdtCoreItemsQuickBar {
                             .height(42f);
 
                     search.button(
-                                    Core.bundle.get("mdtnh.quickbar.clear", "清除"),
+                                    Core.bundle.get("mdtnh.quickbar.clear"),
                                     Styles.flatt,
                                     () -> {
                                         searchText = "";
@@ -498,7 +511,8 @@ public class MdtCoreItemsQuickBar {
                                             Core.scene.setKeyboardFocus(searchField);
                                         }
                                     }
-                            ).height(42f)
+                            ).width(120f)
+                            .height(42f)
                             .padLeft(6f);
 
                 }).growX()
@@ -514,7 +528,7 @@ public class MdtCoreItemsQuickBar {
         dialog.cont.table(actions -> {
 
             actions.button(
-                    Core.bundle.get("mdtnh.quickbar.selectAll", "全部选择"),
+                    Core.bundle.get("mdtnh.quickbar.selectAll"),
                     Icon.ok,
                     Styles.flatt,
                     () -> {
@@ -529,7 +543,7 @@ public class MdtCoreItemsQuickBar {
             ).growX().row();
 
             actions.button(
-                    Core.bundle.get("mdtnh.quickbar.clearAll", "全部清除"),
+                    Core.bundle.get("mdtnh.quickbar.clearAll"),
                     Icon.cancel,
                     Styles.flatt,
                     () -> {
@@ -580,6 +594,15 @@ public class MdtCoreItemsQuickBar {
         dialogItemTable.top();
         dialogItemTable.left();
 
+        /*
+         * Arc 的 enter/exit hover 事件在复杂 Button 子控件树中容易受到
+         * Image / Label / 内嵌 Table 命中结果影响。
+         *
+         * 这里改为每帧直接读取 Scene.hit(...)，这是 Element.hasMouse()
+         * 自身使用的同一套命中方式，能稳定覆盖整个物品按钮。
+         */
+        dialogItemTable.update(this::updateDialogHoverPreview);
+
         ScrollPane pane =
                 new ScrollPane(dialogItemTable, Styles.smallPane);
 
@@ -617,7 +640,13 @@ public class MdtCoreItemsQuickBar {
     private void rebuildItemTable() {
         if (dialogItemTable == null) return;
 
-        dialogItemTable.clear();
+        /*
+         * 这里只清子元素，不能用 clear()。
+         * Group.clear() 会连同 Element.update(...) 一起清掉，
+         * 那样第一次搜索/排序/重建后 hover 轮询就会失效。
+         */
+        dialogItemTable.clearChildren();
+        dialogHoverTargets.clear();
         showHoverPreview(null);
 
         Seq<Item> visible = getFilteredAndSortedItems();
@@ -642,8 +671,7 @@ public class MdtCoreItemsQuickBar {
 
         if (items.isEmpty()) {
             table.add(
-                            Core.bundle.get("mdtnh.quickbar.empty.search",
-                                    "[lightgray]没有找到匹配的物品。\n可尝试名称、内部名、全拼或拼音首字母。[]")
+                            Core.bundle.get("mdtnh.quickbar.empty.search")
                     )
                     .width(480f)
                     .pad(30f);
@@ -708,35 +736,22 @@ public class MdtCoreItemsQuickBar {
                                 ).padLeft(4f);
 
                                 /*
-                                 * 鼠标移入按钮时，在详情页右侧显示完整信息。
-                                 */
-                                button.hovered(() ->
-                                        showHoverPreview(item)
-                                );
-
-                                /*
-                                 * 从按钮真正离开时清空右侧预览。
+                                 * 注册为 hover 命中目标。
                                  *
-                                 * enter/exit 事件在按钮子元素之间切换时也可能触发，
-                                 * 因此 post 到下一帧再用 hasMouse() 判断，避免闪烁。
+                                 * 真正的鼠标判断由 updateDialogHoverPreview()
+                                 * 统一完成，因此图标、名称、数量等任意子元素
+                                 * 被 Scene.hit(...) 命中时都会正确识别为这个物品。
                                  */
-                                button.exited(() ->
-                                        Core.app.post(() -> {
-                                            if (hoveredItem == item &&
-                                                    !button.hasMouse()) {
+                                dialogHoverTargets.put(button, item);
 
-                                                showHoverPreview(null);
-                                            }
-                                        })
-                                );
-
+                                RecipeQueryUI.bindHover(button, item);
                             },
                             Styles.flatTogglet,
                             () -> toggle(item)
                     )
                     .checked(checked)
-                    .width(122f)
-                    .height(56f)
+                    .width(126f)
+                    .height(58f)
                     .pad(2f);
 
             index++;
@@ -745,6 +760,57 @@ public class MdtCoreItemsQuickBar {
                 table.row();
             }
         }
+    }
+
+    /**
+     * 每帧检测详情页当前真正被鼠标命中的物品按钮。
+     *
+     * <p>Scene.hit(...) 返回最深层可触摸元素，因此鼠标落在按钮内部的
+     * Image、Label、Table 等子元素上也没有关系；向父节点回溯即可找到
+     * dialogHoverTargets 中登记的按钮。</p>
+     */
+    private void updateDialogHoverPreview() {
+        if (Core.scene == null ||
+                Core.input == null ||
+                dialogItemTable == null) {
+
+            return;
+        }
+
+        Element hit = Core.scene.hit(
+                Core.input.mouseX(),
+                Core.input.mouseY(),
+                true
+        );
+
+        Item item = findDialogHoverItem(hit);
+
+        if (item != hoveredItem) {
+            showHoverPreview(item);
+        }
+    }
+
+    /**
+     * 从当前命中的最深层元素向上寻找所属的物品按钮。
+     */
+    private Item findDialogHoverItem(Element hit) {
+        Element current = hit;
+
+        while (current != null) {
+            Item item = dialogHoverTargets.get(current);
+
+            if (item != null) {
+                return item;
+            }
+
+            if (current == dialogItemTable) {
+                break;
+            }
+
+            current = current.parent;
+        }
+
+        return null;
     }
 
     /**
@@ -765,8 +831,7 @@ public class MdtCoreItemsQuickBar {
 
         if (item == null) {
             Label hint = new Label(
-                    Core.bundle.get("mdtnh.quickbar.hover.empty",
-                            "[lightgray]将鼠标移到物品上\n查看完整名称和大图[]")
+                    Core.bundle.get("mdtnh.quickbar.hover.empty")
             );
 
             hint.setWrap(true);
@@ -888,7 +953,7 @@ public class MdtCoreItemsQuickBar {
         if (openDetailsKey.value == null ||
                 openDetailsKey.value.key == null) {
 
-            return Core.bundle.get("mdtnh.quickbar.shortcut.unset", "未设置");
+            return Core.bundle.get("mdtnh.quickbar.shortcut.unset");
         }
 
         return openDetailsKey.value.key.getName();
@@ -1075,14 +1140,14 @@ public class MdtCoreItemsQuickBar {
 
     private String getSortButtonText() {
         if (sortMode == SortMode.amountDesc) {
-            return Core.bundle.get("mdtnh.quickbar.sort.desc", "数量 ↓");
+            return Core.bundle.get("mdtnh.quickbar.sort.desc");
         }
 
         if (sortMode == SortMode.amountAsc) {
-            return Core.bundle.get("mdtnh.quickbar.sort.asc", "数量 ↑");
+            return Core.bundle.get("mdtnh.quickbar.sort.asc");
         }
 
-        return Core.bundle.get("mdtnh.quickbar.sort.button", "默认顺序");
+        return Core.bundle.get("mdtnh.quickbar.sort.button");
     }
 
     /**
