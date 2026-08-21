@@ -1,5 +1,10 @@
 package mdtnh;
 
+import mindustry.ctype.UnlockableContent;
+import mindustry.type.Item;
+import mindustry.type.Liquid;
+import mindustry.type.LiquidStack;
+
 import java.util.*;
 
 /**
@@ -8,8 +13,123 @@ import java.util.*;
  * <p>创建一个注册器会生成 15 台 2x2 电力机器，并额外生成 ULV 蒸汽机和
  * ULV 手动机。注册一条配方时，传入配方的 craftTime 与 energyPerCraftJ
  * 被视为它在最低电压等级运行时的基准值。</p>
+ *
+ * <p>除把派生后的配方写入各等级机器外，本类还保留一份“逻辑配方索引”。
+ * 索引中的一条记录严格对应一次 {@link #register(String, VoltageTier, RecipeCrafter.Recipe)}
+ * 调用，而不是某个电压等级上的派生副本。配方查询界面应读取这份索引，
+ * 从而把同一条配方的多个电压等级合并在同一个子页面中显示。</p>
  */
 public class VoltageRecipeRegistry {
+    /** 当前进程中创建的全部电压配方注册器，供配方查询界面按加工方式分类。 */
+    private static final List<VoltageRecipeRegistry> allRegistries = new ArrayList<>();
+
+    /**
+     * 一次 register(...) 调用对应的逻辑配方。
+     *
+     * <p>definition 保存最低等级处的原始定义；electricVariants 保存这条逻辑
+     * 配方在各电力等级上的实际派生参数；ULV 配方还可能包含 steamVariant 和
+     * manualVariant。</p>
+     */
+    public static class RegisteredRecipe {
+        public final VoltageRecipeRegistry registry;
+        public final String groupName;
+        public final VoltageTier minimumTier;
+        public final RecipeCrafter.Recipe definition;
+        public final int registrationIndex;
+
+        public final EnumMap<VoltageTier, RecipeCrafter.Recipe> electricVariants =
+                new EnumMap<>(VoltageTier.class);
+
+        public RecipeCrafter.Recipe steamVariant;
+        public RecipeCrafter.Recipe manualVariant;
+
+        private RegisteredRecipe(VoltageRecipeRegistry registry,
+                                 String groupName,
+                                 VoltageTier minimumTier,
+                                 RecipeCrafter.Recipe definition,
+                                 int registrationIndex) {
+            this.registry = registry;
+            this.groupName = groupName;
+            this.minimumTier = minimumTier;
+            this.definition = definition;
+            this.registrationIndex = registrationIndex;
+        }
+
+        /** 这条逻辑配方是否会产出指定物品。 */
+        public boolean produces(Item item) {
+            return containsItem(definition.outputItems, item);
+        }
+
+        /** 这条逻辑配方是否会消耗指定物品。 */
+        public boolean consumes(Item item) {
+            return containsItem(definition.inputItems, item);
+        }
+
+        /** 这条逻辑配方是否会产出指定流体。 */
+        public boolean produces(Liquid liquid) {
+            return containsLiquid(definition.outputLiquids, liquid);
+        }
+
+        /** 这条逻辑配方是否会消耗指定流体。 */
+        public boolean consumes(Liquid liquid) {
+            return containsLiquid(definition.inputLiquids, liquid);
+        }
+
+        /**
+         * 通用查询入口，供 RecipeQueryUI 同时处理 Item / Liquid。
+         */
+        public boolean produces(UnlockableContent content) {
+            if (content instanceof Item) {
+                return produces((Item) content);
+            }
+
+            if (content instanceof Liquid) {
+                return produces((Liquid) content);
+            }
+
+            return false;
+        }
+
+        /**
+         * 通用用途查询入口，供 RecipeQueryUI 同时处理 Item / Liquid。
+         */
+        public boolean consumes(UnlockableContent content) {
+            if (content instanceof Item) {
+                return consumes((Item) content);
+            }
+
+            if (content instanceof Liquid) {
+                return consumes((Liquid) content);
+            }
+
+            return false;
+        }
+
+        private static boolean containsItem(mindustry.type.ItemStack[] stacks, Item item) {
+            if (stacks == null || item == null) return false;
+
+            for (mindustry.type.ItemStack stack : stacks) {
+                if (stack != null && stack.item == item) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static boolean containsLiquid(LiquidStack[] stacks, Liquid liquid) {
+            if (stacks == null || liquid == null) return false;
+
+            for (LiquidStack stack : stacks) {
+                if (stack != null && stack.liquid == liquid) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
     /** 15 个电压等级各自对应的电力机器。 */
     public final EnumMap<VoltageTier, RecipeCrafter> electricMachines =
             new EnumMap<>(VoltageTier.class);
@@ -20,8 +140,11 @@ public class VoltageRecipeRegistry {
     /** 只能执行 ULV 配方、零能耗且耗时为基准 4 倍的 2x2 手动机器。 */
     public final ManualRecipeCrafter ulvManualMachine;
 
-    /** 所有生成方块内部名称的前缀。 */
+    /** 所有生成方块内部名称的前缀，同时也是配方查询页面的加工方式 ID。 */
     public final String contentPrefix;
+
+    /** 本注册器中按注册顺序保存的逻辑配方。 */
+    private final List<RegisteredRecipe> registeredRecipes = new ArrayList<>();
 
     /**
      * 创建完整机器族。
@@ -34,6 +157,7 @@ public class VoltageRecipeRegistry {
             throw new IllegalArgumentException("contentPrefix 不能为空");
         }
         this.contentPrefix = contentPrefix;
+        allRegistries.add(this);
 
         for (VoltageTier tier : VoltageTier.values()) {
             RecipeCrafter machine = new RecipeCrafter(contentPrefix + "-" + tier.contentName);
@@ -46,6 +170,42 @@ public class VoltageRecipeRegistry {
 
         ulvManualMachine = new ManualRecipeCrafter(contentPrefix + "-ulv-manual");
         configureSpecialMachine(ulvManualMachine, VoltageTier.ULV);
+    }
+
+    /** 返回全部注册器的只读快照；查询 UI 用它生成“加工方式”页面。 */
+    public static List<VoltageRecipeRegistry> allRegistries() {
+        return Collections.unmodifiableList(new ArrayList<>(allRegistries));
+    }
+
+    /** 返回当前机器族中的全部逻辑配方，只读。 */
+    public List<RegisteredRecipe> registeredRecipes() {
+        return Collections.unmodifiableList(registeredRecipes);
+    }
+
+    /** 查询所有“产物包含 item”的逻辑配方。 */
+    public static List<RegisteredRecipe> findProducing(Item item) {
+        List<RegisteredRecipe> result = new ArrayList<>();
+        if (item == null) return result;
+
+        for (VoltageRecipeRegistry registry : allRegistries) {
+            for (RegisteredRecipe recipe : registry.registeredRecipes) {
+                if (recipe.produces(item)) result.add(recipe);
+            }
+        }
+        return result;
+    }
+
+    /** 查询所有“原料包含 item”的逻辑配方。 */
+    public static List<RegisteredRecipe> findUsing(Item item) {
+        List<RegisteredRecipe> result = new ArrayList<>();
+        if (item == null) return result;
+
+        for (VoltageRecipeRegistry registry : allRegistries) {
+            for (RegisteredRecipe recipe : registry.registeredRecipes) {
+                if (recipe.consumes(item)) result.add(recipe);
+            }
+        }
+        return result;
     }
 
     /**
@@ -100,6 +260,9 @@ public class VoltageRecipeRegistry {
      * 在 minimumTier 上执行时的耗时与总能耗。高一级机器的耗时减半、
      * 单次能耗翻倍；低于 minimumTier 的机器不获得该配方。</p>
      *
+     * <p>同一次调用还会创建一条 {@link RegisteredRecipe} 逻辑索引记录。
+     * 因此无论最终派生出多少个电压版本，查询界面里仍然只占一个子页面。</p>
+     *
      * <p>当 minimumTier 为 ULV 时，还会生成：</p>
      * <ul>
      *     <li>蒸汽版：耗时和能耗与 ULV 电力版相同；</li>
@@ -114,6 +277,21 @@ public class VoltageRecipeRegistry {
         if (recipeAtMinimum.energyPerCraftJ < 0f) throw new IllegalArgumentException("配方能耗不能为负数");
 
         String actualGroup = groupName == null || groupName.isEmpty() ? "default" : groupName;
+
+        RecipeCrafter.Recipe definition = recipeAtMinimum.copyWith(
+                recipeAtMinimum.craftTime,
+                recipeAtMinimum.energyPerCraftJ
+        );
+        definition.minimumVoltageTier = minimumTier;
+        definition.executionVoltageTier = minimumTier;
+
+        RegisteredRecipe indexedRecipe = new RegisteredRecipe(
+                this,
+                actualGroup,
+                minimumTier,
+                definition,
+                registeredRecipes.size()
+        );
 
         for (VoltageTier machineTier : VoltageTier.values()) {
             if (!machineTier.canProcess(minimumTier)) continue;
@@ -130,6 +308,7 @@ public class VoltageRecipeRegistry {
             RecipeCrafter machine = electricMachines.get(machineTier);
             addRecipe(machine, actualGroup, derived);
             updateElectricLimits(machine, machineTier, derived);
+            indexedRecipe.electricVariants.put(machineTier, derived);
         }
 
         if (minimumTier == VoltageTier.ULV) {
@@ -142,6 +321,7 @@ public class VoltageRecipeRegistry {
             addRecipe(ulvSteamMachine, actualGroup, steam);
             updateBufferCapacity(ulvSteamMachine, steam);
             updateSteamThroughput(ulvSteamMachine, steam);
+            indexedRecipe.steamVariant = steam;
 
             RecipeCrafter.Recipe manual = recipeAtMinimum.copyWith(
                     recipeAtMinimum.craftTime * 4f,
@@ -150,7 +330,10 @@ public class VoltageRecipeRegistry {
             manual.minimumVoltageTier = VoltageTier.ULV;
             manual.executionVoltageTier = VoltageTier.ULV;
             addRecipe(ulvManualMachine, actualGroup, manual);
+            indexedRecipe.manualVariant = manual;
         }
+
+        registeredRecipes.add(indexedRecipe);
     }
 
     /**
@@ -223,6 +406,7 @@ public class VoltageRecipeRegistry {
         float requiredCapacity = Math.max(recipe.energyPerCraftJ, energyPerSecond);
         machine.energySpec.capacityJ = Math.max(machine.energySpec.capacityJ, requiredCapacity);
     }
+
     /**
      * 按 ULV 配方平均功率提高蒸汽机吞吐上限。
      *
@@ -238,5 +422,4 @@ public class VoltageRecipeRegistry {
                 requiredSteamPerSecond
         );
     }
-
 }
