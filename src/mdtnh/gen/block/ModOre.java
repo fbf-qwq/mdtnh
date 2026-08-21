@@ -1,16 +1,15 @@
 package mdtnh.gen.block;
 
 import mindustry.type.Item;
-import mindustry.world.blocks.environment.OreBlock;
 
 public class ModOre {
-    public static OreBlock testOre;
+    public static ToggleOreBlock testOre;
     public static Item testOreItem;
     public static void load(){
         testOreItem=new Item("test-ore"){{
             hardness=1;
         }};
-        testOre=new OreBlock(testOreItem){{
+        testOre=new ToggleOreBlock(testOreItem){{
             variants = 1;
         }};
     }
