@@ -14,6 +14,7 @@ import mdtnh.gen.ModSectors;
 import mdtnh.gen.block.ModOre;
 import mdtnh.gen.block.ModOreRender;
 import mdtnh.gen.block.OreExplorationController;
+import mdtnh.gen.block.OreExplorationOverlay;
 import mdtnh.graphics.MdtMaterialDraw;
 import mdtnh.modui.buildui.MdtBuildMenuContent;
 import mdtnh.modui.buildui.MdtBuildMenuFragment;
@@ -35,6 +36,8 @@ public class MainMod extends Mod {
 
         OreExplorationController.install();
         ModOreRender.install();
+        OreExplorationOverlay.install();
+
 
         Events.on(ClientLoadEvent.class, event -> Core.app.post(() -> {
             MdtMaterialDraw.load();
