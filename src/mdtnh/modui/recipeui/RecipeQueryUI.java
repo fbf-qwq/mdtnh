@@ -28,8 +28,12 @@ import mindustry.ui.dialogs.BaseDialog;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * MDTNH 配方查询界面。
@@ -47,6 +51,10 @@ public final class RecipeQueryUI {
     public static final KeyBind usageQueryKey =
             KeyBind.add("mdtnh_usage_query", KeyCode.u, "mdtnh");
 
+    /** 内置页面 ID；扩展页面不得占用。 */
+    public static final String PAGE_RECIPE = "recipe";
+    public static final String PAGE_USAGE = "usage";
+
     /*
      * ==============================
      * UI 尺寸集中配置
@@ -57,13 +65,20 @@ public final class RecipeQueryUI {
      */
     private static final int CATEGORY_BUTTONS_PER_PAGE = 4;
 
+    /**
+     * 顶部“页面种类”一屏显示几个。
+     * 配方 / 用途 / 物品介绍 / 第三方扩展页都使用这一分页。
+     */
+    private static final int PAGE_TYPE_BUTTONS_PER_PAGE = 4;
+
     private static final float DIALOG_CONTENT_WIDTH = 900f;
+
+    private static final float PAGE_TYPE_BUTTON_WIDTH = 185f;
+    private static final float PAGE_TYPE_BUTTON_HEIGHT = 46f;
+    private static final float PAGE_TYPE_ARROW_SIZE = 54f;
     private static final float CATEGORY_BUTTON_WIDTH = 185f;
     private static final float CATEGORY_BUTTON_HEIGHT = 46f;
     private static final float CATEGORY_ARROW_SIZE = 54f;
-
-    private static final float MODE_BUTTON_WIDTH = 210f;
-    private static final float MODE_BUTTON_HEIGHT = 46f;
 
     private static final float SUBPAGE_BUTTON_WIDTH = 180f;
     private static final float SUBPAGE_BUTTON_HEIGHT = 46f;
@@ -73,6 +88,9 @@ public final class RecipeQueryUI {
 
     private static final float IO_COLUMN_WIDTH = 395f;
     private static final float IO_ENTRY_MIN_HEIGHT = 46f;
+
+    /** 第三方/本模组注册的自定义页面类型。 */
+    private static final List<RecipeQueryPage> customPages = new ArrayList<>();
 
     private static final RecipeQueryUI instance = new RecipeQueryUI();
 
@@ -86,12 +104,28 @@ public final class RecipeQueryUI {
     private boolean installed;
 
     private UnlockableContent targetContent;
+
+    /** 当前顶部页面。内置值为 PAGE_RECIPE / PAGE_USAGE，也可以是扩展页 ID。 */
+    private String selectedPageId = PAGE_RECIPE;
+
+    /** 仅在配方/用途内置页面中使用。 */
     private QueryMode queryMode = QueryMode.recipe;
+
     private VoltageRecipeRegistry selectedRegistry;
     private int selectedRecipeIndex;
 
-    /** 当前分类按钮处于第几屏，从 0 开始。 */
+    /** 当前配方分类按钮处于第几屏，从 0 开始。 */
     private int categoryPageIndex;
+
+    /** 当前顶部页面种类按钮处于第几屏，从 0 开始。 */
+    private int pageTypePageIndex;
+
+    /**
+     * 当前扩展页的轻量状态。
+     * 扩展页可通过 PageContext 保存 Integer/String/Boolean 等简单值，
+     * 历史回溯时会连同这些值一起恢复。
+     */
+    private final Map<String, Object> customPageState = new HashMap<>();
 
     /** 递归查询历史。 */
     private final Deque<NavigationState> history = new ArrayDeque<>();
@@ -112,25 +146,148 @@ public final class RecipeQueryUI {
 
     private static class NavigationState {
         final UnlockableContent targetContent;
+        final String selectedPageId;
         final QueryMode queryMode;
         final VoltageRecipeRegistry selectedRegistry;
         final int selectedRecipeIndex;
         final int categoryPageIndex;
+        final int pageTypePageIndex;
+        final Map<String, Object> customPageState;
 
         NavigationState(UnlockableContent targetContent,
+                        String selectedPageId,
                         QueryMode queryMode,
                         VoltageRecipeRegistry selectedRegistry,
                         int selectedRecipeIndex,
-                        int categoryPageIndex) {
+                        int categoryPageIndex,
+                        int pageTypePageIndex,
+                        Map<String, Object> customPageState) {
             this.targetContent = targetContent;
+            this.selectedPageId = selectedPageId;
             this.queryMode = queryMode;
             this.selectedRegistry = selectedRegistry;
             this.selectedRecipeIndex = selectedRecipeIndex;
             this.categoryPageIndex = categoryPageIndex;
+            this.pageTypePageIndex = pageTypePageIndex;
+            this.customPageState = customPageState;
+        }
+    }
+
+    /** 顶部页面按钮的统一描述；内置页面和扩展页面都会转换成它。 */
+    private static class PageEntry {
+        final String id;
+        final RecipeQueryPage extension;
+
+        PageEntry(String id, RecipeQueryPage extension) {
+            this.id = id;
+            this.extension = extension;
+        }
+
+        boolean isBuiltIn() {
+            return extension == null;
+        }
+    }
+
+    /**
+     * 扩展页面在 build(...) 时拿到的上下文。
+     *
+     * <p>扩展页不需要访问 RecipeQueryUI 私有字段。需要重新绘制、递归进入
+     * 其他内容、绑定 R/U 悬浮或保存页面状态时，都通过这里完成。</p>
+     */
+    public static final class PageContext {
+        private final RecipeQueryUI owner;
+
+        private PageContext(RecipeQueryUI owner) {
+            this.owner = owner;
+        }
+
+        public UnlockableContent content() {
+            return owner.targetContent;
+        }
+
+        public String pageId() {
+            return owner.selectedPageId;
+        }
+
+        /** 请求在下一帧重新构建当前查询页。 */
+        public void rebuild() {
+            Core.app.post(owner::rebuild);
+        }
+
+        /**
+         * 保存扩展页状态。建议只保存不可变或简单对象。
+         * value == null 时删除该键。
+         */
+        public void putState(String key, Object value) {
+            if (key == null) return;
+
+            if (value == null) {
+                owner.customPageState.remove(key);
+            } else {
+                owner.customPageState.put(key, value);
+            }
+        }
+
+        public Object getState(String key) {
+            return key == null ? null : owner.customPageState.get(key);
+        }
+
+        public int getInt(String key, int fallback) {
+            Object value = getState(key);
+            return value instanceof Number
+                    ? ((Number) value).intValue()
+                    : fallback;
+        }
+
+        public boolean getBoolean(String key, boolean fallback) {
+            Object value = getState(key);
+            return value instanceof Boolean
+                    ? (Boolean) value
+                    : fallback;
+        }
+
+        public String getString(String key, String fallback) {
+            Object value = getState(key);
+            return value instanceof String
+                    ? (String) value
+                    : fallback;
+        }
+
+        /** 让某个元素上的 Item/Liquid 支持 R/U 递归查询。 */
+        public void bindHover(Element element, UnlockableContent content) {
+            RecipeQueryUI.bindHover(element, content);
+        }
+
+        /** 递归进入另一个内容的制造配方页，并写入历史栈。 */
+        public void openRecipe(UnlockableContent content) {
+            owner.navigateTo(content, PAGE_RECIPE);
+        }
+
+        /** 递归进入另一个内容的用途页，并写入历史栈。 */
+        public void openUsage(UnlockableContent content) {
+            owner.navigateTo(content, PAGE_USAGE);
+        }
+
+        /**
+         * 递归进入另一个内容的指定扩展页，并写入历史栈。
+         * 如果该页面不支持目标内容，则不会跳转。
+         */
+        public void openPage(UnlockableContent content, String pageId) {
+            owner.navigateTo(content, pageId);
+        }
+
+        public String text(String key) {
+            return Core.bundle.get(key);
+        }
+
+        public String format(String key, Object... args) {
+            return Core.bundle.format(key, args);
         }
     }
 
     private RecipeQueryUI() {
+        // “物品介绍”本身也通过公开扩展接口注册，用作可直接参考的示例。
+        registerPage(new ItemIntroductionPage());
     }
 
     public static void registerKeybind() {
@@ -138,6 +295,47 @@ public final class RecipeQueryUI {
 
     public static void install() {
         instance.installInternal();
+    }
+
+    /**
+     * 注册一个自定义页面种类。
+     *
+     * <p>相同 ID 再次注册会替换旧实现，方便模组热重载/覆盖默认扩展。
+     * PAGE_RECIPE 与 PAGE_USAGE 为保留 ID，不能注册。</p>
+     */
+    public static synchronized void registerPage(RecipeQueryPage page) {
+        if (page == null ||
+                page.id() == null ||
+                page.id().trim().isEmpty()) {
+            throw new IllegalArgumentException("Invalid recipe query page.");
+        }
+
+        if (PAGE_RECIPE.equals(page.id()) ||
+                PAGE_USAGE.equals(page.id())) {
+            throw new IllegalArgumentException("Reserved recipe query page id.");
+        }
+
+        customPages.removeIf(existing ->
+                existing.id().equals(page.id()));
+        customPages.add(page);
+        customPages.sort(
+                Comparator.comparingInt(RecipeQueryPage::order)
+        );
+    }
+
+    /** 注销一个扩展页面。内置配方/用途页面不能注销。 */
+    public static synchronized boolean unregisterPage(String pageId) {
+        if (pageId == null) return false;
+
+        return customPages.removeIf(page ->
+                page.id().equals(pageId));
+    }
+
+    /** 返回当前扩展页面注册表的只读快照。 */
+    public static synchronized List<RecipeQueryPage> registeredPages() {
+        return Collections.unmodifiableList(
+                new ArrayList<>(customPages)
+        );
     }
 
     /** 从外部作为新的根查询打开。 */
@@ -148,6 +346,14 @@ public final class RecipeQueryUI {
     /** 从外部作为新的根查询打开。 */
     public static void showUsage(UnlockableContent content) {
         instance.showRoot(content, QueryMode.usage);
+    }
+
+    /**
+     * 从外部直接打开某个扩展页。
+     * pageId 可以是 PAGE_RECIPE / PAGE_USAGE，也可以是已注册扩展页 ID。
+     */
+    public static void showPage(UnlockableContent content, String pageId) {
+        instance.showRoot(content, pageId);
     }
 
     /**
@@ -213,13 +419,12 @@ public final class RecipeQueryUI {
          *
          * Dialog 未显示时，则把它视为来自背包/快捷栏的新根查询。
          */
-        if (dialog != null && dialog.isShown() && targetContent != null) {
-            history.push(snapshot());
-            open(content, requestedMode);
-        } else {
-            history.clear();
-            open(content, requestedMode);
-        }
+        navigateTo(
+                content,
+                requestedMode == QueryMode.recipe
+                        ? PAGE_RECIPE
+                        : PAGE_USAGE
+        );
     }
 
     private static UnlockableContent currentHoveredContent() {
@@ -243,14 +448,47 @@ public final class RecipeQueryUI {
         open(content, mode);
     }
 
-    private void open(UnlockableContent content, QueryMode mode) {
+    private void showRoot(UnlockableContent content, String pageId) {
         if (!isQueryable(content)) return;
 
+        history.clear();
+        open(content, pageId);
+    }
+
+    private void open(UnlockableContent content, QueryMode mode) {
+        open(
+                content,
+                mode == QueryMode.recipe
+                        ? PAGE_RECIPE
+                        : PAGE_USAGE
+        );
+    }
+
+    private void open(UnlockableContent content, String pageId) {
+        if (!isQueryable(content)) return;
+
+        PageEntry entry = findAvailablePage(content, pageId);
+        if (entry == null) return;
+
         targetContent = content;
-        queryMode = mode;
+        selectedPageId = entry.id;
+
+        if (PAGE_RECIPE.equals(selectedPageId)) {
+            queryMode = QueryMode.recipe;
+        } else if (PAGE_USAGE.equals(selectedPageId)) {
+            queryMode = QueryMode.usage;
+        }
+
         selectedRegistry = null;
         selectedRecipeIndex = 0;
         categoryPageIndex = 0;
+        customPageState.clear();
+
+        pageTypePageIndex = pageIndexForSelection(
+                availablePages(content),
+                selectedPageId,
+                PAGE_TYPE_BUTTONS_PER_PAGE
+        );
 
         ensureDialog();
         rebuild();
@@ -258,6 +496,24 @@ public final class RecipeQueryUI {
         if (!dialog.isShown()) {
             dialog.show();
         }
+    }
+
+    /**
+     * 从当前查询页递归进入新页面；会保存完整导航状态。
+     */
+    private void navigateTo(UnlockableContent content, String pageId) {
+        if (!isQueryable(content)) return;
+        if (findAvailablePage(content, pageId) == null) return;
+
+        if (dialog != null &&
+                dialog.isShown() &&
+                targetContent != null) {
+            history.push(snapshot());
+        } else {
+            history.clear();
+        }
+
+        open(content, pageId);
     }
 
     private void ensureDialog() {
@@ -304,10 +560,13 @@ public final class RecipeQueryUI {
     private NavigationState snapshot() {
         return new NavigationState(
                 targetContent,
+                selectedPageId,
                 queryMode,
                 selectedRegistry,
                 selectedRecipeIndex,
-                categoryPageIndex
+                categoryPageIndex,
+                pageTypePageIndex,
+                new HashMap<>(customPageState)
         );
     }
 
@@ -316,10 +575,15 @@ public final class RecipeQueryUI {
 
         NavigationState state = history.pop();
         targetContent = state.targetContent;
+        selectedPageId = state.selectedPageId;
         queryMode = state.queryMode;
         selectedRegistry = state.selectedRegistry;
         selectedRecipeIndex = state.selectedRecipeIndex;
         categoryPageIndex = state.categoryPageIndex;
+        pageTypePageIndex = state.pageTypePageIndex;
+
+        customPageState.clear();
+        customPageState.putAll(state.customPageState);
 
         rebuild();
     }
@@ -344,6 +608,8 @@ public final class RecipeQueryUI {
         selectedRegistry = null;
         selectedRecipeIndex = 0;
         categoryPageIndex = 0;
+        pageTypePageIndex = 0;
+        customPageState.clear();
 
         if (dialog != null) {
             dialog.hide();
@@ -358,24 +624,41 @@ public final class RecipeQueryUI {
         buildHeader(dialog.cont);
         dialog.cont.row();
 
-        buildModeButtons(dialog.cont);
+        List<PageEntry> pageEntries = availablePages(targetContent);
+        if (findPageEntry(pageEntries, selectedPageId) == null) {
+            selectedPageId = PAGE_RECIPE;
+            queryMode = QueryMode.recipe;
+            customPageState.clear();
+        }
+
+        clampPageTypePage(pageEntries);
+        buildPageTypeButtons(dialog.cont, pageEntries);
         dialog.cont.row();
 
+        if (PAGE_RECIPE.equals(selectedPageId) ||
+                PAGE_USAGE.equals(selectedPageId)) {
+            buildRecipeUsageBody(dialog.cont);
+        } else {
+            buildExtensionBody(dialog.cont);
+        }
+    }
+
+    private void buildRecipeUsageBody(Table root) {
         List<CategoryPage> pages = collectPages();
 
         if (pages.isEmpty()) {
             selectedRegistry = null;
             selectedRecipeIndex = 0;
             categoryPageIndex = 0;
-            buildEmptyState(dialog.cont);
+            buildEmptyState(root);
             return;
         }
 
         CategoryPage selectedPage = resolveSelectedPage(pages);
         clampCategoryPage(pages);
 
-        buildCategoryTabs(dialog.cont, pages, selectedPage);
-        dialog.cont.row();
+        buildCategoryTabs(root, pages, selectedPage);
+        root.row();
 
         selectedRecipeIndex = Math.max(
                 0,
@@ -389,19 +672,59 @@ public final class RecipeQueryUI {
         detail.top().left();
         buildRecipePage(detail, recipe);
 
+        addDetailPane(root, detail);
+
+        root.row();
+        buildSubPageNavigation(root, selectedPage);
+    }
+
+    private void buildExtensionBody(Table root) {
+        RecipeQueryPage page = findCustomPage(selectedPageId);
+
+        if (page == null || !page.supports(targetContent)) {
+            selectedPageId = PAGE_RECIPE;
+            queryMode = QueryMode.recipe;
+            customPageState.clear();
+            buildRecipeUsageBody(root);
+            return;
+        }
+
+        Table detail = new Table();
+        detail.top().left();
+
+        try {
+            page.build(new PageContext(this), detail);
+        } catch (Throwable error) {
+            Log.err(
+                    "[MDTNH] Recipe query extension page failed: @",
+                    page.id()
+            );
+            Log.err(error);
+
+            detail.clear();
+            detail.add(
+                    Core.bundle.get(
+                            "mdtnh.recipe-query.extension.error"
+                    )
+            ).width(DIALOG_CONTENT_WIDTH - 80f)
+                    .pad(30f)
+                    .left();
+        }
+
+        addDetailPane(root, detail);
+    }
+
+    private void addDetailPane(Table root, Table detail) {
         ScrollPane pane = new ScrollPane(detail, Styles.smallPane);
         pane.setFadeScrollBars(false);
         pane.setScrollingDisabled(true, false);
         pane.setOverscroll(false, false);
 
-        dialog.cont.add(pane)
+        root.add(pane)
                 .width(DIALOG_CONTENT_WIDTH)
                 .maxHeight(610f)
                 .growY()
                 .padTop(6f);
-
-        dialog.cont.row();
-        buildSubPageNavigation(dialog.cont, selectedPage);
     }
 
     private void buildHeader(Table root) {
@@ -436,31 +759,132 @@ public final class RecipeQueryUI {
                 .pad(8f);
     }
 
-    private void buildModeButtons(Table root) {
-        root.table(t -> {
-            t.button(
-                    Core.bundle.format(
-                            "mdtnh.recipe-query.mode.recipe",
-                            keyName(recipeQueryKey)
-                    ),
-                    Styles.flatTogglet,
-                    () -> switchMode(QueryMode.recipe)
-            ).checked(queryMode == QueryMode.recipe)
-                    .width(MODE_BUTTON_WIDTH)
-                    .height(MODE_BUTTON_HEIGHT);
+    private void buildPageTypeButtons(
+            Table root,
+            List<PageEntry> entries) {
 
-            t.button(
+        int totalScreens = pageCount(
+                entries.size(),
+                PAGE_TYPE_BUTTONS_PER_PAGE
+        );
+
+        int start = pageTypePageIndex *
+                PAGE_TYPE_BUTTONS_PER_PAGE;
+
+        int end = Math.min(
+                start + PAGE_TYPE_BUTTONS_PER_PAGE,
+                entries.size()
+        );
+
+        root.table(nav -> {
+            nav.left();
+
+            nav.button(
+                    Icon.left,
+                    Styles.clearNonei,
+                    () -> {
+                        if (pageTypePageIndex <= 0) return;
+                        pageTypePageIndex--;
+                        Core.app.post(this::rebuild);
+                    }
+            ).size(PAGE_TYPE_ARROW_SIZE)
+                    .disabled(button -> pageTypePageIndex <= 0)
+                    .tooltip(
+                            Core.bundle.get(
+                                    "mdtnh.recipe-query.page-type.previous-screen"
+                            )
+                    );
+
+            Table tabs = new Table();
+            tabs.left();
+
+            for (int i = start; i < end; i++) {
+                PageEntry entry = entries.get(i);
+                String text = pageButtonText(entry);
+
+                tabs.button(
+                        button -> {
+                            Label label = new Label(text);
+                            label.setEllipsis(true);
+                            label.setAlignment(Align.center);
+
+                            button.add(label)
+                                    .width(PAGE_TYPE_BUTTON_WIDTH - 18f)
+                                    .center();
+                        },
+                        Styles.flatTogglet,
+                        () -> switchPage(entry.id)
+                ).checked(entry.id.equals(selectedPageId))
+                        .width(PAGE_TYPE_BUTTON_WIDTH)
+                        .height(PAGE_TYPE_BUTTON_HEIGHT)
+                        .padLeft(3f)
+                        .padRight(3f);
+            }
+
+            nav.add(tabs)
+                    .width(
+                            PAGE_TYPE_BUTTON_WIDTH *
+                                    PAGE_TYPE_BUTTONS_PER_PAGE
+                    )
+                    .height(PAGE_TYPE_BUTTON_HEIGHT + 4f)
+                    .left();
+
+            nav.button(
+                    Icon.right,
+                    Styles.clearNonei,
+                    () -> {
+                        if (pageTypePageIndex + 1 >=
+                                totalScreens) {
+                            return;
+                        }
+
+                        pageTypePageIndex++;
+                        Core.app.post(this::rebuild);
+                    }
+            ).size(PAGE_TYPE_ARROW_SIZE)
+                    .disabled(
+                            button ->
+                                    pageTypePageIndex + 1 >=
+                                            totalScreens
+                    )
+                    .tooltip(
+                            Core.bundle.get(
+                                    "mdtnh.recipe-query.page-type.next-screen"
+                            )
+                    );
+        }).width(DIALOG_CONTENT_WIDTH)
+                .height(PAGE_TYPE_BUTTON_HEIGHT + 8f);
+
+        if (totalScreens > 1) {
+            root.row();
+            root.add(
                     Core.bundle.format(
-                            "mdtnh.recipe-query.mode.usage",
-                            keyName(usageQueryKey)
-                    ),
-                    Styles.flatTogglet,
-                    () -> switchMode(QueryMode.usage)
-            ).checked(queryMode == QueryMode.usage)
-                    .width(MODE_BUTTON_WIDTH)
-                    .height(MODE_BUTTON_HEIGHT)
-                    .padLeft(8f);
-        }).padBottom(6f);
+                            "mdtnh.recipe-query.page-type.screen-counter",
+                            pageTypePageIndex + 1,
+                            totalScreens
+                    )
+            ).center()
+                    .padTop(2f)
+                    .padBottom(2f);
+        }
+    }
+
+    private String pageButtonText(PageEntry entry) {
+        if (PAGE_RECIPE.equals(entry.id)) {
+            return Core.bundle.format(
+                    "mdtnh.recipe-query.mode.recipe",
+                    keyName(recipeQueryKey)
+            );
+        }
+
+        if (PAGE_USAGE.equals(entry.id)) {
+            return Core.bundle.format(
+                    "mdtnh.recipe-query.mode.usage",
+                    keyName(usageQueryKey)
+            );
+        }
+
+        return Core.bundle.get(entry.extension.titleKey());
     }
 
     private String keyName(KeyBind bind) {
@@ -473,15 +897,119 @@ public final class RecipeQueryUI {
         return bind.value.key.getName();
     }
 
-    private void switchMode(QueryMode mode) {
-        if (queryMode == mode) return;
+    private void switchPage(String pageId) {
+        if (pageId == null || pageId.equals(selectedPageId)) return;
+        if (findAvailablePage(targetContent, pageId) == null) return;
 
-        queryMode = mode;
+        selectedPageId = pageId;
+
+        if (PAGE_RECIPE.equals(pageId)) {
+            queryMode = QueryMode.recipe;
+        } else if (PAGE_USAGE.equals(pageId)) {
+            queryMode = QueryMode.usage;
+        }
+
         selectedRegistry = null;
         selectedRecipeIndex = 0;
         categoryPageIndex = 0;
+        customPageState.clear();
 
         Core.app.post(this::rebuild);
+    }
+
+    private List<PageEntry> availablePages(UnlockableContent content) {
+        List<PageEntry> result = new ArrayList<>();
+
+        result.add(new PageEntry(PAGE_RECIPE, null));
+        result.add(new PageEntry(PAGE_USAGE, null));
+
+        List<RecipeQueryPage> snapshot;
+        synchronized (RecipeQueryUI.class) {
+            snapshot = new ArrayList<>(customPages);
+        }
+
+        for (RecipeQueryPage page : snapshot) {
+            if (page.supports(content)) {
+                result.add(new PageEntry(page.id(), page));
+            }
+        }
+
+        return result;
+    }
+
+    private PageEntry findAvailablePage(
+            UnlockableContent content,
+            String pageId) {
+
+        return findPageEntry(
+                availablePages(content),
+                pageId
+        );
+    }
+
+    private PageEntry findPageEntry(
+            List<PageEntry> entries,
+            String pageId) {
+
+        if (pageId == null) return null;
+
+        for (PageEntry entry : entries) {
+            if (pageId.equals(entry.id)) {
+                return entry;
+            }
+        }
+
+        return null;
+    }
+
+    private RecipeQueryPage findCustomPage(String pageId) {
+        if (pageId == null) return null;
+
+        synchronized (RecipeQueryUI.class) {
+            for (RecipeQueryPage page : customPages) {
+                if (pageId.equals(page.id())) {
+                    return page;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private int pageCount(int itemCount, int perPage) {
+        return Math.max(
+                1,
+                (itemCount + perPage - 1) / perPage
+        );
+    }
+
+    private int pageIndexForSelection(
+            List<PageEntry> entries,
+            String pageId,
+            int perPage) {
+
+        for (int i = 0; i < entries.size(); i++) {
+            if (entries.get(i).id.equals(pageId)) {
+                return i / perPage;
+            }
+        }
+
+        return 0;
+    }
+
+    private void clampPageTypePage(List<PageEntry> entries) {
+        int totalScreens = pageCount(
+                entries.size(),
+                PAGE_TYPE_BUTTONS_PER_PAGE
+        );
+
+        pageTypePageIndex = Math.max(
+                0,
+                Math.min(
+                        pageTypePageIndex,
+                        totalScreens - 1
+                )
+        );
     }
 
     private List<CategoryPage> collectPages() {
