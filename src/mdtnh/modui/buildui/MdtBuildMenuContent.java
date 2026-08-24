@@ -22,7 +22,7 @@ import mindustry.world.Block;
 public final class MdtBuildMenuContent {
 
     /** 全局 MDT 建造菜单注册表。 */
-    public static final BuildMenuRegistry registry = new BuildMenuRegistry("MDT");
+    public static final BuildMenuRegistry registry = new BuildMenuRegistry(Core.bundle.get("mdtnh.menu.root"));
 
     /** 防止分类与方块重复注册。 */
     private static boolean loaded;
@@ -44,10 +44,10 @@ public final class MdtBuildMenuContent {
 
         // 生产设备：普通生产、电压机器和多方块设备分别使用独立子树。
         registry.category("production",
-                Core.bundle.get("mdtnh.category.production", "生产设备"),
+                Core.bundle.get("mdtnh.category.production"),
                 icon(ModCrafters.multiFactory));
         registry.category("production.basic",
-                Core.bundle.get("mdtnh.category.basic", "基础生产"),
+                Core.bundle.get("mdtnh.category.basic"),
                 icon(ModCrafters.Small_Coal_Fired_Boiler));
         registry.add("production.basic",
                 ModCrafters.Small_Coal_Fired_Boiler,
@@ -57,16 +57,16 @@ public final class MdtBuildMenuContent {
 
         // 电压机器：先按机器族划分，再区分标准电力变体与 ULV 特殊动力变体。
         registry.category("production.voltage",
-                Core.bundle.get("mdtnh.category.voltage", "电压机器"),
+                Core.bundle.get("mdtnh.category.voltage"),
                 icon(VoltageExampleMachines.furnace.machine(VoltageTier.LV)));
         registry.category("production.voltage.furnace",
-                Core.bundle.get("mdtnh.category.furnace", "冶炼炉族"),
+                Core.bundle.get("mdtnh.category.furnace"),
                 icon(VoltageExampleMachines.furnace.machine(VoltageTier.LV)));
         registry.category("production.voltage.furnace.electric",
-                Core.bundle.get("mdtnh.category.electric", "电力机器"),
+                Core.bundle.get("mdtnh.category.electric"),
                 icon(VoltageExampleMachines.furnace.machine(VoltageTier.LV)));
         registry.category("production.voltage.furnace.ulv-special",
-                Core.bundle.get("mdtnh.category.ulv-special", "ULV特殊机器"),
+                Core.bundle.get("mdtnh.category.ulv-special"),
                 icon(VoltageExampleMachines.furnace.ulvSteamMachine));
 
         for (VoltageTier tier : VoltageTier.values()) {
@@ -79,13 +79,13 @@ public final class MdtBuildMenuContent {
         );
 
         registry.category("production.voltage.processor",
-                Core.bundle.get("mdtnh.category.processor", "材料处理器族"),
+                Core.bundle.get("mdtnh.category.processor"),
                 icon(VoltageExampleMachines.processor.machine(VoltageTier.ULV)));
         registry.category("production.voltage.processor.electric",
-                Core.bundle.get("mdtnh.category.electric", "电力机器"),
+                Core.bundle.get("mdtnh.category.electric"),
                 icon(VoltageExampleMachines.processor.machine(VoltageTier.ULV)));
         registry.category("production.voltage.processor.ulv-special",
-                Core.bundle.get("mdtnh.category.ulv-special", "ULV特殊机器"),
+                Core.bundle.get("mdtnh.category.ulv-special"),
                 icon(VoltageExampleMachines.processor.ulvSteamMachine));
 
         for (VoltageTier tier : VoltageTier.values()) {
@@ -99,61 +99,61 @@ public final class MdtBuildMenuContent {
 
         // 多方块系统：核心与各类输入/输出舱室分组，便于继续扩展结构组件。
         registry.category("production.multiblock",
-                Core.bundle.get("mdtnh.category.multiblock", "多方块设备"),
+                Core.bundle.get("mdtnh.category.multiblock"),
                 icon(ModCrafters.poweredAltar));
         registry.category("production.multiblock.core",
-                Core.bundle.get("mdtnh.category.core", "多方块核心"),
+                Core.bundle.get("mdtnh.category.core"),
                 icon(ModCrafters.poweredAltar));
         registry.add("production.multiblock.core", ModCrafters.poweredAltar);
 
         registry.category("production.multiblock.hatch",
-                Core.bundle.get("mdtnh.category.hatch", "结构舱室"),
+                Core.bundle.get("mdtnh.category.hatch"),
                 icon(ModCrafters.copperInputHatch));
         registry.category("production.multiblock.hatch.item",
-                Core.bundle.get("mdtnh.category.itemhatch", "物品舱"),
+                Core.bundle.get("mdtnh.category.itemhatch"),
                 icon(ModCrafters.copperInputHatch));
         registry.add("production.multiblock.hatch.item",
                 ModCrafters.copperInputHatch, ModCrafters.productOutputHatch);
 
         registry.category("production.multiblock.hatch.liquid",
-                Core.bundle.get("mdtnh.category.liquidhatch", "液体舱"),
+                Core.bundle.get("mdtnh.category.liquidhatch"),
                 icon(ModCrafters.liquidInputHatch));
         registry.add("production.multiblock.hatch.liquid",
                 ModCrafters.liquidInputHatch, ModCrafters.liquidOutputHatch);
 
         registry.category("production.multiblock.hatch.energy",
-                Core.bundle.get("mdtnh.category.energyhatch", "能源舱"),
+                Core.bundle.get("mdtnh.category.energyhatch"),
                 icon(ModCrafters.energyInputHatch));
         registry.add("production.multiblock.hatch.energy",
                 ModCrafters.energyInputHatch, ModCrafters.steamInputHatch);
 
         // MDT 能源：按发电、输电、储能、用电四种基本职责组织。
         registry.category("energy",
-                Core.bundle.get("mdtnh.category.energy", "MDT能源"),
+                Core.bundle.get("mdtnh.category.energy"),
                 icon(MdtEnergyBlocks.exampleGenerator));
         registry.category("energy.generation",
-                Core.bundle.get("mdtnh.category.generation", "发电"),
+                Core.bundle.get("mdtnh.category.generation"),
                 icon(MdtEnergyBlocks.exampleGenerator));
         registry.add("energy.generation", MdtEnergyBlocks.exampleGenerator);
 
         registry.category("energy.transmission",
-                Core.bundle.get("mdtnh.category.transmission", "输电"),
+                Core.bundle.get("mdtnh.category.transmission"),
                 icon(MdtEnergyBlocks.exampleWire));
         registry.add("energy.transmission", MdtEnergyBlocks.exampleWire);
 
         registry.category("energy.storage",
-                Core.bundle.get("mdtnh.category.storage", "储能"),
+                Core.bundle.get("mdtnh.category.storage"),
                 icon(MdtEnergyBlocks.exampleBattery));
         registry.add("energy.storage", MdtEnergyBlocks.exampleBattery);
 
         registry.category("energy.consumer",
-                Core.bundle.get("mdtnh.category.consumer", "用电设备"),
+                Core.bundle.get("mdtnh.category.consumer"),
                 icon(MdtEnergyBlocks.exampleConsumer));
         registry.add("energy.consumer", MdtEnergyBlocks.exampleConsumer);
 
         // 炮台
         registry.category("turret",
-                Core.bundle.get("mdtnh.category.turret", "炮台"),
+                Core.bundle.get("mdtnh.category.turret"),
                 icon(Blocks.arc));
         registry.add("turret",
                 MdtImplementedTurrets.broadsword,
@@ -173,13 +173,13 @@ public final class MdtBuildMenuContent {
             Block fluidIcon = MdtTransportBlocks.fluidPipes.first();
 
             registry.category("production.transport",
-                    Core.bundle.get("mdtnh.category.transport", "运输管道"),
+                    Core.bundle.get("mdtnh.category.transport"),
                     icon(itemIcon));
             registry.category("production.transport.item",
-                    Core.bundle.get("mdtnh.category.transport.item", "物品管道"),
+                    Core.bundle.get("mdtnh.category.transport.item"),
                     icon(itemIcon));
             registry.category("production.transport.fluid",
-                    Core.bundle.get("mdtnh.category.transport.fluid", "流体管道"),
+                    Core.bundle.get("mdtnh.category.transport.fluid"),
                     icon(fluidIcon));
 
             for (Block block : MdtTransportBlocks.itemPipes) {

@@ -6,17 +6,19 @@ import arc.scene.ui.Label;
 import arc.scene.ui.layout.Table;
 import mindustry.ctype.UnlockableContent;
 import mindustry.type.Item;
+import mindustry.type.Liquid;
 import mindustry.ui.Styles;
 
 /**
- * “物品介绍”示例扩展页。
+ * 配方查看器中的通用“介绍”扩展页。
  *
- * <p>注意：这个页面没有被 RecipeQueryUI 特判；它和第三方页面一样，
- * 完全通过 RecipeQueryPage + registerPage(...) 接入。</p>
+ * <p>保留原类名与页面 ID 以兼容已有调用，但现在同时支持 Item 与 Liquid。</p>
  */
-public final class ItemIntroductionPage implements RecipeQueryPage {
+public final class ItemIntroductionPage
+        implements RecipeQueryPage {
 
-    public static final String ID = "mdtnh:item-introduction";
+    public static final String ID =
+            "mdtnh:item-introduction";
 
     @Override
     public String id() {
@@ -34,8 +36,11 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
     }
 
     @Override
-    public boolean supports(UnlockableContent content) {
-        return content instanceof Item;
+    public boolean supports(
+            UnlockableContent content) {
+
+        return content instanceof Item ||
+                content instanceof Liquid;
     }
 
     @Override
@@ -43,7 +48,8 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
             RecipeQueryUI.PageContext context,
             Table root) {
 
-        Item item = (Item) context.content();
+        UnlockableContent content =
+                context.content();
 
         root.defaults().left();
         root.top().left();
@@ -52,14 +58,18 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
         card.left();
         card.background(Styles.black6);
 
-        card.image(item.uiIcon)
+        card.image(content.uiIcon)
                 .size(72f)
                 .pad(10f);
 
         card.table(text -> {
             text.left();
 
-            Label name = new Label(item.localizedName);
+            Label name =
+                    new Label(
+                            content.localizedName
+                    );
+
             name.setColor(Color.white);
             name.setWrap(true);
 
@@ -72,7 +82,7 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
             text.add(
                     Core.bundle.format(
                             "mdtnh.recipe-query.introduction.internal-name",
-                            item.name
+                            content.name
                     )
             ).left()
                     .padTop(4f);
@@ -87,19 +97,30 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
         addSection(
                 root,
                 "mdtnh.recipe-query.introduction.description-title",
-                usableText(item.description)
-                        ? item.description
+                usableText(content.description)
+                        ? content.description
                         : Core.bundle.get(
                                 "mdtnh.recipe-query.introduction.no-description"
                         )
         );
 
-        if (usableText(item.details)) {
+        if (usableText(content.details)) {
             root.row();
+
             addSection(
                     root,
                     "mdtnh.recipe-query.introduction.details-title",
-                    item.details
+                    content.details
+            );
+        }
+
+        if (usableText(content.credit)) {
+            root.row();
+
+            addSection(
+                    root,
+                    "mdtnh.recipe-query.introduction.credit-title",
+                    content.credit
             );
         }
     }
@@ -122,7 +143,9 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
 
         section.row();
 
-        Label body = new Label(bodyText);
+        Label body =
+                new Label(bodyText);
+
         body.setWrap(true);
 
         section.add(body)
@@ -140,6 +163,7 @@ public final class ItemIntroductionPage implements RecipeQueryPage {
     }
 
     private boolean usableText(String value) {
-        return value != null && !value.trim().isEmpty();
+        return value != null &&
+                !value.trim().isEmpty();
     }
 }

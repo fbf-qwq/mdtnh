@@ -10,6 +10,7 @@ import arc.scene.ui.ImageButton;
 import arc.scene.ui.layout.Table;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.Seq;
+import mdtnh.modui.introduction.MdtIntroductionUI;
 import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.gen.Tex;
@@ -34,6 +35,10 @@ public final class MdtBuildMenuFragment {
     /** 注入场景树时使用的唯一名称，用于检测并复用已有入口按钮。 */
     private static final String entryName = "mdtnh-build-menu-entry";
 
+    /** 介绍/教程入口在场景树中的唯一名称。 */
+    private static final String introductionEntryName =
+            "mdtnh-introduction-menu-entry";
+
     /** 菜单数据来源。 */
     private final BuildMenuRegistry registry;
 
@@ -42,6 +47,9 @@ public final class MdtBuildMenuFragment {
 
     /** 注入原版建造分类栏的 MDT 入口按钮。 */
     private ImageButton entryButton;
+
+    /** 注入截图右下空位的介绍/教程入口按钮。 */
+    private ImageButton introductionEntryButton;
 
     /** 分类和方块主体弹窗。 */
     private Table popup;
@@ -85,8 +93,12 @@ public final class MdtBuildMenuFragment {
         installed = true;
         buildPopup();
         Events.run(Trigger.update, () -> {
-            if (entryButton == null || entryButton.getScene() == null)
+            if (entryButton == null ||
+                    entryButton.getScene() == null ||
+                    introductionEntryButton == null ||
+                    introductionEntryButton.getScene() == null) {
                 injectEntryButton();
+            }
             syncSelectedBlock();
         });
         Core.app.post(this::injectEntryButton);
@@ -130,22 +142,117 @@ public final class MdtBuildMenuFragment {
      * 则定位原版分类按钮的父表格并在末尾追加 MDT 按钮。</p>
      */
     private void injectEntryButton() {
-        if (Vars.ui == null || Vars.ui.hudfrag == null) return;
-        Element existing = Core.scene.find(entryName);
-        if (existing instanceof ImageButton) {
-            entryButton = (ImageButton) existing;
+        if (Vars.ui == null ||
+                Vars.ui.hudfrag == null) {
             return;
         }
-        Table categoryTable = findVanillaCategoryTable();
-        if (categoryTable == null) return;
-        if (registry.root.icon == null) return;
+
+        Element existingBuild =
+                Core.scene.find(entryName);
+
+        Element existingIntroduction =
+                Core.scene.find(
+                        introductionEntryName
+                );
+
+        if (existingBuild instanceof ImageButton) {
+            entryButton =
+                    (ImageButton) existingBuild;
+        }
+
+        if (existingIntroduction instanceof ImageButton) {
+            introductionEntryButton =
+                    (ImageButton) existingIntroduction;
+        }
+
+        if (entryButton != null &&
+                entryButton.getScene() != null &&
+                introductionEntryButton != null &&
+                introductionEntryButton.getScene() != null) {
+            return;
+        }
+
+        Table categoryTable =
+                findVanillaCategoryTable();
+
+        if (categoryTable == null ||
+                registry.root.icon == null) {
+            return;
+        }
+
+        /*
+         * 原实现这里是：
+         *   [MDT 建造入口] [50x50 空白]
+         *
+         * 现在直接把右侧空白替换为介绍菜单入口，因此位置就是
+         * 建造分类栏最下方的右下角，不额外增加第三列。
+         */
         categoryTable.row();
-        entryButton = categoryTable.button(registry.root.icon, Styles.clearTogglei, this::toggle).size(50f).get();
+
+        entryButton =
+                categoryTable.button(
+                        registry.root.icon,
+                        Styles.clearTogglei,
+                        this::toggle
+                ).size(50f)
+                        .get();
+
         entryButton.name = entryName;
-        categoryTable.add().size(50f);
-        entryButton.update(() -> entryButton.setChecked(opened));
-        Vars.ui.addDescTooltip(entryButton, Core.bundle.get("mdtnh.menu.entry.tooltip", "MDT多级建造菜单"));
+
+        introductionEntryButton =
+                categoryTable.button(
+                        mindustry.gen.Icon.list,
+                        Styles.clearTogglei,
+                        this::openIntroductionMenu
+                ).size(50f)
+                        .get();
+
+        introductionEntryButton.name =
+                introductionEntryName;
+
+        entryButton.update(
+                () -> entryButton.setChecked(
+                        opened
+                )
+        );
+
+        introductionEntryButton.update(
+                () -> introductionEntryButton.setChecked(
+                        MdtIntroductionUI.isShown()
+                )
+        );
+
+        Vars.ui.addDescTooltip(
+                entryButton,
+                Core.bundle.get(
+                        "mdtnh.menu.entry.tooltip"
+                )
+        );
+
+        Vars.ui.addDescTooltip(
+                introductionEntryButton,
+                Core.bundle.get(
+                        "mdtnh.intro.entry.tooltip"
+                )
+        );
+
         categoryTable.invalidateHierarchy();
+    }
+
+    /** 关闭建造菜单弹窗，并打开介绍/教程中心。 */
+    private void openIntroductionMenu() {
+        opened = false;
+        clearHoveredBlock();
+
+        if (popup != null) {
+            popup.visible = false;
+        }
+
+        if (hoverInfo != null) {
+            hoverInfo.visible = false;
+        }
+
+        MdtIntroductionUI.show();
     }
 
     /**
@@ -205,7 +312,7 @@ public final class MdtBuildMenuFragment {
     private void buildHeader() {
         popup.table(header -> {
             if (current != registry.root) {
-                header.button(Core.bundle.get("mdtnh.menu.back", "<"), Styles.cleart, () -> {
+                header.button(Core.bundle.get("mdtnh.menu.back"), Styles.cleart, () -> {
                     if (current.parent != null) {
                         current = current.parent;
                         rebuildPopup();
@@ -215,7 +322,7 @@ public final class MdtBuildMenuFragment {
                 header.add().size(42f);
             }
             header.add(getBreadcrumb()).left().growX().padLeft(6f).padRight(6f);
-            header.button(Core.bundle.get("mdtnh.menu.close", "X"), Styles.cleart, () -> opened = false).size(42f);
+            header.button(Core.bundle.get("mdtnh.menu.close"), Styles.cleart, () -> opened = false).size(42f);
         }).growX();
     }
 
@@ -230,9 +337,9 @@ public final class MdtBuildMenuFragment {
             path.insert(0, node);
             node = node.parent;
         }
-        StringBuilder builder = new StringBuilder("MDT");
+        StringBuilder builder = new StringBuilder(registry.root.title);
         for (BuildMenuNode item : path) {
-            builder.append(" > ").append(item.title);
+            builder.append(Core.bundle.get("mdtnh.menu.breadcrumb.separator")).append(item.title);
         }
         return builder.toString();
     }
@@ -252,7 +359,7 @@ public final class MdtBuildMenuFragment {
         }
         buildBlocks(table);
         if (table.getChildren().isEmpty()) {
-            table.add(Core.bundle.get("mdtnh.menu.empty", "（该分类下暂无可用方块）")).pad(10f);
+            table.add(Core.bundle.get("mdtnh.menu.empty")).pad(10f);
         }
     }
 
@@ -260,7 +367,7 @@ public final class MdtBuildMenuFragment {
     private void buildChildren(Table table) {
         for (BuildMenuNode child : current.children) {
             if (!hasAvailableContent(child)) continue;
-            table.button(child.title + "  >", Styles.cleart, () -> {
+            table.button(Core.bundle.format("mdtnh.menu.child", child.title), Styles.cleart, () -> {
                 current = child;
                 rebuildPopup();
             }).height(44f).growX();
@@ -338,11 +445,11 @@ public final class MdtBuildMenuFragment {
 
         hoverInfo.table(costs -> {
             costs.top().left();
-            costs.add("[lightgray]建造花费[]").left().padBottom(3f);
+            costs.add(Core.bundle.get("mdtnh.menu.build-cost")).left().padBottom(3f);
             costs.row();
 
             if (block.requirements == null || block.requirements.length == 0) {
-                costs.add("无").left().padLeft(2f);
+                costs.add(Core.bundle.get("mdtnh.menu.none")).left().padLeft(2f);
                 return;
             }
 
