@@ -40,6 +40,33 @@ public interface MdtEnergyNode {
     }
 
     /**
+     * 判断一个相邻节点是否允许作为当前节点的下一跳。
+     *
+     * <p>默认双向允许。变压器、二极管等有方向性的节点可覆盖此方法，
+     * 从而在不改变网络拓扑收集逻辑的前提下限制实际能量流向。</p>
+     */
+    default boolean canSendEnergyTo(MdtEnergyNode neighbor) {
+        return true;
+    }
+
+    /**
+     * 判断当前节点是否允许从指定相邻节点接收能量。
+     */
+    default boolean canReceiveEnergyFrom(MdtEnergyNode neighbor) {
+        return true;
+    }
+
+    /**
+     * 是否允许与另一个 battery 角色节点直接进行能量交换。
+     *
+     * <p>普通电池默认返回 false，避免多个储能方块之间来回倒能。
+     * 变压器和二极管属于主动桥接设备，会覆盖为 true。</p>
+     */
+    default boolean allowsBatteryBridge(MdtEnergyNode other) {
+        return false;
+    }
+
+    /**
      * 处理超过最高输入电压的电流包。
      *
      * <p>默认行为是清空能源缓存并摧毁建筑。特殊设备可以重写该方法，

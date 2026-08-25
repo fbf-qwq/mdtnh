@@ -82,10 +82,14 @@ public class MainMod extends Mod {
 
         ModItems.load();
         ModLiquids.load();
+        GtLiquids.load();
+        GtMaterials.load();
         ModOre.load();
         MineralVeins.load();
         Component.load();
         ModCrafters.load();
+        GtProductionMachines.load();
+        GtUtilityMachines.load();
         MdtImplementedTurrets.load();
         VoltageExampleMachines.load();
         MdtTransportBlocks.load();

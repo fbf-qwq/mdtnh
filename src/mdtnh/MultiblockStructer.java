@@ -12,6 +12,7 @@ import arc.scene.ui.layout.*;
 import arc.util.*;
 import arc.util.io.*;
 import mdtnh.draw.DrawerManager;
+import mdtnh.energy.EnergySpec;
 import mdtnh.energy.EnergyState;
 import mdtnh.energy.MdtEnergyNode;
 import mdtnh.hatch.EnergyInputHatch;
@@ -77,6 +78,14 @@ public class MultiblockStructer extends Block {
     /** 并行数 */
     public int parallel=8;
 
+    /**
+     * GTNH 旧式多方块输入电压聚合：true 时把所有能源仓标称输入电压相加后判级，
+     * 因而会出现“双仓升压”；false 时使用能源仓平均电压。
+     */
+    public boolean gtNhLegacyVoltageAggregation = true;
+
+
+
     // ====== 绘图管理器 ======
     private DrawerManager drawerManager = new DrawerManager();
 
@@ -95,6 +104,8 @@ public class MultiblockStructer extends Block {
         public LiquidStack[] outputLiquids;
         public float craftTime;
         public float energyPerCraftJ;
+        /** 该配方允许启动的最低电压等级。 */
+        public VoltageTier minimumVoltageTier = VoltageTier.ULV;
 
         public Recipe(ItemStack[] inputItems, LiquidStack[] inputLiquids,
                       ItemStack[] outputItems, LiquidStack[] outputLiquids, float craftTime) {
@@ -114,6 +125,11 @@ public class MultiblockStructer extends Block {
 
         public Recipe energy(float joules) {
             this.energyPerCraftJ = Math.max(0f, joules);
+            return this;
+        }
+
+        public Recipe voltage(VoltageTier tier) {
+            this.minimumVoltageTier = tier == null ? VoltageTier.ULV : tier;
             return this;
         }
 
@@ -138,7 +154,7 @@ public class MultiblockStructer extends Block {
 
         public Recipe times(int count) {
             int multiplier = Math.max(0, count);
-            return new Recipe(
+            Recipe scaled = new Recipe(
                     scaleItems(inputItems, multiplier),
                     scaleLiquids(inputLiquids, multiplier),
                     scaleItems(outputItems, multiplier),
@@ -146,6 +162,8 @@ public class MultiblockStructer extends Block {
                     craftTime,
                     energyPerCraftJ * multiplier
             );
+            scaled.minimumVoltageTier = minimumVoltageTier;
+            return scaled;
         }
 
         private static ItemStack[] scaleItems(ItemStack[] stacks, int multiplier) {
@@ -700,6 +718,87 @@ public class MultiblockStructer extends Block {
             return remaining <= 0.0001f;
         }
 
+        /**
+         * 返回当前结构全部能源仓聚合后的有效输入电压。
+         * 旧式 GTNH 模式使用求和；兼容模式使用平均值。
+         */
+        public float getEffectiveInputVoltageV() {
+            if (currentLevel() == null || currentEnergyInputs == null
+                    || currentEnergyInputs.length == 0) return 0f;
+
+            float sum = 0f;
+            int count = 0;
+            for (pos offset : currentEnergyInputs) {
+                Tile target = Vars.world.tile(tile.x + offset.x, tile.y + offset.y);
+                if (target == null || target.build == null) continue;
+                if (target.build.team != team) continue;
+                if (!(target.build instanceof MdtEnergyNode)) continue;
+
+                MdtEnergyNode node = (MdtEnergyNode) target.build;
+                EnergySpec spec = node.energySpec();
+                if (spec == null || spec.voltageV <= 0f) continue;
+                sum += spec.voltageV;
+                count++;
+            }
+
+            if (count == 0) return 0f;
+            return gtNhLegacyVoltageAggregation ? sum : sum / count;
+        }
+
+        public VoltageTier getEffectiveInputVoltageTier() {
+            float voltage = getEffectiveInputVoltageV();
+            VoltageTier[] tiers = VoltageTier.values();
+            if (tiers.length == 0) return null;
+
+            for (VoltageTier tier : tiers) {
+                if (voltage <= tier.maxVoltageV + 0.0001f) {
+                    return tier;
+                }
+            }
+            return tiers[tiers.length - 1];
+        }
+
+        private boolean voltageAllows(Recipe recipe) {
+            if (recipe == null) return false;
+
+            // 旧的零能耗配方保持无电运行兼容性。
+            if (recipe.energyPerCraftJ <= 0f
+                    && (recipe.minimumVoltageTier == null
+                    || recipe.minimumVoltageTier == VoltageTier.ULV)) {
+                return true;
+            }
+
+            VoltageTier effective = getEffectiveInputVoltageTier();
+            VoltageTier minimum = recipe.minimumVoltageTier == null
+                    ? VoltageTier.ULV
+                    : recipe.minimumVoltageTier;
+            return effective != null
+                    && getEffectiveInputVoltageV() > 0f
+                    && effective.canProcess(minimum);
+        }
+
+        private float effectiveCraftTime(Recipe recipe) {
+            VoltageTier minimum = recipe.minimumVoltageTier == null
+                    ? VoltageTier.ULV
+                    : recipe.minimumVoltageTier;
+            VoltageTier effective = getEffectiveInputVoltageTier();
+            if (effective == null || !effective.canProcess(minimum)) {
+                return recipe.craftTime;
+            }
+            return recipe.craftTime / effective.speedMultiplierFrom(minimum);
+        }
+
+        private float effectiveEnergyPerCraft(Recipe recipe) {
+            VoltageTier minimum = recipe.minimumVoltageTier == null
+                    ? VoltageTier.ULV
+                    : recipe.minimumVoltageTier;
+            VoltageTier effective = getEffectiveInputVoltageTier();
+            if (effective == null || !effective.canProcess(minimum)) {
+                return recipe.energyPerCraftJ;
+            }
+            return recipe.energyPerCraftJ * effective.energyMultiplierFrom(minimum);
+        }
+
         @Override
         public void updateTile() {
             super.updateTile();
@@ -727,7 +826,7 @@ public class MultiblockStructer extends Block {
 
             if (currentRecipe >= 0 && currentRecipe < activeRecipes.length) {
                 Recipe active = activeRecipes[currentRecipe];
-                if (!canRunParallel(active, 1)) {
+                if (!voltageAllows(active) || !canRunParallel(active, 1)) {
                     currentRecipe = -1;
                     currentParallel = 0;
                 }
@@ -736,6 +835,7 @@ public class MultiblockStructer extends Block {
             if (currentRecipe == -1) {
                 for (int i = 0; i < activeRecipes.length; i++) {
                     Recipe recipe = activeRecipes[i];
+                    if (!voltageAllows(recipe)) continue;
                     int maximum = findMaximumParallel(recipe);
                     if (maximum > 0) {
                         currentRecipe = i;
@@ -762,14 +862,23 @@ public class MultiblockStructer extends Block {
                     progress = 0f;
                 }
 
+                if (!voltageAllows(active)) {
+                    currentRecipe = -1;
+                    currentParallel = 0;
+                    progress = 0f;
+                    return;
+                }
+
                 float workTicks = delta();
-                float requiredEnergyJ = active.energyPerCraftJ
+                float runCraftTime = Math.max(0.0001f, effectiveCraftTime(active));
+                float runEnergyPerCraft = Math.max(0f, effectiveEnergyPerCraft(active));
+                float requiredEnergyJ = runEnergyPerCraft
                         * workTicks
-                        / active.craftTime
+                        / runCraftTime
                         * currentParallel;
 
                 if (consumeEnergyJ(requiredEnergyJ)) {
-                    progress += workTicks / active.craftTime;
+                    progress += workTicks / runCraftTime;
                 }
 
                 if (progress >= 1f) {

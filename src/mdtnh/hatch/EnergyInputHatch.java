@@ -2,6 +2,8 @@ package mdtnh.hatch;
 
 import arc.Core;
 import arc.graphics.Color;
+import mdtnh.MultiblockStructer;
+import mdtnh.VoltageTier;
 import mdtnh.energy.EnergySpec;
 import mdtnh.energy.EnergyState;
 import mdtnh.energy.MdtEnergyNode;
@@ -31,7 +33,7 @@ public class EnergyInputHatch extends Hatch {
 
         // 作为纯输入端接入网络：允许充电，不允许主动向外部网络放电。
         energySpec.role = EnergySpec.Role.consumer;
-        energySpec.voltageV = 12f;
+        energySpec.voltageV = 8f;
         energySpec.minInputVoltageV = 10f;
         energySpec.maxInputVoltageV = 14f;
         energySpec.capacityJ = 2400f;

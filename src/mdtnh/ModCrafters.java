@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import static mdtnh.VoltageTier.MV;
+
 /**
  * 注册项目中的生产建筑、舱室和多方块结构示例。
  *
@@ -109,9 +111,9 @@ public class ModCrafters {
             localizedName = Core.bundle.get("hatch.energy-input-hatch.name", "能源输入仓");
             requirements(Category.power, ItemStack.with(Items.copper, 50, Items.silicon, 20));
 
-            energySpec.voltageV = 12f;
-            energySpec.minInputVoltageV = 10f;
-            energySpec.maxInputVoltageV = 14f;
+            energySpec.voltageV = 8f;
+            energySpec.minInputVoltageV = 8f;
+            energySpec.maxInputVoltageV = 31.5f;
             energySpec.capacityJ = 4800f;
             energySpec.maxInputA = 32;
         }};
@@ -163,7 +165,7 @@ public class ModCrafters {
                                     new ItemStack[]{new ItemStack(Items.copper, 1), new ItemStack(Items.silicon, 2)},
                                     new ItemStack(Items.metaglass, 2), 90f
                             ).energy(360f),
-                            RecipeCrafter.Recipe.withLiquid(
+                             RecipeCrafter.Recipe.withLiquid(
                                     new ItemStack[]{new ItemStack(Items.silicon, 3)},
                                     new LiquidStack[]{new LiquidStack(Liquids.water, 0.1f)},
                                     new ItemStack[]{new ItemStack(Items.surgeAlloy, 1), new ItemStack(Items.metaglass, 1)},
@@ -245,10 +247,11 @@ public class ModCrafters {
             level1.struct.put(new pos(2, 0), 3);
             level1.struct.put(new pos(1, 1), 5);
             level1.struct.put(new pos(-1, 1), 6);
+            level1.struct.put(new pos(-1, -1), 3);
             /*
-               IO LI
+            LO IO LI
             II C  II EI
-               _  LO
+            EI _
               */
 
             level1.Mapping = mapping;
@@ -275,7 +278,7 @@ public class ModCrafters {
                                     new ItemStack[]{new ItemStack(Items.surgeAlloy, 1), new ItemStack(Items.phaseFabric, 1)},
                                     new ItemStack[]{new ItemStack(Items.plastanium, 2)},
                                     300f
-                            ).energy(1200f)
+                            ).energy(1200f).voltage(MV)
                     })
             };
 

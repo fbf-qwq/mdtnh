@@ -87,6 +87,19 @@ public final class MdtEnergySystem {
     }
 
     /**
+     * 判断一个电流包是否允许沿相邻边从 from 流向 to。
+     *
+     * <p>拓扑连接仍然是无向的，实际传输则额外尊重节点自己的方向规则。
+     * 这使二极管/变压器可以只在指定侧输入或输出，同时保持导线贴图和
+     * 连通分量扫描逻辑不变。</p>
+     */
+    public static boolean canFlow(MdtEnergyNode from, MdtEnergyNode to) {
+        return canConnect(from, to)
+                && from.canSendEnergyTo(to)
+                && to.canReceiveEnergyFrom(from);
+    }
+
+    /**
      * 执行一个完整模拟秒的能源结算。
      *
      * <p>输入、输出和导线电流统计在每秒开始时清零，只表示当前结算秒的结果。
@@ -328,8 +341,16 @@ public final class MdtEnergySystem {
 
         if (srcSpec.role == EnergySpec.Role.generator) return true;
 
-        return srcSpec.role == EnergySpec.Role.battery
-                && sink.energySpec().role == EnergySpec.Role.consumer;
+        if (srcSpec.role != EnergySpec.Role.battery) return false;
+
+        EnergySpec.Role sinkRole = sink.energySpec().role;
+        if (sinkRole == EnergySpec.Role.consumer) return true;
+
+        // 普通电池之间仍不互相倒能；只有变压器/二极管等主动桥接设备
+        // 参与时，才允许 battery -> battery 的一跳。
+        return sinkRole == EnergySpec.Role.battery
+                && (source.allowsBatteryBridge(sink)
+                || sink.allowsBatteryBridge(source));
     }
 
     /**
@@ -463,6 +484,7 @@ public final class MdtEnergySystem {
             if (current != source && !current.isEnergyWire()) continue;
 
             for (MdtEnergyNode neighbor : adjacentNodes(current)) {
+                if (!canFlow(current, neighbor)) continue;
                 if (!neighbor.isEnergyWire() && neighbor != target) continue;
 
                 float addedLoss = neighbor.isEnergyWire()

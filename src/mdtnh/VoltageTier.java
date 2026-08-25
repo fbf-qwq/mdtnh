@@ -61,6 +61,23 @@ public enum VoltageTier {
     }
 
     /**
+     * 将任意正电压按 GT 风格向上归入离散等级。
+     *
+     * <p>例如 LV 上限为 8V：8V -> LV，而 8V < V <= 32V -> MV。
+     * 因而旧式多方块若把两个 LV 能源仓相加得到 16V，就会被判为 MV。</p>
+     *
+     * @return voltageV <= 0 时返回 null；超过 MAX 上限时钳制为 MAX
+     */
+    public static VoltageTier fromVoltageCeil(float voltageV) {
+        if (!(voltageV > 0f)) return null;
+
+        for (VoltageTier tier : values()) {
+            if (voltageV <= tier.maxVoltageV) return tier;
+        }
+        return MAX;
+    }
+
+    /**
      * 判断当前等级是否满足配方最低等级要求。
      *
      * @param minimumTier 配方要求的最低电压等级

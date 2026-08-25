@@ -9,9 +9,15 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Log;
 import arc.util.Timer;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import mdtnh.draw.DrawerManager;
+import mdtnh.energy.EnergySpec;
+import mdtnh.energy.EnergyState;
+import mdtnh.energy.MdtEnergyNode;
 import mindustry.Vars;
 import mindustry.content.Items;
+import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -40,6 +46,20 @@ public class ModDrill extends Block {
     public int top = 1, button = 1, left = 1, right = 1;
     public float drillTime = 60f; // 每次产出的 tick 数
 
+    /** 是否接入 MDT 离散电网；默认 false 以保持旧钻头行为。 */
+    public boolean usesMdtEnergy = false;
+    /** 每完成一次采矿周期消耗的总能量。 */
+    public float energyPerMineJ = 0f;
+    /** true 时每周期只采一个矿格；GT 矿机使用该模式。 */
+    public boolean mineOneOrePerCycle = false;
+    /** true 时成功采矿后移除矿石 overlay，模拟 GT 矿机的有限矿脉开采。 */
+    public boolean consumeOreOverlay = false;
+    /** 旧钻头按扫描到的总硬度降低速度；GT 矿机应关闭。 */
+    public boolean useHardnessSpeedPenalty = true;
+
+    /** 该钻头接入 MDT 电网时使用的能源规格。 */
+    public final EnergySpec energySpec = new EnergySpec();
+
     public ModDrill(String name) {
         super(name);
         update = true;
@@ -48,6 +68,15 @@ public class ModDrill extends Block {
         buildVisibility = BuildVisibility.shown;
         requirements(Category.crafting, ItemStack.with(Items.copper, 50));
         itemCapacity = 20;
+
+        energySpec.role = EnergySpec.Role.consumer;
+        energySpec.voltageV = 8f;
+        energySpec.minInputVoltageV = 0f;
+        energySpec.maxInputVoltageV = 8f;
+        energySpec.capacityJ = 64f;
+        energySpec.maxInputA = 1;
+        energySpec.maxOutputA = 0;
+
         buildType = ModDrillBuilding::new;
     }
 
@@ -106,10 +135,24 @@ public class ModDrill extends Block {
                 () -> Color.valueOf("ffd37f"),
                 () -> build.progress / drillTime
         ));
+
+        if (usesMdtEnergy) {
+            addBar("mdt-energy", (ModDrillBuilding build) -> new Bar(
+                    () -> Core.bundle.format("mdt.bar.energy",
+                            Math.round(build.nodeState.energyJ),
+                            Math.round(energySpec.capacityJ)),
+                    () -> Color.valueOf("84f491"),
+                    () -> energySpec.capacityJ <= 0f
+                            ? 0f
+                            : Math.min(1f, build.nodeState.energyJ / energySpec.capacityJ)
+            ));
+        }
     }
 
     // ----- 内部建筑类 -----
-    public class ModDrillBuilding extends Building {
+    public class ModDrillBuilding extends Building implements MdtEnergyNode {
+
+        public final EnergyState nodeState = new EnergyState();
 
         /** 存储每个矿石格子的信息：坐标和对应的物品 */
         private static class OreSlot {
@@ -165,8 +208,8 @@ public class ModDrill extends Block {
         @Override
         public void updateTile() {
 
-            for(var i:oreSlots){
-                if(items.has(i.item))dump(i.item);
+            for (var i : oreSlots) {
+                if (items.has(i.item)) dump(i.item);
             }
 
             if (oreSlots.isEmpty()) {
@@ -174,27 +217,115 @@ public class ModDrill extends Block {
                 return;
             }
 
-            // 累计进度
-            progress += delta()/max(1,sumHardness);
+            float speedPenalty = useHardnessSpeedPenalty ? max(1, sumHardness) : 1f;
+            float progressTicks = delta() / speedPenalty;
 
-            // 达到产出周期 -> 批量产出
-            if (progress >= drillTime) {
-                progress -= drillTime;
-                // 遍历所有有效的格子，每个格子产出 1 个对应矿物
-                for (OreSlot slot : oreSlots) {
-                    // 再次检查（防止遍历过程中被修改）
-                    Tile t = Vars.world.tile(slot.x, slot.y);
-                    if (t == null || !(t.overlay() instanceof OreBlock)) continue;
-
-                    Item item = slot.item;
-                    if (item == null) continue;
-
-                    // 检查仓库是否有空间
-                    if (items.get(item) >= itemCapacity) continue;
-                    // 产出 1 个
-                    items.add(item, 1);
+            if (usesMdtEnergy && energyPerMineJ > 0f) {
+                float requiredJ = energyPerMineJ * progressTicks / Math.max(1f, drillTime);
+                if (!nodeState.consume(requiredJ)) {
+                    return;
                 }
             }
+
+            progress += progressTicks;
+
+            if (progress >= drillTime) {
+                progress -= drillTime;
+
+                if (mineOneOrePerCycle) {
+                    mineOneOre();
+                } else {
+                    mineAllOresOnce();
+                }
+            }
+        }
+
+        private void mineOneOre() {
+            if (oreSlots.isEmpty()) return;
+
+            for (int i = 0; i < oreSlots.size(); i++) {
+                OreSlot slot = oreSlots.get(i);
+                Tile t = Vars.world.tile(slot.x, slot.y);
+                if (t == null || !(t.overlay() instanceof OreBlock)) continue;
+
+                Item item = slot.item;
+                if (item == null || items.get(item) >= itemCapacity) continue;
+
+                items.add(item, 1);
+                if (consumeOreOverlay) {
+                    t.setOverlay(Blocks.air);
+                    oreSlots.remove(i);
+                    recalculateHardness();
+                }
+                return;
+            }
+        }
+
+        private void mineAllOresOnce() {
+            for (OreSlot slot : new ArrayList<>(oreSlots)) {
+                Tile t = Vars.world.tile(slot.x, slot.y);
+                if (t == null || !(t.overlay() instanceof OreBlock)) continue;
+
+                Item item = slot.item;
+                if (item == null || items.get(item) >= itemCapacity) continue;
+
+                items.add(item, 1);
+                if (consumeOreOverlay) {
+                    t.setOverlay(Blocks.air);
+                }
+            }
+
+            if (consumeOreOverlay) {
+                rescanOres();
+            }
+        }
+
+        private void recalculateHardness() {
+            sumHardness = 0;
+            for (OreSlot slot : oreSlots) {
+                if (slot.item != null) sumHardness += slot.item.hardness;
+            }
+        }
+
+        @Override
+        public Building energyBuilding() {
+            return this;
+        }
+
+        @Override
+        public EnergySpec energySpec() {
+            return ModDrill.this.energySpec;
+        }
+
+        @Override
+        public EnergyState energyState() {
+            return nodeState;
+        }
+
+        @Override
+        public boolean canConnectToElectricGrid() {
+            return usesMdtEnergy;
+        }
+
+        @Override
+        public void write(Writes write) {
+            super.write(write);
+            write.f(progress);
+            if (usesMdtEnergy) nodeState.write(write);
+        }
+
+        @Override
+        public void read(Reads read, byte revision) {
+            super.read(read, revision);
+            if (revision >= 1) {
+                progress = read.f();
+                if (usesMdtEnergy) nodeState.read(read, energySpec);
+            }
+        }
+
+        @Override
+        public byte version() {
+            return 1;
         }
 
         /**

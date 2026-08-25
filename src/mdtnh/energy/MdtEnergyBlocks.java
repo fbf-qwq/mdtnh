@@ -1,6 +1,9 @@
 package mdtnh.energy;
 
 import arc.Core;
+import mdtnh.VoltageTier;
+
+import java.util.EnumMap;
 import mindustry.content.Items;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -12,6 +15,15 @@ public final class MdtEnergyBlocks {
     public static MdtEnergyBlock exampleWire;
     public static MdtEnergyBlock exampleConsumer;
     public static MdtEnergyBlock exampleBattery;
+
+    /** GT 风格分级储能、二极管与相邻等级变压器。 */
+    public static final EnumMap<VoltageTier, MdtEnergyBlock> tierBatteries =
+            new EnumMap<>(VoltageTier.class);
+    public static final EnumMap<VoltageTier, MdtDiodeBlock> tierDiodes =
+            new EnumMap<>(VoltageTier.class);
+    /** key 为低压侧等级；最高等级没有更高一级，因此不会注册变压器。 */
+    public static final EnumMap<VoltageTier, MdtTransformerBlock> tierTransformers =
+            new EnumMap<>(VoltageTier.class);
 
     private MdtEnergyBlocks() {
     }
@@ -136,5 +148,103 @@ public final class MdtEnergyBlocks {
                     Items.silicon, 20
             ));
         }};
+
+        registerGtGridDevices();
+    }
+
+    private static void registerGtGridDevices() {
+        VoltageTier[] tiers = VoltageTier.values();
+
+        for (VoltageTier tier : tiers) {
+            MdtEnergyBlock battery = new MdtEnergyBlock("gt-battery-" + tier.contentName);
+            battery.localizedName = Core.bundle.get(
+                    "block.gt-battery-" + tier.contentName + ".name",
+                    tier.name() + " 电池"
+            );
+            battery.description = Core.bundle.get(
+                    "block.gt-battery-" + tier.contentName + ".description",
+                    "GT 风格分级储能。额定 " + Math.round(tier.maxVoltageV) + "V，1A 输入/输出。"
+            );
+            battery.fallbackRegion = "battery";
+            battery.role = MdtEnergyBlock.EnergyRole.battery;
+            battery.voltageV = tier.maxVoltageV;
+            battery.minInputVoltageV = tier.minVoltageV;
+            battery.maxInputVoltageV = tier.maxVoltageV;
+            battery.capacityJ = Math.max(tier.capacityJ * 8f, tier.maxVoltageV * 64f);
+            battery.initialEnergyFraction = 0f;
+            battery.maxInputA = 1;
+            battery.maxOutputA = 1;
+            battery.health = 260;
+            battery.size = 1;
+            battery.alwaysUnlocked = true;
+            battery.buildVisibility = BuildVisibility.shown;
+            battery.requirements(Category.power, ItemStack.with(
+                    Items.copper, 30,
+                    Items.lead, 30,
+                    Items.silicon, 8
+            ));
+            tierBatteries.put(tier, battery);
+
+            MdtDiodeBlock diode = new MdtDiodeBlock("gt-diode-" + tier.contentName);
+            diode.localizedName = Core.bundle.get(
+                    "block.gt-diode-" + tier.contentName + ".name",
+                    tier.name() + " 二极管"
+            );
+            diode.description = Core.bundle.get(
+                    "block.gt-diode-" + tier.contentName + ".description",
+                    "从非正面接收能量，只从正面输出；可在 1A/2A/4A/8A/16A 间切换限流。"
+            );
+            diode.fallbackRegion = "battery";
+            diode.minInputVoltageV = tier.minVoltageV;
+            diode.voltageV = tier.maxVoltageV;
+            diode.maxConfigAmperage = 16;
+            diode.capacityJ = Math.max(tier.capacityJ, tier.maxVoltageV * 32f);
+            diode.health = 220;
+            diode.size = 1;
+            diode.alwaysUnlocked = true;
+            diode.buildVisibility = BuildVisibility.shown;
+            diode.requirements(Category.power, ItemStack.with(
+                    Items.copper, 20,
+                    Items.silicon, 12,
+                    Items.lead, 10
+            ));
+            tierDiodes.put(tier, diode);
+        }
+
+        for (int i = 0; i + 1 < tiers.length; i++) {
+            VoltageTier low = tiers[i];
+            VoltageTier high = tiers[i + 1];
+
+            MdtTransformerBlock transformer = new MdtTransformerBlock(
+                    "gt-transformer-" + low.contentName + "-" + high.contentName
+            );
+            transformer.localizedName = Core.bundle.get(
+                    "block.gt-transformer-" + low.contentName + "-" + high.contentName + ".name",
+                    low.name() + " ↔ " + high.name() + " 变压器"
+            );
+            transformer.description = Core.bundle.get(
+                    "block.gt-transformer-" + low.contentName + "-" + high.contentName + ".description",
+                    "降压 1A " + high.name() + " → 4A " + low.name()
+                            + "；可切换为反向升压。正面为输出侧。"
+            );
+            transformer.fallbackRegion = "battery";
+            transformer.lowMinVoltageV = low.minVoltageV;
+            transformer.lowVoltageV = low.maxVoltageV;
+            transformer.highMinVoltageV = high.minVoltageV;
+            transformer.highVoltageV = high.maxVoltageV;
+            transformer.lowSideAmperage = 4;
+            transformer.highSideAmperage = 1;
+            transformer.capacityJ = Math.max(high.capacityJ, high.maxVoltageV * 4f);
+            transformer.health = 300;
+            transformer.size = 1;
+            transformer.alwaysUnlocked = true;
+            transformer.buildVisibility = BuildVisibility.shown;
+            transformer.requirements(Category.power, ItemStack.with(
+                    Items.copper, 40,
+                    Items.lead, 24,
+                    Items.silicon, 16
+            ));
+            tierTransformers.put(low, transformer);
+        }
     }
 }

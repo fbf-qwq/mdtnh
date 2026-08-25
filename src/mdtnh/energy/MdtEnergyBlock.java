@@ -39,6 +39,10 @@ public class MdtEnergyBlock extends Block {
      */
     public EnergyRole role = EnergyRole.battery;
     public float voltageV = 12f;
+    /** 正常输入电压下限；到达电压低于该值时丢弃电流包。 */
+    public float minInputVoltageV = 10f;
+    /** 正常输入电压上限；到达电压高于该值时触发过压。 */
+    public float maxInputVoltageV = 14f;
     public float capacityJ = 1000f;
     public float initialEnergyFraction = 0f;
     public int maxInputA = 1;
@@ -219,6 +223,8 @@ public class MdtEnergyBlock extends Block {
         spec = new EnergySpec();
         spec.role = convertRole(role);
         spec.voltageV = voltageV;
+        spec.minInputVoltageV = minInputVoltageV;
+        spec.maxInputVoltageV = maxInputVoltageV;
         spec.capacityJ = capacityJ;
         spec.maxInputA = maxInputA;
         spec.maxOutputA = maxOutputA;
@@ -573,6 +579,8 @@ public class MdtEnergyBlock extends Block {
 
             runtimeSpec.role = base.role;
             runtimeSpec.voltageV = configuredVoltageV;
+            runtimeSpec.minInputVoltageV = base.minInputVoltageV;
+            runtimeSpec.maxInputVoltageV = base.maxInputVoltageV;
             runtimeSpec.capacityJ = base.capacityJ;
             runtimeSpec.maxInputA = base.maxInputA;
             runtimeSpec.maxOutputA = generatorEnabled
