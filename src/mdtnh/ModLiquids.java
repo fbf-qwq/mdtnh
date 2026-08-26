@@ -279,11 +279,11 @@ public class ModLiquids {
         petroleum = Liquids.oil;
 
         // ---- 保留原 ModLiquids 已有 steam ----
-        steam = new Liquid("steam", Color.lightGray) {
+        steam = new Liquid("steam", Color.lightGray) {{
             gas = true;
             temperature = 0.9f;
             viscosity = 0.2f;
-        };
+        }};
 
         // ---- 原 ModLiquids 的 distilled_water 不再重复注册，改用现有 GT 蒸馏水 ----
         distilledWater = GtLiquids.distilledWater;
