@@ -2,17 +2,22 @@ package mdtnh.modui.buildui;
 
 import arc.Core;
 import arc.Events;
+import arc.graphics.Color;
+import arc.input.KeyCode;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.scene.Element;
+import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.ui.ImageButton;
+import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
 import arc.scene.style.TextureRegionDrawable;
 import arc.struct.Seq;
 import mdtnh.modui.introduction.MdtIntroductionUI;
 import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
+import mindustry.gen.Icon;
 import mindustry.gen.Tex;
 import mindustry.gen.Building;
 import mindustry.type.ItemStack;
@@ -20,6 +25,8 @@ import mindustry.type.Category;
 import mindustry.ui.Styles;
 import mindustry.ui.fragments.PlacementFragment;
 import mindustry.world.Block;
+
+import java.lang.reflect.Field;
 
 /**
  * MDT 多级建造菜单的 HUD 控制器。
@@ -35,6 +42,14 @@ public final class MdtBuildMenuFragment {
     /** 注入场景树时使用的唯一名称，用于检测并复用已有入口按钮。 */
     private static final String entryName = "mdtnh-build-menu-entry";
 
+    /** 收藏分类按钮在场景树中的唯一名称。 */
+    private static final String favoriteCategoryName =
+            "mdtnh-favorite-category";
+
+    /** 右侧 MDT 辅助入口栏的唯一名称。 */
+    private static final String sideRailName =
+            "mdtnh-build-menu-side-rail";
+
     /** 介绍/教程入口在场景树中的唯一名称。 */
     private static final String introductionEntryName =
             "mdtnh-introduction-menu-entry";
@@ -45,11 +60,52 @@ public final class MdtBuildMenuFragment {
     /** 当前正在浏览的分类节点。 */
     private BuildMenuNode current;
 
-    /** 注入原版建造分类栏的 MDT 入口按钮。 */
+    /**
+     * MDT 自定义建造树入口。
+     *
+     * <p>不再占用原版分类栏左下角，而是放到原版建造菜单右侧辅助栏。</p>
+     */
     private ImageButton entryButton;
 
-    /** 注入截图右下空位的介绍/教程入口按钮。 */
+    /** 原版分类栏中的收藏分类按钮。 */
+    private ImageButton favoriteCategoryButton;
+
+    /** 原版建造菜单右侧的介绍/教程入口。 */
     private ImageButton introductionEntryButton;
+
+    /** 原版建造菜单右侧的 MDT 辅助入口栏。 */
+    private Table sideRail;
+
+    /** 原版方块选择 ScrollPane。收藏分类直接复用这一块区域。 */
+    private ScrollPane vanillaBlockPane;
+
+    /** 原版 ScrollPane 原先承载的方块 Table。 */
+    private Element vanillaBlockWidget;
+
+    /** 收藏分类使用的方块 Table。 */
+    private final Table favoriteBlockTable =
+            new Table();
+
+    /** 当前是否正在浏览收藏伪分类。 */
+    private boolean favoriteCategoryActive;
+
+    /** 打开收藏分类时原版记录的分类，用于检测键盘切换分类。 */
+    private Category favoriteBaseCategory;
+
+    /** 收藏分类中当前悬浮的方块。 */
+    private Block favoriteHoveredBlock;
+
+    /** 收藏分类自己的滚动位置。 */
+    private float favoriteScrollY;
+
+    /**
+     * PlacementFragment.menuHoverBlock 的兼容访问。
+     *
+     * <p>它在 Mindustry 中是包可见字段，模组不在 mindustry 包下，
+     * 因此这里只在收藏页悬浮时使用一次反射桥接。反射失败不会影响
+     * 收藏、选择和 O 键，只会缺少原版顶部悬浮信息同步。</p>
+     */
+    private Field placementMenuHoverField;
 
     /** 分类和方块主体弹窗。 */
     private Table popup;
@@ -80,6 +136,7 @@ public final class MdtBuildMenuFragment {
     public MdtBuildMenuFragment(BuildMenuRegistry registry) {
         this.registry = registry;
         this.current = registry.root;
+        BuildMenuFavorites.load();
     }
 
     /**
@@ -95,11 +152,19 @@ public final class MdtBuildMenuFragment {
         Events.run(Trigger.update, () -> {
             if (entryButton == null ||
                     entryButton.getScene() == null ||
+                    favoriteCategoryButton == null ||
+                    favoriteCategoryButton.getScene() == null ||
                     introductionEntryButton == null ||
                     introductionEntryButton.getScene() == null) {
+
+                favoriteCategoryActive = false;
+                favoriteHoveredBlock = null;
                 injectEntryButton();
             }
+
             syncSelectedBlock();
+            updateFavoriteCategoryState();
+            updateFavoriteHotkey();
         });
         Core.app.post(this::injectEntryButton);
     }
@@ -143,16 +208,27 @@ public final class MdtBuildMenuFragment {
      */
     private void injectEntryButton() {
         if (Vars.ui == null ||
-                Vars.ui.hudfrag == null) {
+                Vars.ui.hudfrag == null ||
+                registry.root.icon == null) {
             return;
         }
 
         Element existingBuild =
                 Core.scene.find(entryName);
 
+        Element existingFavorite =
+                Core.scene.find(
+                        favoriteCategoryName
+                );
+
         Element existingIntroduction =
                 Core.scene.find(
                         introductionEntryName
+                );
+
+        Element existingSideRail =
+                Core.scene.find(
+                        sideRailName
                 );
 
         if (existingBuild instanceof ImageButton) {
@@ -160,87 +236,695 @@ public final class MdtBuildMenuFragment {
                     (ImageButton) existingBuild;
         }
 
+        if (existingFavorite instanceof ImageButton) {
+            favoriteCategoryButton =
+                    (ImageButton) existingFavorite;
+        }
+
         if (existingIntroduction instanceof ImageButton) {
             introductionEntryButton =
                     (ImageButton) existingIntroduction;
         }
 
-        if (entryButton != null &&
-                entryButton.getScene() != null &&
-                introductionEntryButton != null &&
-                introductionEntryButton.getScene() != null) {
-            return;
+        if (existingSideRail instanceof Table) {
+            sideRail =
+                    (Table) existingSideRail;
         }
 
         Table categoryTable =
                 findVanillaCategoryTable();
 
         if (categoryTable == null ||
-                registry.root.icon == null) {
+                !(categoryTable.parent instanceof Table)) {
+            return;
+        }
+
+        Table blockCatTable =
+                (Table) categoryTable.parent;
+
+        ScrollPane foundPane =
+                findFirstScrollPane(
+                        blockCatTable
+                );
+
+        if (foundPane != null) {
+            vanillaBlockPane =
+                    foundPane;
+
+            if (!favoriteCategoryActive &&
+                    vanillaBlockPane.getWidget() !=
+                            favoriteBlockTable) {
+
+                vanillaBlockWidget =
+                        vanillaBlockPane.getWidget();
+            }
+        }
+
+        /*
+         * 原本 MDT 自定义建造树占用原版分类栏最后一行左格，
+         * 右格为空。
+         *
+         * 现在收藏、MDT 建造树、介绍菜单全部移动到右侧辅助栏，
+         * 因此这里不再放任何可交互入口，而是保留两个
+         * 50 x 50 的灰色半透明占位格，让原版分类网格保持整齐。
+         */
+        Element oldFavorite =
+                Core.scene.find(
+                        favoriteCategoryName
+                );
+
+        if (oldFavorite != null &&
+                oldFavorite.parent ==
+                        categoryTable) {
+
+            oldFavorite.remove();
+            favoriteCategoryButton = null;
+        }
+
+        Element oldBuild =
+                Core.scene.find(entryName);
+
+        if (oldBuild != null &&
+                oldBuild.parent ==
+                        categoryTable) {
+
+            oldBuild.remove();
+            entryButton = null;
+        }
+
+        /*
+         * 只有在最后一行还没有我们的灰色占位时才追加，
+         * 避免 HUD 重建时重复插入。
+         */
+        Element placeholder =
+                Core.scene.find(
+                        "mdtnh-build-menu-placeholder-left"
+                );
+
+        if (placeholder == null) {
+            categoryTable.row();
+
+            arc.scene.ui.Image left =
+                    categoryTable.image(
+                            Styles.black6
+                    ).size(50f)
+                            .get();
+
+            left.name =
+                    "mdtnh-build-menu-placeholder-left";
+
+            arc.scene.ui.Image right =
+                    categoryTable.image(
+                            Styles.black6
+                    ).size(50f)
+                            .get();
+
+            right.name =
+                    "mdtnh-build-menu-placeholder-right";
+        }
+
+        /*
+         * 右侧辅助栏：
+         *
+         * [ 收藏       ]
+         * [ MDT 建造树 ]
+         * [ 介绍/教程  ]
+         *
+         * 收藏按钮不加入原版 Category ButtonGroup，
+         * 从而避免点击后被原版分类监听器立即改回、只显示一帧。
+         */
+        if (sideRail == null ||
+                sideRail.getScene() == null) {
+
+            sideRail = new Table();
+            sideRail.name = sideRailName;
+            sideRail.bottom();
+            sideRail.defaults().size(50f);
+            sideRail.setBackground(Tex.pane);
+
+            favoriteCategoryButton =
+                    sideRail.button(
+                            Icon.list,
+                            Styles.clearTogglei,
+                            this::openFavoriteCategory
+                    ).get();
+
+            favoriteCategoryButton.name =
+                    favoriteCategoryName;
+
+            sideRail.row();
+
+            entryButton =
+                    sideRail.button(
+                            registry.root.icon,
+                            Styles.clearTogglei,
+                            this::toggle
+                    ).get();
+
+            entryButton.name =
+                    entryName;
+
+            sideRail.row();
+
+            introductionEntryButton =
+                    sideRail.button(
+                            Icon.list,
+                            Styles.clearTogglei,
+                            this::openIntroductionMenu
+                    ).get();
+
+            introductionEntryButton.name =
+                    introductionEntryName;
+
+            blockCatTable.add(sideRail)
+                    .fillY()
+                    .bottom()
+                    .padLeft(4f);
+
+            Vars.ui.addDescTooltip(
+                    favoriteCategoryButton,
+                    Core.bundle.get(
+                            "mdtnh.favorite.category.tooltip"
+                    )
+            );
+
+            Vars.ui.addDescTooltip(
+                    entryButton,
+                    Core.bundle.get(
+                            "mdtnh.menu.entry.tooltip"
+                    )
+            );
+
+            Vars.ui.addDescTooltip(
+                    introductionEntryButton,
+                    Core.bundle.get(
+                            "mdtnh.intro.entry.tooltip"
+                    )
+            );
+        }
+
+        if (favoriteCategoryButton != null) {
+            favoriteCategoryButton.update(
+                    () -> favoriteCategoryButton
+                            .setChecked(
+                                    favoriteCategoryActive
+                            )
+            );
+        }
+
+        if (entryButton != null) {
+            entryButton.update(
+                    () -> entryButton.setChecked(
+                            opened
+                    )
+            );
+        }
+
+        if (introductionEntryButton != null) {
+            introductionEntryButton.update(
+                    () -> introductionEntryButton
+                            .setChecked(
+                                    MdtIntroductionUI
+                                            .isShown()
+                            )
+            );
+        }
+
+        categoryTable.invalidateHierarchy();
+        blockCatTable.invalidateHierarchy();
+    }
+
+    /**
+     * 切换到收藏伪分类。
+     *
+     * <p>收藏按钮已经加入原版分类按钮 ButtonGroup，所以选中收藏时
+     * 原版分类按钮会自动取消勾选；点击任意原版分类又会自动取消收藏勾选。</p>
+     */
+    private void openFavoriteCategory() {
+        if (vanillaBlockPane == null) {
+            return;
+        }
+
+        if (vanillaBlockPane.getWidget() !=
+                favoriteBlockTable) {
+
+            vanillaBlockWidget =
+                    vanillaBlockPane.getWidget();
+        }
+
+        favoriteCategoryActive = true;
+
+        if (favoriteCategoryButton != null) {
+            favoriteCategoryButton.setChecked(
+                    true
+            );
+        }
+
+        PlacementFragment placement =
+                Vars.ui.hudfrag.blockfrag;
+
+        favoriteBaseCategory =
+                placement.currentCategory;
+
+        favoriteHoveredBlock = null;
+        setPlacementMenuHoverBlock(null);
+
+        rebuildFavoriteCategory();
+
+        if (favoriteCategoryButton != null) {
+            favoriteCategoryButton.setChecked(
+                    true
+            );
+        }
+    }
+
+    /**
+     * 每帧检测是否通过原版分类按钮或分类快捷键离开收藏页。
+     */
+    private void updateFavoriteCategoryState() {
+        if (!favoriteCategoryActive) {
+            return;
+        }
+
+        if (favoriteCategoryButton == null ||
+                favoriteCategoryButton.getScene() == null ||
+                vanillaBlockPane == null) {
+
+            leaveFavoriteCategory();
+            return;
+        }
+
+        PlacementFragment placement =
+                Vars.ui.hudfrag.blockfrag;
+
+        /*
+         * 若玩家使用原版分类快捷键切换到了别的 Category，
+         * currentCategory 会发生变化，此时退出收藏页。
+         */
+        if (favoriteBaseCategory != null &&
+                placement.currentCategory !=
+                        favoriteBaseCategory) {
+
+            leaveFavoriteCategory();
             return;
         }
 
         /*
-         * 原实现这里是：
-         *   [MDT 建造入口] [50x50 空白]
+         * 原版 PlacementFragment 有时会在自身 update / rebuild 中
+         * 重新把 blockPane 指回原版列表。
          *
-         * 现在直接把右侧空白替换为介绍菜单入口，因此位置就是
-         * 建造分类栏最下方的右下角，不额外增加第三列。
+         * 收藏页激活期间，每帧确认一次 widget；
+         * 如果被原版覆盖，就立即重新接管。
+         * 这样不会再出现“显示一帧后消失”。
          */
-        categoryTable.row();
+        if (vanillaBlockPane.getWidget() !=
+                favoriteBlockTable) {
 
-        entryButton =
-                categoryTable.button(
-                        registry.root.icon,
-                        Styles.clearTogglei,
-                        this::toggle
-                ).size(50f)
-                        .get();
+            vanillaBlockPane.setWidget(
+                    favoriteBlockTable
+            );
 
-        entryButton.name = entryName;
+            favoriteBlockTable.act(0f);
 
-        introductionEntryButton =
-                categoryTable.button(
-                        mindustry.gen.Icon.list,
-                        Styles.clearTogglei,
-                        this::openIntroductionMenu
-                ).size(50f)
-                        .get();
+            vanillaBlockPane
+                    .setScrollYForce(
+                            favoriteScrollY
+                    );
 
-        introductionEntryButton.name =
-                introductionEntryName;
+            vanillaBlockPane.act(0f);
+            vanillaBlockPane.layout();
+        }
+    }
 
-        entryButton.update(
-                () -> entryButton.setChecked(
-                        opened
-                )
+    /** 恢复原版方块列表。 */
+    private void leaveFavoriteCategory() {
+        favoriteCategoryActive = false;
+        favoriteBaseCategory = null;
+        favoriteHoveredBlock = null;
+        setPlacementMenuHoverBlock(null);
+
+        if (vanillaBlockPane != null &&
+                vanillaBlockWidget != null &&
+                vanillaBlockPane.getWidget() ==
+                        favoriteBlockTable) {
+
+            vanillaBlockPane.setWidget(
+                    vanillaBlockWidget
+            );
+
+            vanillaBlockPane.act(0f);
+            vanillaBlockPane.layout();
+        }
+    }
+
+    /**
+     * 使用原版 blockPane 尺寸和方块按钮样式构建收藏内容。
+     */
+    private void rebuildFavoriteCategory() {
+        if (vanillaBlockPane == null) {
+            return;
+        }
+
+        if (vanillaBlockPane.getWidget() ==
+                favoriteBlockTable) {
+
+            favoriteScrollY =
+                    vanillaBlockPane.getScrollY();
+        }
+
+        favoriteBlockTable.clearChildren();
+        favoriteBlockTable.top();
+        favoriteBlockTable.margin(5f);
+
+        Seq<Block> favorites =
+                BuildMenuFavorites.all();
+
+        int index = 0;
+
+        for (Block block :
+                favorites) {
+
+            if (!available(block)) {
+                continue;
+            }
+
+            if (index > 0 &&
+                    index % 4 == 0) {
+
+                favoriteBlockTable.row();
+            }
+
+            ImageButton button =
+                    favoriteBlockTable.button(
+                            new TextureRegionDrawable(
+                                    block.uiIcon
+                            ),
+                            Styles.selecti,
+                            () -> selectFavoriteBlock(
+                                    block
+                            )
+                    ).size(46f)
+                            .get();
+
+            button.resizeImage(40f);
+
+            button.update(
+                    () -> updateFavoriteBlockButton(
+                            button,
+                            block
+                    )
+            );
+
+            button.hovered(
+                    () -> {
+                        favoriteHoveredBlock =
+                                block;
+
+                        setPlacementMenuHoverBlock(
+                                block
+                        );
+                    }
+            );
+
+            button.exited(
+                    () -> {
+                        if (favoriteHoveredBlock ==
+                                block) {
+
+                            favoriteHoveredBlock =
+                                    null;
+
+                            setPlacementMenuHoverBlock(
+                                    null
+                            );
+                        }
+                    }
+            );
+
+            index++;
+        }
+
+        if (index == 0) {
+            favoriteBlockTable.add(
+                    Core.bundle.get(
+                            "mdtnh.favorite.empty"
+                    )
+            ).width(170f)
+                    .pad(12f)
+                    .left();
+        } else {
+            int rest = index % 4;
+
+            if (rest != 0) {
+                for (int i = rest;
+                     i < 4;
+                     i++) {
+
+                    favoriteBlockTable.add()
+                            .size(46f);
+                }
+            }
+        }
+
+        vanillaBlockPane.setWidget(
+                favoriteBlockTable
         );
 
-        introductionEntryButton.update(
-                () -> introductionEntryButton.setChecked(
-                        MdtIntroductionUI.isShown()
-                )
+        favoriteBlockTable.act(0f);
+
+        vanillaBlockPane.setScrollYForce(
+                favoriteScrollY
         );
 
-        Vars.ui.addDescTooltip(
-                entryButton,
-                Core.bundle.get(
-                        "mdtnh.menu.entry.tooltip"
-                )
+        Core.app.post(
+                () -> {
+                    if (!favoriteCategoryActive ||
+                            vanillaBlockPane == null) {
+                        return;
+                    }
+
+                    vanillaBlockPane
+                            .setScrollYForce(
+                                    favoriteScrollY
+                            );
+
+                    vanillaBlockPane.act(0f);
+                    vanillaBlockPane.layout();
+                }
+        );
+    }
+
+    /**
+     * 与原版 PlacementFragment 的方块按钮保持相同的
+     * 资源不足/不可放置变灰逻辑。
+     */
+    private void updateFavoriteBlockButton(
+            ImageButton button,
+            Block block) {
+
+        Building core =
+                Vars.player == null
+                        ? null
+                        : Vars.player.core();
+
+        boolean canAfford =
+                Vars.state.rules.infiniteResources ||
+                        (core != null &&
+                                core.items.has(
+                                        block.requirements,
+                                        Vars.state.rules
+                                                .buildCostMultiplier
+                                ));
+
+        boolean canBuild =
+                Vars.player != null &&
+                        Vars.player.isBuilder();
+
+        Color color =
+                canAfford && canBuild
+                        ? Color.white
+                        : Color.gray;
+
+        button.forEach(
+                element ->
+                        element.setColor(color)
         );
 
-        Vars.ui.addDescTooltip(
-                introductionEntryButton,
-                Core.bundle.get(
-                        "mdtnh.intro.entry.tooltip"
-                )
+        if (!block.isPlaceable()) {
+            button.forEach(
+                    element ->
+                            element.setColor(
+                                    Color.darkGray
+                            )
+            );
+        }
+
+        button.setChecked(
+                Vars.control.input.block ==
+                        block
+        );
+    }
+
+    /**
+     * 收藏页中的点击行为直接复用原版放置系统，不切换 currentCategory，
+     * 因而选中不同原版分类的方块时收藏页仍保持打开。
+     */
+    private void selectFavoriteBlock(
+            Block block) {
+
+        if (!available(block)) {
+            return;
+        }
+
+        Vars.control.input.block =
+                Vars.control.input.block ==
+                        block
+                        ? null
+                        : block;
+    }
+
+    /**
+     * O 键：
+     * - MDT 自定义建造树中悬浮：收藏/取消收藏；
+     * - 原版收藏分类中悬浮：取消收藏（再次按也遵循 toggle 语义）。
+     */
+    private void updateFavoriteHotkey() {
+        if (Core.input == null ||
+                Core.scene == null ||
+                Core.scene.hasKeyboard()) {
+            return;
+        }
+
+        Block target = null;
+
+        if (opened &&
+                hoveredBlock != null) {
+
+            target = hoveredBlock;
+
+        } else if (favoriteCategoryActive &&
+                favoriteHoveredBlock != null) {
+
+            target = favoriteHoveredBlock;
+        }
+
+        if (target == null ||
+                !Core.input.keyTap(
+                        KeyCode.o
+                )) {
+            return;
+        }
+
+        BuildMenuFavorites.toggle(
+                target
         );
 
-        categoryTable.invalidateHierarchy();
+        /*
+         * 自定义建造树保持当前 hover，同时刷新收藏标记。
+         */
+        if (opened &&
+                hoveredBlock == target) {
+
+            rebuildHoverInfo(
+                    target
+            );
+        }
+
+        /*
+         * 收藏页里按 O 后立即从当前列表移除该项。
+         * 若以后允许从收藏页重新添加，toggle 语义仍然兼容。
+         */
+        if (favoriteCategoryActive) {
+            favoriteHoveredBlock = null;
+            setPlacementMenuHoverBlock(
+                    null
+            );
+
+            rebuildFavoriteCategory();
+        }
+    }
+
+    /**
+     * 把收藏页的悬浮块同步给原版 PlacementFragment 顶部详情框。
+     *
+     * <p>Mindustry 当前实现中的 menuHoverBlock 为包可见字段；
+     * 模组无法直接访问，因此使用反射桥接。字段不存在时静默降级。</p>
+     */
+    private void setPlacementMenuHoverBlock(
+            Block block) {
+
+        try {
+            if (Vars.ui == null ||
+                    Vars.ui.hudfrag == null) {
+                return;
+            }
+
+            PlacementFragment placement =
+                    Vars.ui.hudfrag.blockfrag;
+
+            if (placementMenuHoverField == null) {
+                placementMenuHoverField =
+                        PlacementFragment.class
+                                .getDeclaredField(
+                                        "menuHoverBlock"
+                                );
+
+                placementMenuHoverField
+                        .setAccessible(true);
+            }
+
+            placementMenuHoverField.set(
+                    placement,
+                    block
+            );
+        } catch (Throwable ignored) {
+            /*
+             * 兼容未来 Mindustry 字段改名：
+             * 失败只影响原版顶部 hover 同步，
+             * 收藏列表、O 键和放置选择仍然正常。
+             */
+        }
+    }
+
+    /**
+     * 递归寻找原版 blockPane。
+     */
+    private ScrollPane findFirstScrollPane(
+            Element root) {
+
+        if (root instanceof ScrollPane) {
+            return (ScrollPane) root;
+        }
+
+        if (!(root instanceof Group)) {
+            return null;
+        }
+
+        Group group =
+                (Group) root;
+
+        for (Element child :
+                group.getChildren()) {
+
+            ScrollPane result =
+                    findFirstScrollPane(
+                            child
+                    );
+
+            if (result != null) {
+                return result;
+            }
+        }
+
+        return null;
     }
 
     /** 关闭建造菜单弹窗，并打开介绍/教程中心。 */
     private void openIntroductionMenu() {
+        if (favoriteCategoryActive) {
+            leaveFavoriteCategory();
+        }
+
         opened = false;
         clearHoveredBlock();
 
@@ -276,6 +960,10 @@ public final class MdtBuildMenuFragment {
      * <p>打开时重建当前分类并把弹窗置于前景；关闭时同时隐藏悬浮信息。</p>
      */
     private void toggle() {
+        if (favoriteCategoryActive) {
+            leaveFavoriteCategory();
+        }
+
         opened = !opened;
         clearHoveredBlock();
 
@@ -438,7 +1126,15 @@ public final class MdtBuildMenuFragment {
         hoverInfo.table(header -> {
             header.left();
             header.image(block.uiIcon).size(40f).padRight(8f);
-            header.add(block.localizedName).left().growX();
+            header.add(
+                    block.localizedName +
+                            (BuildMenuFavorites
+                                    .contains(block)
+                                    ? Core.bundle.get(
+                                            "mdtnh.favorite.mark"
+                                      )
+                                    : "")
+            ).left().growX();
         }).growX().left();
 
         hoverInfo.row();
@@ -464,6 +1160,15 @@ public final class MdtBuildMenuFragment {
                 costs.row();
             }
         }).growX().left().padTop(4f);
+
+        hoverInfo.row();
+
+        hoverInfo.add(
+                Core.bundle.get(
+                        "mdtnh.favorite.hotkey-hint"
+                )
+        ).left()
+                .padTop(5f);
 
         hoverInfo.pack();
     }
@@ -591,10 +1296,46 @@ public final class MdtBuildMenuFragment {
         Vars.ui.hudGroup.stageToLocalCoordinates(tmp);
         float width = popup.getWidth();
         float height = popup.getHeight();
-        float x = tmp.x - width - 8f;
+
+        float rightX =
+                tmp.x +
+                        entryButton.getWidth() +
+                        8f;
+
+        float leftX =
+                tmp.x -
+                        width -
+                        8f;
+
+        float availableWidth =
+                Vars.ui.hudGroup.getWidth();
+
+        float x =
+                rightX + width <= availableWidth
+                        ? rightX
+                        : leftX;
+
         float y = tmp.y;
-        x = Mathf.clamp(x, 0f, Math.max(0f, Vars.ui.hudGroup.getWidth() - width));
-        y = Mathf.clamp(y, 0f, Math.max(0f, Vars.ui.hudGroup.getHeight() - height));
+
+        x = Mathf.clamp(
+                x,
+                0f,
+                Math.max(
+                        0f,
+                        availableWidth - width
+                )
+        );
+
+        y = Mathf.clamp(
+                y,
+                0f,
+                Math.max(
+                        0f,
+                        Vars.ui.hudGroup.getHeight() -
+                                height
+                )
+        );
+
         popup.setPosition(x, y);
     }
 }
