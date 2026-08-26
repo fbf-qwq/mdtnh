@@ -386,6 +386,7 @@ SECTION_UI	src/mdtnh/modui/introduction/MdtIntroductionContent.java	/^    public
 SECTION_VOLTAGE	src/mdtnh/modui/introduction/MdtIntroductionContent.java	/^    public static final String SECTION_VOLTAGE =$/;"	f	class:MdtIntroductionContent
 SPECIAL	src/mdtnh/ModLiquids.java	/^        SPECIAL,$/;"	e	enum:ModLiquids.Profile	file:
 SPECIAL_FORMS	src/mdtnh/MaterialDefinition.java	/^    public static final List<String> SPECIAL_FORMS = List.of($/;"	f	class:MaterialDefinition
+STEAM	src/mdtnh/ModLiquids.java	/^        STEAM$/;"	e	enum:ModLiquids.Profile	file:
 STEP_BODIES	src/mdtnh/modui/introduction/GuidedTourPage.java	/^    private static final String[] STEP_BODIES = {$/;"	f	class:GuidedTourPage	file:
 STEP_TITLES	src/mdtnh/modui/introduction/GuidedTourPage.java	/^    private static final String[] STEP_TITLES = {$/;"	f	class:GuidedTourPage	file:
 SUBPAGE_BUTTON_HEIGHT	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private static final float SUBPAGE_BUTTON_HEIGHT = 46f;$/;"	f	class:RecipeQueryUI	file:
@@ -437,7 +438,7 @@ VoltageTier	src/mdtnh/VoltageTier.java	/^    VoltageTier(String displayName, Str
 VoltageTier	src/mdtnh/VoltageTier.java	/^public enum VoltageTier {$/;"	g
 VoltageTierIntroductionPage	src/mdtnh/modui/introduction/VoltageTierIntroductionPage.java	/^    public VoltageTierIntroductionPage($/;"	m	class:VoltageTierIntroductionPage
 VoltageTierIntroductionPage	src/mdtnh/modui/introduction/VoltageTierIntroductionPage.java	/^public final class VoltageTierIntroductionPage$/;"	c
-WASTE	src/mdtnh/ModLiquids.java	/^        WASTE$/;"	e	enum:ModLiquids.Profile	file:
+WASTE	src/mdtnh/ModLiquids.java	/^        WASTE,$/;"	e	enum:ModLiquids.Profile	file:
 WIRES	src/mdtnh/transport/GtTransportData.java	/^    public static final WireMaterial[] WIRES = {$/;"	f	class:GtTransportData
 WIRE_COUNTS	src/mdtnh/transport/GtTransportData.java	/^    public static final int[] WIRE_COUNTS = {1, 2, 4, 8, 12, 16};$/;"	f	class:GtTransportData
 WIRE_FORMS	src/mdtnh/MaterialDefinition.java	/^    public static final List<String> WIRE_FORMS = List.of($/;"	f	class:MaterialDefinition
