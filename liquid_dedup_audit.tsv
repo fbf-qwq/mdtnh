@@ -1,0 +1,205 @@
+No.	中文	English	semantic_id	status	source	actual_content_id	access	localization_key
+1	水	Water	water	REUSE	Mindustry vanilla	water	Liquids.water	(vanilla bundle)
+2	蒸馏水	Distilled Water	distilled_water	REUSE	existing GtLiquids	gt-distilled-water	GtLiquids.distilledWater	liquid.mindustry_newhorizon-gt-distilled-water
+3	过滤澄清水（一级净化水）	Filtered Clear Water (Primary Purified Water)	filtered-clear-water	NEW	new ModLiquids	filtered-clear-water	"ModLiquids.get(""filtered-clear-water"")"	liquid.mindustry_newhorizon-filtered-clear-water
+4	臭氧处理水（二级净化水）	Ozone-Treated Water (Secondary Purified Water)	ozone-treated-water	NEW	new ModLiquids	ozone-treated-water	"ModLiquids.get(""ozone-treated-water"")"	liquid.mindustry_newhorizon-ozone-treated-water
+5	絮凝沉降水（三级净化水）	Flocculated Settled Water (Tertiary Purified Water)	flocculated-settled-water	NEW	new ModLiquids	flocculated-settled-water	"ModLiquids.get(""flocculated-settled-water"")"	liquid.mindustry_newhorizon-flocculated-settled-water
+6	酸碱中和水（四级净化水）	Acid-Base Neutralized Water (Quaternary Purified Water)	acid-base-neutralized-water	NEW	new ModLiquids	acid-base-neutralized-water	"ModLiquids.get(""acid-base-neutralized-water"")"	liquid.mindustry_newhorizon-acid-base-neutralized-water
+7	极温净化水（五级净化水）	Extreme-Temperature Purified Water (Quinary Purified Water)	extreme-temperature-purified-water	NEW	new ModLiquids	extreme-temperature-purified-water	"ModLiquids.get(""extreme-temperature-purified-water"")"	liquid.mindustry_newhorizon-extreme-temperature-purified-water
+8	紫外辐照水（六级净化水）	UV-Irradiated Water (Senary Purified Water)	uv-irradiated-water	NEW	new ModLiquids	uv-irradiated-water	"ModLiquids.get(""uv-irradiated-water"")"	liquid.mindustry_newhorizon-uv-irradiated-water
+9	去杂脱气水（七级净化水）	Deionized Degassed Water (Septenary Purified Water)	deionized-degassed-water	NEW	new ModLiquids	deionized-degassed-water	"ModLiquids.get(""deionized-degassed-water"")"	liquid.mindustry_newhorizon-deionized-degassed-water
+10	理想微粒水（八级净化水）	Ideal Particulate Water (Octonary Purified Water)	ideal-particulate-water	NEW	new ModLiquids	ideal-particulate-water	"ModLiquids.get(""ideal-particulate-water"")"	liquid.mindustry_newhorizon-ideal-particulate-water
+11	冰	Ice	ice	NEW	new ModLiquids	ice	"ModLiquids.get(""ice"")"	liquid.mindustry_newhorizon-ice
+12	蒸汽	Steam	steam	REUSE	existing ModLiquids	steam	steam	liquid.mindustry_newhorizon-steam
+13	过热蒸汽	Superheated Steam	superheated-steam	NEW	new ModLiquids	superheated-steam	"ModLiquids.get(""superheated-steam"")"	liquid.mindustry_newhorizon-superheated-steam
+14	超临界致密蒸汽	Supercritical Dense Steam	supercritical-dense-steam	NEW	new ModLiquids	supercritical-dense-steam	"ModLiquids.get(""supercritical-dense-steam"")"	liquid.mindustry_newhorizon-supercritical-dense-steam
+15	臭氧	Ozone	ozone	REUSE	Mindustry vanilla	ozone	Liquids.ozone	(vanilla bundle)
+16	过氧化氢	Hydrogen Peroxide	hydrogen-peroxide	NEW	new ModLiquids	hydrogen-peroxide	"ModLiquids.get(""hydrogen-peroxide"")"	liquid.mindustry_newhorizon-hydrogen-peroxide
+17	一氧化碳	Carbon Monoxide	carbon-monoxide	NEW	new ModLiquids	carbon-monoxide	"ModLiquids.get(""carbon-monoxide"")"	liquid.mindustry_newhorizon-carbon-monoxide
+18	二氧化碳	Carbon Dioxide	carbon-dioxide	NEW	new ModLiquids	carbon-dioxide	"ModLiquids.get(""carbon-dioxide"")"	liquid.mindustry_newhorizon-carbon-dioxide
+19	二氧化硫	Sulfur Dioxide	sulfur-dioxide	NEW	new ModLiquids	sulfur-dioxide	"ModLiquids.get(""sulfur-dioxide"")"	liquid.mindustry_newhorizon-sulfur-dioxide
+20	三氧化硫	Sulfur Trioxide	sulfur-trioxide	NEW	new ModLiquids	sulfur-trioxide	"ModLiquids.get(""sulfur-trioxide"")"	liquid.mindustry_newhorizon-sulfur-trioxide
+21	氨	Ammonia	ammonia	NEW	new ModLiquids	ammonia	"ModLiquids.get(""ammonia"")"	liquid.mindustry_newhorizon-ammonia
+22	一氧化氮	Nitric Oxide	nitric-oxide	NEW	new ModLiquids	nitric-oxide	"ModLiquids.get(""nitric-oxide"")"	liquid.mindustry_newhorizon-nitric-oxide
+23	一氧化二氮	Nitrous Oxide	nitrous-oxide	NEW	new ModLiquids	nitrous-oxide	"ModLiquids.get(""nitrous-oxide"")"	liquid.mindustry_newhorizon-nitrous-oxide
+24	二氧化氮	Nitrogen Dioxide	nitrogen-dioxide	NEW	new ModLiquids	nitrogen-dioxide	"ModLiquids.get(""nitrogen-dioxide"")"	liquid.mindustry_newhorizon-nitrogen-dioxide
+25	四氧化二氮	Dinitrogen Tetroxide	dinitrogen-tetroxide	NEW	new ModLiquids	dinitrogen-tetroxide	"ModLiquids.get(""dinitrogen-tetroxide"")"	liquid.mindustry_newhorizon-dinitrogen-tetroxide
+26	肼	Hydrazine	hydrazine	NEW	new ModLiquids	hydrazine	"ModLiquids.get(""hydrazine"")"	liquid.mindustry_newhorizon-hydrazine
+27	硅烷	Silane	silane	NEW	new ModLiquids	silane	"ModLiquids.get(""silane"")"	liquid.mindustry_newhorizon-silane
+28	氢氟酸	Hydrofluoric Acid	hydrofluoric-acid	NEW	new ModLiquids	hydrofluoric-acid	"ModLiquids.get(""hydrofluoric-acid"")"	liquid.mindustry_newhorizon-hydrofluoric-acid
+29	工业氢氟酸	Industrial Hydrofluoric Acid	industrial-hydrofluoric-acid	NEW	new ModLiquids	industrial-hydrofluoric-acid	"ModLiquids.get(""industrial-hydrofluoric-acid"")"	liquid.mindustry_newhorizon-industrial-hydrofluoric-acid
+30	硫化氢	Hydrogen Sulfide	hydrogen-sulfide	NEW	new ModLiquids	hydrogen-sulfide	"ModLiquids.get(""hydrogen-sulfide"")"	liquid.mindustry_newhorizon-hydrogen-sulfide
+31	氢氯酸	Hydrochloric Acid	hydrochloric-acid	REUSE	existing GtLiquids	gt-hydrochloric-acid	GtLiquids.hydrochloricAcid	liquid.mindustry_newhorizon-gt-hydrochloric-acid
+32	稀盐酸	Dilute Hydrochloric Acid	dilute-hydrochloric-acid	NEW	new ModLiquids	dilute-hydrochloric-acid	"ModLiquids.get(""dilute-hydrochloric-acid"")"	liquid.mindustry_newhorizon-dilute-hydrochloric-acid
+33	氯化铵	Ammonium Chloride	ammonium-chloride	NEW	new ModLiquids	ammonium-chloride	"ModLiquids.get(""ammonium-chloride"")"	liquid.mindustry_newhorizon-ammonium-chloride
+34	硫酸	Sulfuric Acid	sulfuric-acid	REUSE	existing GtLiquids	gt-sulfuric-acid	GtLiquids.sulfuricAcid	liquid.mindustry_newhorizon-gt-sulfuric-acid
+35	稀硫酸	Dilute Sulfuric Acid	dilute-sulfuric-acid	NEW	new ModLiquids	dilute-sulfuric-acid	"ModLiquids.get(""dilute-sulfuric-acid"")"	liquid.mindustry_newhorizon-dilute-sulfuric-acid
+36	王水	Aqua Regia	aqua-regia	NEW	new ModLiquids	aqua-regia	"ModLiquids.get(""aqua-regia"")"	liquid.mindustry_newhorizon-aqua-regia
+37	硼酸	Boric Acid	boric-acid	NEW	new ModLiquids	boric-acid	"ModLiquids.get(""boric-acid"")"	liquid.mindustry_newhorizon-boric-acid
+38	硝酸	Nitric Acid	nitric-acid	NEW	new ModLiquids	nitric-acid	"ModLiquids.get(""nitric-acid"")"	liquid.mindustry_newhorizon-nitric-acid
+39	次氯酸	Hypochlorous Acid	hypochlorous-acid	NEW	new ModLiquids	hypochlorous-acid	"ModLiquids.get(""hypochlorous-acid"")"	liquid.mindustry_newhorizon-hypochlorous-acid
+40	磷酸	Phosphoric Acid	phosphoric-acid	NEW	new ModLiquids	phosphoric-acid	"ModLiquids.get(""phosphoric-acid"")"	liquid.mindustry_newhorizon-phosphoric-acid
+41	氟硅酸	Fluorosilicic Acid	fluorosilicic-acid	NEW	new ModLiquids	fluorosilicic-acid	"ModLiquids.get(""fluorosilicic-acid"")"	liquid.mindustry_newhorizon-fluorosilicic-acid
+42	氟锑酸	Fluoroantimonic Acid	fluoroantimonic-acid	NEW	new ModLiquids	fluoroantimonic-acid	"ModLiquids.get(""fluoroantimonic-acid"")"	liquid.mindustry_newhorizon-fluoroantimonic-acid
+43	碳酰氯	Phosgene (Carbonyl Chloride)	phosgene	NEW	new ModLiquids	phosgene	"ModLiquids.get(""phosgene"")"	liquid.mindustry_newhorizon-phosgene
+44	三氯化硼	Boron Trichloride	boron-trichloride	NEW	new ModLiquids	boron-trichloride	"ModLiquids.get(""boron-trichloride"")"	liquid.mindustry_newhorizon-boron-trichloride
+45	四氯化钛	Titanium Tetrachloride	titanium-tetrachloride	NEW	new ModLiquids	titanium-tetrachloride	"ModLiquids.get(""titanium-tetrachloride"")"	liquid.mindustry_newhorizon-titanium-tetrachloride
+46	三氯化铁	Ferric Chloride	ferric-chloride	NEW	new ModLiquids	ferric-chloride	"ModLiquids.get(""ferric-chloride"")"	liquid.mindustry_newhorizon-ferric-chloride
+47	过硫酸钠	Sodium Persulfate	sodium-persulfate	REUSE	existing GtLiquids	gt-sodium-persulfate	GtLiquids.sodiumPersulfate	liquid.mindustry_newhorizon-gt-sodium-persulfate
+48	聚氯化铝	Polyaluminum Chloride	polyaluminum-chloride	NEW	new ModLiquids	polyaluminum-chloride	"ModLiquids.get(""polyaluminum-chloride"")"	liquid.mindustry_newhorizon-polyaluminum-chloride
+49	甲烷	Methane	methane	REUSE	existing GtLiquids	gt-methane	GtLiquids.methane	liquid.mindustry_newhorizon-gt-methane
+50	乙烷	Ethane	ethane	NEW	new ModLiquids	ethane	"ModLiquids.get(""ethane"")"	liquid.mindustry_newhorizon-ethane
+51	乙烯	Ethylene	ethylene	REUSE	existing GtLiquids	gt-ethylene	GtLiquids.ethylene	liquid.mindustry_newhorizon-gt-ethylene
+52	乙炔	Acetylene	acetylene	NEW	new ModLiquids	acetylene	"ModLiquids.get(""acetylene"")"	liquid.mindustry_newhorizon-acetylene
+53	丙烷	Propane	propane	NEW	new ModLiquids	propane	"ModLiquids.get(""propane"")"	liquid.mindustry_newhorizon-propane
+54	丙烯	Propylene	propylene	NEW	new ModLiquids	propylene	"ModLiquids.get(""propylene"")"	liquid.mindustry_newhorizon-propylene
+55	丁烷	Butane	butane	NEW	new ModLiquids	butane	"ModLiquids.get(""butane"")"	liquid.mindustry_newhorizon-butane
+56	丁烯	Butene	butene	NEW	new ModLiquids	butene	"ModLiquids.get(""butene"")"	liquid.mindustry_newhorizon-butene
+57	丁二烯	Butadiene	butadiene	NEW	new ModLiquids	butadiene	"ModLiquids.get(""butadiene"")"	liquid.mindustry_newhorizon-butadiene
+58	环戊二烯	Cyclopentadiene	cyclopentadiene	NEW	new ModLiquids	cyclopentadiene	"ModLiquids.get(""cyclopentadiene"")"	liquid.mindustry_newhorizon-cyclopentadiene
+59	异戊二烯	Isoprene	isoprene	NEW	new ModLiquids	isoprene	"ModLiquids.get(""isoprene"")"	liquid.mindustry_newhorizon-isoprene
+60	环己烷	Cyclohexane	cyclohexane	NEW	new ModLiquids	cyclohexane	"ModLiquids.get(""cyclohexane"")"	liquid.mindustry_newhorizon-cyclohexane
+61	辛烷	Octane	octane	NEW	new ModLiquids	octane	"ModLiquids.get(""octane"")"	liquid.mindustry_newhorizon-octane
+62	苯	Benzene	benzene	NEW	new ModLiquids	benzene	"ModLiquids.get(""benzene"")"	liquid.mindustry_newhorizon-benzene
+63	萘	Naphthalene	naphthalene	NEW	new ModLiquids	naphthalene	"ModLiquids.get(""naphthalene"")"	liquid.mindustry_newhorizon-naphthalene
+64	蒽	Anthracene	anthracene	NEW	new ModLiquids	anthracene	"ModLiquids.get(""anthracene"")"	liquid.mindustry_newhorizon-anthracene
+65	甲苯	Toluene	toluene	NEW	new ModLiquids	toluene	"ModLiquids.get(""toluene"")"	liquid.mindustry_newhorizon-toluene
+66	氯苯	Chlorobenzene	chlorobenzene	NEW	new ModLiquids	chlorobenzene	"ModLiquids.get(""chlorobenzene"")"	liquid.mindustry_newhorizon-chlorobenzene
+67	邻二甲苯	o-Xylene	o-xylene	NEW	new ModLiquids	o-xylene	"ModLiquids.get(""o-xylene"")"	liquid.mindustry_newhorizon-o-xylene
+68	对二甲苯	p-Xylene	p-xylene	NEW	new ModLiquids	p-xylene	"ModLiquids.get(""p-xylene"")"	liquid.mindustry_newhorizon-p-xylene
+69	间二甲苯	m-Xylene	m-xylene	NEW	new ModLiquids	m-xylene	"ModLiquids.get(""m-xylene"")"	liquid.mindustry_newhorizon-m-xylene
+70	乙苯	Ethylbenzene	ethylbenzene	NEW	new ModLiquids	ethylbenzene	"ModLiquids.get(""ethylbenzene"")"	liquid.mindustry_newhorizon-ethylbenzene
+71	氯甲烷	Chloromethane	chloromethane	NEW	new ModLiquids	chloromethane	"ModLiquids.get(""chloromethane"")"	liquid.mindustry_newhorizon-chloromethane
+72	氯仿	Chloroform	chloroform	NEW	new ModLiquids	chloroform	"ModLiquids.get(""chloroform"")"	liquid.mindustry_newhorizon-chloroform
+73	氟仿	Fluoroform	fluoroform	NEW	new ModLiquids	fluoroform	"ModLiquids.get(""fluoroform"")"	liquid.mindustry_newhorizon-fluoroform
+74	甲醇	Methanol	methanol	NEW	new ModLiquids	methanol	"ModLiquids.get(""methanol"")"	liquid.mindustry_newhorizon-methanol
+75	乙醇	Ethanol	ethanol	NEW	new ModLiquids	ethanol	"ModLiquids.get(""ethanol"")"	liquid.mindustry_newhorizon-ethanol
+76	丁醇	Butanol	butanol	NEW	new ModLiquids	butanol	"ModLiquids.get(""butanol"")"	liquid.mindustry_newhorizon-butanol
+77	乙二醇	Ethylene Glycol	ethylene-glycol	NEW	new ModLiquids	ethylene-glycol	"ModLiquids.get(""ethylene-glycol"")"	liquid.mindustry_newhorizon-ethylene-glycol
+78	1,4-丁二醇	1,4-Butanediol	1-4-butanediol	NEW	new ModLiquids	1-4-butanediol	"ModLiquids.get(""1-4-butanediol"")"	liquid.mindustry_newhorizon-1-4-butanediol
+79	甘油	Glycerol	glycerol	NEW	new ModLiquids	glycerol	"ModLiquids.get(""glycerol"")"	liquid.mindustry_newhorizon-glycerol
+80	苯酚	Phenol	phenol	NEW	new ModLiquids	phenol	"ModLiquids.get(""phenol"")"	liquid.mindustry_newhorizon-phenol
+81	乙醚	Diethyl Ether	diethyl-ether	NEW	new ModLiquids	diethyl-ether	"ModLiquids.get(""diethyl-ether"")"	liquid.mindustry_newhorizon-diethyl-ether
+82	四氢呋喃	Tetrahydrofuran	tetrahydrofuran	NEW	new ModLiquids	tetrahydrofuran	"ModLiquids.get(""tetrahydrofuran"")"	liquid.mindustry_newhorizon-tetrahydrofuran
+83	甲醛	Formaldehyde	formaldehyde	NEW	new ModLiquids	formaldehyde	"ModLiquids.get(""formaldehyde"")"	liquid.mindustry_newhorizon-formaldehyde
+84	乙醛	Acetaldehyde	acetaldehyde	NEW	new ModLiquids	acetaldehyde	"ModLiquids.get(""acetaldehyde"")"	liquid.mindustry_newhorizon-acetaldehyde
+85	丁醛	Butyraldehyde	butyraldehyde	NEW	new ModLiquids	butyraldehyde	"ModLiquids.get(""butyraldehyde"")"	liquid.mindustry_newhorizon-butyraldehyde
+86	异丁醛	Isobutyraldehyde	isobutyraldehyde	NEW	new ModLiquids	isobutyraldehyde	"ModLiquids.get(""isobutyraldehyde"")"	liquid.mindustry_newhorizon-isobutyraldehyde
+87	丙酮	Acetone	acetone	NEW	new ModLiquids	acetone	"ModLiquids.get(""acetone"")"	liquid.mindustry_newhorizon-acetone
+88	环己酮	Cyclohexanone	cyclohexanone	NEW	new ModLiquids	cyclohexanone	"ModLiquids.get(""cyclohexanone"")"	liquid.mindustry_newhorizon-cyclohexanone
+89	甲酸	Formic Acid	formic-acid	NEW	new ModLiquids	formic-acid	"ModLiquids.get(""formic-acid"")"	liquid.mindustry_newhorizon-formic-acid
+90	乙酸	Acetic Acid	acetic-acid	NEW	new ModLiquids	acetic-acid	"ModLiquids.get(""acetic-acid"")"	liquid.mindustry_newhorizon-acetic-acid
+91	丙酸	Propionic Acid	propionic-acid	NEW	new ModLiquids	propionic-acid	"ModLiquids.get(""propionic-acid"")"	liquid.mindustry_newhorizon-propionic-acid
+92	环烷酸	Naphthenic Acid	naphthenic-acid	NEW	new ModLiquids	naphthenic-acid	"ModLiquids.get(""naphthenic-acid"")"	liquid.mindustry_newhorizon-naphthenic-acid
+93	草酸	Oxalic Acid	oxalic-acid	NEW	new ModLiquids	oxalic-acid	"ModLiquids.get(""oxalic-acid"")"	liquid.mindustry_newhorizon-oxalic-acid
+94	邻苯二甲酸	Phthalic Acid	phthalic-acid	NEW	new ModLiquids	phthalic-acid	"ModLiquids.get(""phthalic-acid"")"	liquid.mindustry_newhorizon-phthalic-acid
+95	乙酸甲酯	Methyl Acetate	methyl-acetate	NEW	new ModLiquids	methyl-acetate	"ModLiquids.get(""methyl-acetate"")"	liquid.mindustry_newhorizon-methyl-acetate
+96	甲胺	Methylamine	methylamine	NEW	new ModLiquids	methylamine	"ModLiquids.get(""methylamine"")"	liquid.mindustry_newhorizon-methylamine
+97	二甲胺	Dimethylamine	dimethylamine	NEW	new ModLiquids	dimethylamine	"ModLiquids.get(""dimethylamine"")"	liquid.mindustry_newhorizon-dimethylamine
+98	三甲胺	Trimethylamine	trimethylamine	NEW	new ModLiquids	trimethylamine	"ModLiquids.get(""trimethylamine"")"	liquid.mindustry_newhorizon-trimethylamine
+99	二乙胺	Diethylamine	diethylamine	NEW	new ModLiquids	diethylamine	"ModLiquids.get(""diethylamine"")"	liquid.mindustry_newhorizon-diethylamine
+100	腐胺	Putrescine	putrescine	NEW	new ModLiquids	putrescine	"ModLiquids.get(""putrescine"")"	liquid.mindustry_newhorizon-putrescine
+101	尸胺	Cadaverine	cadaverine	NEW	new ModLiquids	cadaverine	"ModLiquids.get(""cadaverine"")"	liquid.mindustry_newhorizon-cadaverine
+102	苯胺	Aniline	aniline	NEW	new ModLiquids	aniline	"ModLiquids.get(""aniline"")"	liquid.mindustry_newhorizon-aniline
+103	P-507	P-507	p-507	NEW	new ModLiquids	p-507	"ModLiquids.get(""p-507"")"	liquid.mindustry_newhorizon-p-507
+104	空气	Air	air	NEW	new ModLiquids	air	"ModLiquids.get(""air"")"	liquid.mindustry_newhorizon-air
+105	液态空气	Liquid Air	liquid-air	NEW	new ModLiquids	liquid-air	"ModLiquids.get(""liquid-air"")"	liquid.mindustry_newhorizon-liquid-air
+106	下界空气	Nether Air	nether-air	NEW	new ModLiquids	nether-air	"ModLiquids.get(""nether-air"")"	liquid.mindustry_newhorizon-nether-air
+107	毒性空气	Toxic Air	toxic-air	NEW	new ModLiquids	toxic-air	"ModLiquids.get(""toxic-air"")"	liquid.mindustry_newhorizon-toxic-air
+108	岩浆	Magma	magma	NEW	new ModLiquids	magma	"ModLiquids.get(""magma"")"	liquid.mindustry_newhorizon-magma
+109	熔岩岩浆	Lava Magma	lava-magma	NEW	new ModLiquids	lava-magma	"ModLiquids.get(""lava-magma"")"	liquid.mindustry_newhorizon-lava-magma
+110	石油	Petroleum	petroleum	REUSE	Mindustry vanilla	oil	Liquids.oil	(vanilla bundle)
+111	原油	Crude Oil	crude-oil	NEW	new ModLiquids	crude-oil	"ModLiquids.get(""crude-oil"")"	liquid.mindustry_newhorizon-crude-oil
+112	轻油	Light Oil	light-oil	NEW	new ModLiquids	light-oil	"ModLiquids.get(""light-oil"")"	liquid.mindustry_newhorizon-light-oil
+113	重油	Heavy Oil	heavy-oil	NEW	new ModLiquids	heavy-oil	"ModLiquids.get(""heavy-oil"")"	liquid.mindustry_newhorizon-heavy-oil
+114	极重油	Extremely Heavy Oil	extremely-heavy-oil	NEW	new ModLiquids	extremely-heavy-oil	"ModLiquids.get(""extremely-heavy-oil"")"	liquid.mindustry_newhorizon-extremely-heavy-oil
+115	盐水	Brine	brine	NEW	new ModLiquids	brine	"ModLiquids.get(""brine"")"	liquid.mindustry_newhorizon-brine
+116	菌泥	Bacterial Slime	bacterial-slime	NEW	new ModLiquids	bacterial-slime	"ModLiquids.get(""bacterial-slime"")"	liquid.mindustry_newhorizon-bacterial-slime
+117	UU物质	UU Matter	uu-matter	NEW	new ModLiquids	uu-matter	"ModLiquids.get(""uu-matter"")"	liquid.mindustry_newhorizon-uu-matter
+118	UU增幅液体	UU Amplification Liquid	uu-amplification-liquid	NEW	new ModLiquids	uu-amplification-liquid	"ModLiquids.get(""uu-amplification-liquid"")"	liquid.mindustry_newhorizon-uu-amplification-liquid
+119	不明液体	Unknown Liquid	unknown-liquid	NEW	new ModLiquids	unknown-liquid	"ModLiquids.get(""unknown-liquid"")"	liquid.mindustry_newhorizon-unknown-liquid
+120	润滑油	Lubricant	lubricant	REUSE	existing GtLiquids	gt-lubricant	GtLiquids.lubricant	liquid.mindustry_newhorizon-gt-lubricant
+121	松油	Pine Oil	pine-oil	NEW	new ModLiquids	pine-oil	"ModLiquids.get(""pine-oil"")"	liquid.mindustry_newhorizon-pine-oil
+122	富集肥料	Enriched Fertilizer	enriched-fertilizer	NEW	new ModLiquids	enriched-fertilizer	"ModLiquids.get(""enriched-fertilizer"")"	liquid.mindustry_newhorizon-enriched-fertilizer
+123	冷却液	Coolant	coolant	NEW	new ModLiquids	coolant	"ModLiquids.get(""coolant"")"	liquid.mindustry_newhorizon-coolant
+124	超级冷却液	Super Coolant	super-coolant	NEW	new ModLiquids	super-coolant	"ModLiquids.get(""super-coolant"")"	liquid.mindustry_newhorizon-super-coolant
+125	极寒之凛冰	Extreme Cold Ice	extreme-cold-ice	NEW	new ModLiquids	extreme-cold-ice	"ModLiquids.get(""extreme-cold-ice"")"	liquid.mindustry_newhorizon-extreme-cold-ice
+126	烈焰之炽焱	Blazing Fire	blazing-fire	NEW	new ModLiquids	blazing-fire	"ModLiquids.get(""blazing-fire"")"	liquid.mindustry_newhorizon-blazing-fire
+127	废液	Waste Liquid	waste-liquid	NEW	new ModLiquids	waste-liquid	"ModLiquids.get(""waste-liquid"")"	liquid.mindustry_newhorizon-waste-liquid
+128	轻质硅岩燃料	Light Silicon Rock Fuel	light-silicon-rock-fuel	NEW	new ModLiquids	light-silicon-rock-fuel	"ModLiquids.get(""light-silicon-rock-fuel"")"	liquid.mindustry_newhorizon-light-silicon-rock-fuel
+129	重质硅岩燃料	Heavy Silicon Rock Fuel	heavy-silicon-rock-fuel	NEW	new ModLiquids	heavy-silicon-rock-fuel	"ModLiquids.get(""heavy-silicon-rock-fuel"")"	liquid.mindustry_newhorizon-heavy-silicon-rock-fuel
+130	硅岩沥青	Silicon Rock Asphalt	silicon-rock-asphalt	NEW	new ModLiquids	silicon-rock-asphalt	"ModLiquids.get(""silicon-rock-asphalt"")"	liquid.mindustry_newhorizon-silicon-rock-asphalt
+131	萃取纳米树脂	Extraction Nano Resin	extraction-nano-resin	NEW	new ModLiquids	extraction-nano-resin	"ModLiquids.get(""extraction-nano-resin"")"	liquid.mindustry_newhorizon-extraction-nano-resin
+132	培养基原液	Culture Medium Stock	culture-medium-stock	NEW	new ModLiquids	culture-medium-stock	"ModLiquids.get(""culture-medium-stock"")"	liquid.mindustry_newhorizon-culture-medium-stock
+133	无菌培养基	Sterile Culture Medium	sterile-culture-medium	NEW	new ModLiquids	sterile-culture-medium	"ModLiquids.get(""sterile-culture-medium"")"	liquid.mindustry_newhorizon-sterile-culture-medium
+134	生物培养基原液	Biological Culture Medium Stock	biological-culture-medium-stock	NEW	new ModLiquids	biological-culture-medium-stock	"ModLiquids.get(""biological-culture-medium-stock"")"	liquid.mindustry_newhorizon-biological-culture-medium-stock
+135	灭菌生物培养基	Sterilized Biological Culture Medium	sterilized-biological-culture-medium	NEW	new ModLiquids	sterilized-biological-culture-medium	"ModLiquids.get(""sterilized-biological-culture-medium"")"	liquid.mindustry_newhorizon-sterilized-biological-culture-medium
+136	诱变剂	Mutagen	mutagen	NEW	new ModLiquids	mutagen	"ModLiquids.get(""mutagen"")"	liquid.mindustry_newhorizon-mutagen
+137	异氙	Isomeric Xenon	isomeric-xenon	NEW	new ModLiquids	isomeric-xenon	"ModLiquids.get(""isomeric-xenon"")"	liquid.mindustry_newhorizon-isomeric-xenon
+138	超重拉多X	Superheavy Lado X	superheavy-lado-x	NEW	new ModLiquids	superheavy-lado-x	"ModLiquids.get(""superheavy-lado-x"")"	liquid.mindustry_newhorizon-superheavy-lado-x
+139	重拉多X	Heavy Lado X	heavy-lado-x	NEW	new ModLiquids	heavy-lado-x	"ModLiquids.get(""heavy-lado-x"")"	liquid.mindustry_newhorizon-heavy-lado-x
+140	突变活性焊料	Mutagenic Active Solder	mutagenic-active-solder	NEW	new ModLiquids	mutagenic-active-solder	"ModLiquids.get(""mutagenic-active-solder"")"	liquid.mindustry_newhorizon-mutagenic-active-solder
+141	海晶酸	Sea Crystal Acid	sea-crystal-acid	NEW	new ModLiquids	sea-crystal-acid	"ModLiquids.get(""sea-crystal-acid"")"	liquid.mindustry_newhorizon-sea-crystal-acid
+142	激发的粗制超维度催化剂	Excited Crude Hyperdimensional Catalyst	excited-crude-hyperdimensional-catalyst	NEW	new ModLiquids	excited-crude-hyperdimensional-catalyst	"ModLiquids.get(""excited-crude-hyperdimensional-catalyst"")"	liquid.mindustry_newhorizon-excited-crude-hyperdimensional-catalyst
+143	激发的平凡超维度催化剂	Excited Ordinary Hyperdimensional Catalyst	excited-ordinary-hyperdimensional-catalyst	NEW	new ModLiquids	excited-ordinary-hyperdimensional-catalyst	"ModLiquids.get(""excited-ordinary-hyperdimensional-catalyst"")"	liquid.mindustry_newhorizon-excited-ordinary-hyperdimensional-catalyst
+144	激发的光辉超维度催化剂	Excited Glorious Hyperdimensional Catalyst	excited-glorious-hyperdimensional-catalyst	NEW	new ModLiquids	excited-glorious-hyperdimensional-catalyst	"ModLiquids.get(""excited-glorious-hyperdimensional-catalyst"")"	liquid.mindustry_newhorizon-excited-glorious-hyperdimensional-catalyst
+145	激发的异星超维度催化剂	Excited Alien Hyperdimensional Catalyst	excited-alien-hyperdimensional-catalyst	NEW	new ModLiquids	excited-alien-hyperdimensional-catalyst	"ModLiquids.get(""excited-alien-hyperdimensional-catalyst"")"	liquid.mindustry_newhorizon-excited-alien-hyperdimensional-catalyst
+146	激发的恒星超维度催化剂	Excited Stellar Hyperdimensional Catalyst	excited-stellar-hyperdimensional-catalyst	NEW	new ModLiquids	excited-stellar-hyperdimensional-catalyst	"ModLiquids.get(""excited-stellar-hyperdimensional-catalyst"")"	liquid.mindustry_newhorizon-excited-stellar-hyperdimensional-catalyst
+147	超维度残留	Hyperdimensional Residue	hyperdimensional-residue	NEW	new ModLiquids	hyperdimensional-residue	"ModLiquids.get(""hyperdimensional-residue"")"	liquid.mindustry_newhorizon-hyperdimensional-residue
+148	维度偏移超流体	Dimensional-Shifted Superfluid	dimensional-shifted-superfluid	NEW	new ModLiquids	dimensional-shifted-superfluid	"ModLiquids.get(""dimensional-shifted-superfluid"")"	liquid.mindustry_newhorizon-dimensional-shifted-superfluid
+149	富快子时间流体	Tachyon-Rich Time Fluid	tachyon-rich-time-fluid	NEW	new ModLiquids	tachyon-rich-time-fluid	"ModLiquids.get(""tachyon-rich-time-fluid"")"	liquid.mindustry_newhorizon-tachyon-rich-time-fluid
+150	扩大化空间流体	Expanded Spatial Fluid	expanded-spatial-fluid	NEW	new ModLiquids	expanded-spatial-fluid	"ModLiquids.get(""expanded-spatial-fluid"")"	liquid.mindustry_newhorizon-expanded-spatial-fluid
+151	无界寰宇焊料	Boundless Universal Solder	boundless-universal-solder	NEW	new ModLiquids	boundless-universal-solder	"ModLiquids.get(""boundless-universal-solder"")"	liquid.mindustry_newhorizon-boundless-universal-solder
+152	流体本源物质	Fluid Primordial Substance	fluid-primordial-substance	NEW	new ModLiquids	fluid-primordial-substance	"ModLiquids.get(""fluid-primordial-substance"")"	liquid.mindustry_newhorizon-fluid-primordial-substance
+153	稳定重子物质	Stable Baryonic Matter	stable-baryonic-matter	NEW	new ModLiquids	stable-baryonic-matter	"ModLiquids.get(""stable-baryonic-matter"")"	liquid.mindustry_newhorizon-stable-baryonic-matter
+154	饱和声子晶体溶液	Saturated Phononic Crystal Solution	saturated-phononic-crystal-solution	NEW	new ModLiquids	saturated-phononic-crystal-solution	"ModLiquids.get(""saturated-phononic-crystal-solution"")"	liquid.mindustry_newhorizon-saturated-phononic-crystal-solution
+155	无损声子传输介质	Lossless Phonon Transmission Medium	lossless-phonon-transmission-medium	NEW	new ModLiquids	lossless-phonon-transmission-medium	"ModLiquids.get(""lossless-phonon-transmission-medium"")"	liquid.mindustry_newhorizon-lossless-phonon-transmission-medium
+156	元始物质	Primordial Substance	primordial-substance	NEW	new ModLiquids	primordial-substance	"ModLiquids.get(""primordial-substance"")"	liquid.mindustry_newhorizon-primordial-substance
+157	半稳定反物质	Semi-Stable Antimatter	semi-stable-antimatter	NEW	new ModLiquids	semi-stable-antimatter	"ModLiquids.get(""semi-stable-antimatter"")"	liquid.mindustry_newhorizon-semi-stable-antimatter
+158	浓缩原始恒星等离子体混合物	Concentrated Primordial Star Plasma Mixture	concentrated-primordial-star-plasma-mixture	NEW	new ModLiquids	concentrated-primordial-star-plasma-mixture	"ModLiquids.get(""concentrated-primordial-star-plasma-mixture"")"	liquid.mindustry_newhorizon-concentrated-primordial-star-plasma-mixture
+159	简并夸克胶子等离子体	Degenerate Quark-Gluon Plasma	degenerate-quark-gluon-plasma	NEW	new ModLiquids	degenerate-quark-gluon-plasma	"ModLiquids.get(""degenerate-quark-gluon-plasma"")"	liquid.mindustry_newhorizon-degenerate-quark-gluon-plasma
+160	星门水晶浆液	Stargate Crystal Slurry	stargate-crystal-slurry	NEW	new ModLiquids	stargate-crystal-slurry	"ModLiquids.get(""stargate-crystal-slurry"")"	liquid.mindustry_newhorizon-stargate-crystal-slurry
+161	轻燃油	Light Fuel Oil	light-fuel-oil	REUSE	existing GtLiquids	gt-light-fuel	GtLiquids.lightFuel	liquid.mindustry_newhorizon-gt-light-fuel
+162	生物柴油	Biodiesel	biodiesel	NEW	new ModLiquids	biodiesel	"ModLiquids.get(""biodiesel"")"	liquid.mindustry_newhorizon-biodiesel
+163	柴油	Diesel	diesel	REUSE	existing GtLiquids	gt-diesel	GtLiquids.diesel	liquid.mindustry_newhorizon-gt-diesel
+164	汽油	Gasoline	gasoline	NEW	new ModLiquids	gasoline	"ModLiquids.get(""gasoline"")"	liquid.mindustry_newhorizon-gasoline
+165	高十六烷值柴油	High Cetane Diesel	high-cetane-diesel	NEW	new ModLiquids	high-cetane-diesel	"ModLiquids.get(""high-cetane-diesel"")"	liquid.mindustry_newhorizon-high-cetane-diesel
+166	乙醇汽油	Ethanol Gasoline	ethanol-gasoline	NEW	new ModLiquids	ethanol-gasoline	"ModLiquids.get(""ethanol-gasoline"")"	liquid.mindustry_newhorizon-ethanol-gasoline
+167	航空煤油-3	Aviation Kerosene-3	aviation-kerosene-3	NEW	new ModLiquids	aviation-kerosene-3	"ModLiquids.get(""aviation-kerosene-3"")"	liquid.mindustry_newhorizon-aviation-kerosene-3
+168	航空煤油A	Aviation Kerosene A	aviation-kerosene-a	NEW	new ModLiquids	aviation-kerosene-a	"ModLiquids.get(""aviation-kerosene-a"")"	liquid.mindustry_newhorizon-aviation-kerosene-a
+169	高辛烷值汽油	High Octane Gasoline	high-octane-gasoline	NEW	new ModLiquids	high-octane-gasoline	"ModLiquids.get(""high-octane-gasoline"")"	liquid.mindustry_newhorizon-high-octane-gasoline
+170	天然气	Natural Gas	natural-gas	NEW	new ModLiquids	natural-gas	"ModLiquids.get(""natural-gas"")"	liquid.mindustry_newhorizon-natural-gas
+171	木炭气	Charcoal Gas	charcoal-gas	NEW	new ModLiquids	charcoal-gas	"ModLiquids.get(""charcoal-gas"")"	liquid.mindustry_newhorizon-charcoal-gas
+172	沼气	Biogas	biogas	NEW	new ModLiquids	biogas	"ModLiquids.get(""biogas"")"	liquid.mindustry_newhorizon-biogas
+173	煤气	Coal Gas	coal-gas	NEW	new ModLiquids	coal-gas	"ModLiquids.get(""coal-gas"")"	liquid.mindustry_newhorizon-coal-gas
+174	炼油气	Refinery Gas	refinery-gas	NEW	new ModLiquids	refinery-gas	"ModLiquids.get(""refinery-gas"")"	liquid.mindustry_newhorizon-refinery-gas
+175	石脑油	Naphtha	naphtha	NEW	new ModLiquids	naphtha	"ModLiquids.get(""naphtha"")"	liquid.mindustry_newhorizon-naphtha
+176	液化石油气	Liquefied Petroleum Gas (LPG)	liquefied-petroleum-gas	NEW	new ModLiquids	liquefied-petroleum-gas	"ModLiquids.get(""liquefied-petroleum-gas"")"	liquid.mindustry_newhorizon-liquefied-petroleum-gas
+177	硅岩气	Silicon Rock Gas	silicon-rock-gas	NEW	new ModLiquids	silicon-rock-gas	"ModLiquids.get(""silicon-rock-gas"")"	liquid.mindustry_newhorizon-silicon-rock-gas
+178	邪恶气体	Evil Gas	evil-gas	NEW	new ModLiquids	evil-gas	"ModLiquids.get(""evil-gas"")"	liquid.mindustry_newhorizon-evil-gas
+179	硝基苯	Nitrobenzene	nitrobenzene	NEW	new ModLiquids	nitrobenzene	"ModLiquids.get(""nitrobenzene"")"	liquid.mindustry_newhorizon-nitrobenzene
+180	鱼油	Fish Oil	fish-oil	NEW	new ModLiquids	fish-oil	"ModLiquids.get(""fish-oil"")"	liquid.mindustry_newhorizon-fish-oil
+181	种子油	Seed Oil	seed-oil	NEW	new ModLiquids	seed-oil	"ModLiquids.get(""seed-oil"")"	liquid.mindustry_newhorizon-seed-oil
+182	煤焦	Coal Coke	coal-coke	NEW	new ModLiquids	coal-coke	"ModLiquids.get(""coal-coke"")"	liquid.mindustry_newhorizon-coal-coke
+183	生物质	Biomass	biomass	REUSE	existing GtLiquids	gt-biomass	GtLiquids.biomass	liquid.mindustry_newhorizon-gt-biomass
+184	煤焦油	Coal Tar	coal-tar	NEW	new ModLiquids	coal-tar	"ModLiquids.get(""coal-tar"")"	liquid.mindustry_newhorizon-coal-tar
+185	含硫煤焦油	Sulfurous Coal Tar	sulfurous-coal-tar	NEW	new ModLiquids	sulfurous-coal-tar	"ModLiquids.get(""sulfurous-coal-tar"")"	liquid.mindustry_newhorizon-sulfurous-coal-tar
+186	杂酚油	Creosote	creosote	NEW	new ModLiquids	creosote	"ModLiquids.get(""creosote"")"	liquid.mindustry_newhorizon-creosote
+187	重燃油	Heavy Fuel Oil	heavy-fuel-oil	NEW	new ModLiquids	heavy-fuel-oil	"ModLiquids.get(""heavy-fuel-oil"")"	liquid.mindustry_newhorizon-heavy-fuel-oil
+188	邪恶原油	Evil Crude Oil	evil-crude-oil	NEW	new ModLiquids	evil-crude-oil	"ModLiquids.get(""evil-crude-oil"")"	liquid.mindustry_newhorizon-evil-crude-oil
+189	RP-1火箭燃料	RP-1 Rocket Fuel	rp-1-rocket-fuel	NEW	new ModLiquids	rp-1-rocket-fuel	"ModLiquids.get(""rp-1-rocket-fuel"")"	liquid.mindustry_newhorizon-rp-1-rocket-fuel
+190	密集肼混合燃料	Dense Hydrazine Mixed Fuel	dense-hydrazine-mixed-fuel	NEW	new ModLiquids	dense-hydrazine-mixed-fuel	"ModLiquids.get(""dense-hydrazine-mixed-fuel"")"	liquid.mindustry_newhorizon-dense-hydrazine-mixed-fuel
+191	CN3H7O3火箭燃料	CN3H7O3 Rocket Fuel	cn3h7o3-rocket-fuel	NEW	new ModLiquids	cn3h7o3-rocket-fuel	"ModLiquids.get(""cn3h7o3-rocket-fuel"")"	liquid.mindustry_newhorizon-cn3h7o3-rocket-fuel
+192	H8N4C2O4火箭燃料	H8N4C2O4 Rocket Fuel	h8n4c2o4-rocket-fuel	NEW	new ModLiquids	h8n4c2o4-rocket-fuel	"ModLiquids.get(""h8n4c2o4-rocket-fuel"")"	liquid.mindustry_newhorizon-h8n4c2o4-rocket-fuel
+193	铀基流体燃料	Uranium-Based Fluid Fuel	uranium-based-fluid-fuel	NEW	new ModLiquids	uranium-based-fluid-fuel	"ModLiquids.get(""uranium-based-fluid-fuel"")"	liquid.mindustry_newhorizon-uranium-based-fluid-fuel
+194	钍基流体燃料	Thorium-Based Fluid Fuel	thorium-based-fluid-fuel	NEW	new ModLiquids	thorium-based-fluid-fuel	"ModLiquids.get(""thorium-based-fluid-fuel"")"	liquid.mindustry_newhorizon-thorium-based-fluid-fuel
+195	钚基流体燃料	Plutonium-Based Fluid Fuel	plutonium-based-fluid-fuel	NEW	new ModLiquids	plutonium-based-fluid-fuel	"ModLiquids.get(""plutonium-based-fluid-fuel"")"	liquid.mindustry_newhorizon-plutonium-based-fluid-fuel
+196	硅岩基流体燃料 MK-I	Silicon Rock-Based Fluid Fuel MK-I	silicon-rock-based-fluid-fuel-mk-i	NEW	new ModLiquids	silicon-rock-based-fluid-fuel-mk-i	"ModLiquids.get(""silicon-rock-based-fluid-fuel-mk-i"")"	liquid.mindustry_newhorizon-silicon-rock-based-fluid-fuel-mk-i
+197	硅岩基流体燃料 MK-II	Silicon Rock-Based Fluid Fuel MK-II	silicon-rock-based-fluid-fuel-mk-ii	NEW	new ModLiquids	silicon-rock-based-fluid-fuel-mk-ii	"ModLiquids.get(""silicon-rock-based-fluid-fuel-mk-ii"")"	liquid.mindustry_newhorizon-silicon-rock-based-fluid-fuel-mk-ii
+198	硅岩基流体燃料 MK-III	Silicon Rock-Based Fluid Fuel MK-III	silicon-rock-based-fluid-fuel-mk-iii	NEW	new ModLiquids	silicon-rock-based-fluid-fuel-mk-iii	"ModLiquids.get(""silicon-rock-based-fluid-fuel-mk-iii"")"	liquid.mindustry_newhorizon-silicon-rock-based-fluid-fuel-mk-iii
+199	硅岩基流体燃料 MK-IV	Silicon Rock-Based Fluid Fuel MK-IV	silicon-rock-based-fluid-fuel-mk-iv	NEW	new ModLiquids	silicon-rock-based-fluid-fuel-mk-iv	"ModLiquids.get(""silicon-rock-based-fluid-fuel-mk-iv"")"	liquid.mindustry_newhorizon-silicon-rock-based-fluid-fuel-mk-iv
+200	硅岩基流体燃料 MK-V	Silicon Rock-Based Fluid Fuel MK-V	silicon-rock-based-fluid-fuel-mk-v	NEW	new ModLiquids	silicon-rock-based-fluid-fuel-mk-v	"ModLiquids.get(""silicon-rock-based-fluid-fuel-mk-v"")"	liquid.mindustry_newhorizon-silicon-rock-based-fluid-fuel-mk-v
+201	硅岩基流体燃料 MK-VI	Silicon Rock-Based Fluid Fuel MK-VI	silicon-rock-based-fluid-fuel-mk-vi	NEW	new ModLiquids	silicon-rock-based-fluid-fuel-mk-vi	"ModLiquids.get(""silicon-rock-based-fluid-fuel-mk-vi"")"	liquid.mindustry_newhorizon-silicon-rock-based-fluid-fuel-mk-vi
+202	汞	Mercury	mercury	REUSE	existing GtLiquids	gt-mercury	GtLiquids.mercury	liquid.mindustry_newhorizon-gt-mercury
+203	工业氯化氢	Industrial Hydrogen Chloride	industrial-hydrogen-chloride	NEW	new ModLiquids	industrial-hydrogen-chloride	"ModLiquids.get(""industrial-hydrogen-chloride"")"	liquid.mindustry_newhorizon-industrial-hydrogen-chloride
+204	氯磺酸	Chlorosulfonic Acid	chlorosulfonic-acid	NEW	new ModLiquids	chlorosulfonic-acid	"ModLiquids.get(""chlorosulfonic-acid"")"	liquid.mindustry_newhorizon-chlorosulfonic-acid
