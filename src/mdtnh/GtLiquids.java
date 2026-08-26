@@ -4,7 +4,7 @@ import arc.graphics.Color;
 import mindustry.type.Liquid;
 
 /**
- * GT 常用化工流体。只补 MDT/GTNH 主流程实际使用的流体，避免一次性灌入大量冷门化学品。
+ * GT 常用化工流体。
  */
 public final class GtLiquids {
     private GtLiquids() {}

@@ -386,6 +386,7 @@ SECTION_UI	src/mdtnh/modui/introduction/MdtIntroductionContent.java	/^    public
 SECTION_VOLTAGE	src/mdtnh/modui/introduction/MdtIntroductionContent.java	/^    public static final String SECTION_VOLTAGE =$/;"	f	class:MdtIntroductionContent
 SPECIAL	src/mdtnh/ModLiquids.java	/^        SPECIAL,$/;"	e	enum:ModLiquids.Profile	file:
 SPECIAL_FORMS	src/mdtnh/MaterialDefinition.java	/^    public static final List<String> SPECIAL_FORMS = List.of($/;"	f	class:MaterialDefinition
+STEAM	src/mdtnh/ModLiquids.java	/^        STEAM$/;"	e	enum:ModLiquids.Profile	file:
 STEP_BODIES	src/mdtnh/modui/introduction/GuidedTourPage.java	/^    private static final String[] STEP_BODIES = {$/;"	f	class:GuidedTourPage	file:
 STEP_TITLES	src/mdtnh/modui/introduction/GuidedTourPage.java	/^    private static final String[] STEP_TITLES = {$/;"	f	class:GuidedTourPage	file:
 SUBPAGE_BUTTON_HEIGHT	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private static final float SUBPAGE_BUTTON_HEIGHT = 46f;$/;"	f	class:RecipeQueryUI	file:
@@ -437,7 +438,7 @@ VoltageTier	src/mdtnh/VoltageTier.java	/^    VoltageTier(String displayName, Str
 VoltageTier	src/mdtnh/VoltageTier.java	/^public enum VoltageTier {$/;"	g
 VoltageTierIntroductionPage	src/mdtnh/modui/introduction/VoltageTierIntroductionPage.java	/^    public VoltageTierIntroductionPage($/;"	m	class:VoltageTierIntroductionPage
 VoltageTierIntroductionPage	src/mdtnh/modui/introduction/VoltageTierIntroductionPage.java	/^public final class VoltageTierIntroductionPage$/;"	c
-WASTE	src/mdtnh/ModLiquids.java	/^        WASTE$/;"	e	enum:ModLiquids.Profile	file:
+WASTE	src/mdtnh/ModLiquids.java	/^        WASTE,$/;"	e	enum:ModLiquids.Profile	file:
 WIRES	src/mdtnh/transport/GtTransportData.java	/^    public static final WireMaterial[] WIRES = {$/;"	f	class:GtTransportData
 WIRE_COUNTS	src/mdtnh/transport/GtTransportData.java	/^    public static final int[] WIRE_COUNTS = {1, 2, 4, 8, 12, 16};$/;"	f	class:GtTransportData
 WIRE_FORMS	src/mdtnh/MaterialDefinition.java	/^    public static final List<String> WIRE_FORMS = List.of($/;"	f	class:MaterialDefinition
@@ -466,9 +467,9 @@ acceptLiquid	src/mdtnh/turret/MdtSteamLiquidTurret.java	/^        public boolean
 acceptLiquid	src/mdtnh/turret/MdtSteamTurret.java	/^        public boolean acceptLiquid(Building source, Liquid liquid) {$/;"	m	class:MdtSteamTurret.MdtSteamTurretBuild
 acceptStack	src/mdtnh/transport/MdtItemPipeBlock.java	/^        public int acceptStack(Item item, int amount, Teamc source) {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild
 acceptStack	src/mdtnh/turret/MdtEnergyItemTurret.java	/^        public int acceptStack(Item item, int amount, Teamc source) {$/;"	m	class:MdtEnergyItemTurret.MdtEnergyItemTurretBuild
-accumulated	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block accumulated;   \/\/ 蓄积$/;"	f	class:MdtImplementedTurrets
-accumulatedBolt	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block accumulatedBolt; \/\/ 蓄积-螺栓$/;"	f	class:MdtImplementedTurrets
-actinium	src/mdtnh/BasicItems.java	/^    public static Metal actinium; \/\/ 锕$/;"	f	class:BasicItems
+accumulated	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block accumulated;   \/\/ èç§¯$/;"	f	class:MdtImplementedTurrets
+accumulatedBolt	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block accumulatedBolt; \/\/ èç§¯-èºæ $/;"	f	class:MdtImplementedTurrets
+actinium	src/mdtnh/BasicItems.java	/^    public static Metal actinium; \/\/ é$/;"	f	class:BasicItems
 activeLiquidCount	src/mdtnh/transport/MdtFluidPipeBlock.java	/^        private int activeLiquidCount() {$/;"	m	class:MdtFluidPipeBlock.MdtFluidPipeBuild	file:
 add	src/mdtnh/GtMaterials.java	/^    private static void add(String key, String internalName, Color color, float cost) {$/;"	m	class:GtMaterials	file:
 add	src/mdtnh/energy/EnergyState.java	/^    public float add(float amountJ, EnergySpec spec) {$/;"	m	class:EnergyState
@@ -506,8 +507,8 @@ allowsBatteryBridge	src/mdtnh/energy/MdtEnergyNode.java	/^    default boolean al
 allowsBatteryBridge	src/mdtnh/energy/MdtTransformerBlock.java	/^        public boolean allowsBatteryBridge(MdtEnergyNode other) {$/;"	m	class:MdtTransformerBlock.MdtTransformerBuild
 alloy	src/mdtnh/GtProductionMachines.java	/^    private static void alloy(String group, String[] in, String[] out) {$/;"	m	class:GtProductionMachines	file:
 alloySmelter	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry alloySmelter;$/;"	f	class:GtProductionMachines
-aluminum	src/mdtnh/BasicItems.java	/^    public static Metal aluminum; \/\/ 铝$/;"	f	class:BasicItems
-americium	src/mdtnh/BasicItems.java	/^    public static Metal americium; \/\/ 镅$/;"	f	class:BasicItems
+aluminum	src/mdtnh/BasicItems.java	/^    public static Metal aluminum; \/\/ é$/;"	f	class:BasicItems
+americium	src/mdtnh/BasicItems.java	/^    public static Metal americium; \/\/ é$/;"	f	class:BasicItems
 ammo	src/mdtnh/turret/MdtEnergyItemTurret.java	/^    public void ammo(Object... objects) {$/;"	m	class:MdtEnergyItemTurret
 ammo	src/mdtnh/turret/MdtEnergyLiquidTurret.java	/^    public void ammo(Object... objects) {$/;"	m	class:MdtEnergyLiquidTurret
 ammoTypes	src/mdtnh/turret/MdtEnergyItemTurret.java	/^    public ObjectMap<Item, BulletType> ammoTypes = new OrderedMap<>();$/;"	f	class:MdtEnergyItemTurret
@@ -517,8 +518,8 @@ amount	src/mdtnh/transport/MdtItemPipeBlock.java	/^        public int amount;$/;
 amountAsc	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^        amountAsc$/;"	e	enum:MdtCoreItemsQuickBar.SortMode	file:
 amountDesc	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^        amountDesc,$/;"	e	enum:MdtCoreItemsQuickBar.SortMode	file:
 animationTick	src/mdtnh/Boiler.java	/^        int animationTick,ticker;$/;"	f	class:Boiler.BoilerBuilding
-annealedCopper	src/mdtnh/BasicItems.java	/^    public static Metal annealedCopper; \/\/ 退火铜$/;"	f	class:BasicItems
-antimony	src/mdtnh/BasicItems.java	/^    public static Metal antimony; \/\/ 锑$/;"	f	class:BasicItems
+annealedCopper	src/mdtnh/BasicItems.java	/^    public static Metal annealedCopper; \/\/ éç«é$/;"	f	class:BasicItems
+antimony	src/mdtnh/BasicItems.java	/^    public static Metal antimony; \/\/ é$/;"	f	class:BasicItems
 apply	src/mdtnh/graphics/GrayMaterialShader.java	/^    public void apply() {$/;"	m	class:GrayMaterialShader
 applyAutomaticEnergyChange	src/mdtnh/energy/MdtEnergySystem.java	/^    private static void applyAutomaticEnergyChange(List<MdtEnergyNode> component) {$/;"	m	class:MdtEnergySystem	file:
 applyFluidPipeVisualScale	src/mdtnh/transport/MdtTransportBlocks.java	/^    private static void applyFluidPipeVisualScale($/;"	m	class:MdtTransportBlocks	file:
@@ -538,36 +539,36 @@ basic	src/mdtnh/MaterialDefinition.java	/^    public static MaterialDefinition b
 batteries	src/mdtnh/GtUtilityMachines.java	/^    public static final EnumMap<VoltageTier, RecipeCrafter> batteries = new EnumMap<>(VoltageTier.class);$/;"	f	class:GtUtilityMachines
 battery	src/mdtnh/energy/EnergySpec.java	/^        battery,$/;"	e	enum:EnergySpec.Role	file:
 battery	src/mdtnh/energy/MdtEnergyBlock.java	/^        battery$/;"	e	enum:MdtEnergyBlock.EnergyRole	file:
-batteryAlloy	src/mdtnh/BasicItems.java	/^    public static Metal batteryAlloy; \/\/ 电池合金$/;"	f	class:BasicItems
+batteryAlloy	src/mdtnh/BasicItems.java	/^    public static Metal batteryAlloy; \/\/ çµæ± åé$/;"	f	class:BasicItems
 bender	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry bender;$/;"	f	class:GtProductionMachines
-berkelium	src/mdtnh/BasicItems.java	/^    public static Metal berkelium; \/\/ 锫$/;"	f	class:BasicItems
-beryllium	src/mdtnh/BasicItems.java	/^    public static Metal beryllium; \/\/ 铍$/;"	f	class:BasicItems
+berkelium	src/mdtnh/BasicItems.java	/^    public static Metal berkelium; \/\/ é«$/;"	f	class:BasicItems
+beryllium	src/mdtnh/BasicItems.java	/^    public static Metal beryllium; \/\/ é$/;"	f	class:BasicItems
 bind	src/mdtnh/ModLiquids.java	/^    private static void bind(String id, Liquid liquid) {$/;"	m	class:ModLiquids	file:
 bindHover	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        public void bindHover(Element element, UnlockableContent content) {$/;"	m	class:RecipeQueryUI.PageContext
 bindHover	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    public static void bindHover(Element element, UnlockableContent content) {$/;"	m	class:RecipeQueryUI
 biologicalLab	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry biologicalLab;$/;"	f	class:GtProductionMachines
 biomass	src/mdtnh/GtLiquids.java	/^    public static Liquid biomass;$/;"	f	class:GtLiquids
-bismuth	src/mdtnh/BasicItems.java	/^    public static Metal bismuth; \/\/ 铋$/;"	f	class:BasicItems
-bismuthBronze	src/mdtnh/BasicItems.java	/^    public static Metal bismuthBronze; \/\/ 铋青铜$/;"	f	class:BasicItems
-blackBronze	src/mdtnh/BasicItems.java	/^    public static Metal blackBronze; \/\/ 黑青铜$/;"	f	class:BasicItems
-blackSteel	src/mdtnh/BasicItems.java	/^    public static Metal blackSteel; \/\/ 黑钢$/;"	f	class:BasicItems
+bismuth	src/mdtnh/BasicItems.java	/^    public static Metal bismuth; \/\/ é$/;"	f	class:BasicItems
+bismuthBronze	src/mdtnh/BasicItems.java	/^    public static Metal bismuthBronze; \/\/ ééé$/;"	f	class:BasicItems
+blackBronze	src/mdtnh/BasicItems.java	/^    public static Metal blackBronze; \/\/ é»éé$/;"	f	class:BasicItems
+blackSteel	src/mdtnh/BasicItems.java	/^    public static Metal blackSteel; \/\/ é»é¢$/;"	f	class:BasicItems
 block	src/mdtnh/BasicItems.java	/^    public final Item block;$/;"	f	class:BasicItems.Metal
 block	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^        block,$/;"	e	enum:ContentCatalogPage.Kind	file:
 blocks	src/mdtnh/modui/buildui/BuildMenuNode.java	/^    public final Seq<Block> blocks = new Seq<>();$/;"	f	class:BuildMenuNode
 blocks	src/mdtnh/transport/MdtTransportBlocks.java	/^    public static final ObjectMap<String, Block> blocks = new ObjectMap<>();$/;"	f	class:MdtTransportBlocks
-blueAlloy	src/mdtnh/BasicItems.java	/^    public static Metal blueAlloy; \/\/ 蓝色合金$/;"	f	class:BasicItems
-blueSteel	src/mdtnh/BasicItems.java	/^    public static Metal blueSteel; \/\/ 蓝钢$/;"	f	class:BasicItems
+blueAlloy	src/mdtnh/BasicItems.java	/^    public static Metal blueAlloy; \/\/ èè²åé$/;"	f	class:BasicItems
+blueSteel	src/mdtnh/BasicItems.java	/^    public static Metal blueSteel; \/\/ èé¢$/;"	f	class:BasicItems
 bodyKey	src/mdtnh/modui/introduction/LocalizedArticlePage.java	/^    private final String bodyKey;$/;"	f	class:LocalizedArticlePage	file:
-bohrium	src/mdtnh/BasicItems.java	/^    public static Metal bohrium; \/\/ 𬭛$/;"	f	class:BasicItems
+bohrium	src/mdtnh/BasicItems.java	/^    public static Metal bohrium; \/\/ ð¬­$/;"	f	class:BasicItems
 boiler	src/mdtnh/GtUtilityMachines.java	/^    private static GtAutoRecipeCrafter boiler(String name, float ticks,$/;"	m	class:GtUtilityMachines	file:
 bolt	src/mdtnh/BasicItems.java	/^    public final Item bolt;$/;"	f	class:BasicItems.Metal
 borderAlpha	OreExplorationOverlay.java	/^    public static float borderAlpha = 0.75f;$/;"	f	class:OreExplorationOverlay
 borderAlpha	src/mdtnh/gen/block/OreExplorationOverlay.java	/^    public static float borderAlpha = 0.75f;$/;"	f	class:OreExplorationOverlay
 borderStroke	OreExplorationOverlay.java	/^    public static float borderStroke = 1.2f;$/;"	f	class:OreExplorationOverlay
 borderStroke	src/mdtnh/gen/block/OreExplorationOverlay.java	/^    public static float borderStroke = 1.2f;$/;"	f	class:OreExplorationOverlay
-brass	src/mdtnh/BasicItems.java	/^    public static Metal brass; \/\/ 黄铜$/;"	f	class:BasicItems
-broadsword	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block broadsword;    \/\/ 阔剑$/;"	f	class:MdtImplementedTurrets
-bronze	src/mdtnh/BasicItems.java	/^    public static Metal bronze; \/\/ 青铜$/;"	f	class:BasicItems
+brass	src/mdtnh/BasicItems.java	/^    public static Metal brass; \/\/ é»é$/;"	f	class:BasicItems
+broadsword	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block broadsword;    \/\/ éå$/;"	f	class:MdtImplementedTurrets
+bronze	src/mdtnh/BasicItems.java	/^    public static Metal bronze; \/\/ éé$/;"	f	class:BasicItems
 build	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^    public void build($/;"	m	class:ContentCatalogPage
 build	src/mdtnh/modui/introduction/CreditIntroductionPage.java	/^    public void build(IntroductionContext context, Table root) {$/;"	m	class:CreditIntroductionPage
 build	src/mdtnh/modui/introduction/FlowChartIntroductionPage.java	/^    public void build($/;"	m	class:FlowChartIntroductionPage
@@ -621,9 +622,9 @@ cableEdgeRotationOffsetDeg	src/mdtnh/energy/MdtEnergyBlock.java	/^    public flo
 cableLossV	src/mdtnh/transport/GtTransportData.java	/^        public final float cableLossV;$/;"	f	class:GtTransportData.WireMaterial
 cableWireSprites	src/mdtnh/energy/MdtEnergyBlock.java	/^    public boolean cableWireSprites = false;$/;"	f	class:MdtEnergyBlock
 cables	src/mdtnh/BasicItems.java	/^    public final Item[] cables;$/;"	f	class:BasicItems.Metal
-cadmium	src/mdtnh/BasicItems.java	/^    public static Metal cadmium; \/\/ 镉$/;"	f	class:BasicItems
-calcium	src/mdtnh/BasicItems.java	/^    public static Metal calcium; \/\/ 钙$/;"	f	class:BasicItems
-californium	src/mdtnh/BasicItems.java	/^    public static Metal californium; \/\/ 锎$/;"	f	class:BasicItems
+cadmium	src/mdtnh/BasicItems.java	/^    public static Metal cadmium; \/\/ é$/;"	f	class:BasicItems
+calcium	src/mdtnh/BasicItems.java	/^    public static Metal calcium; \/\/ é$/;"	f	class:BasicItems
+californium	src/mdtnh/BasicItems.java	/^    public static Metal californium; \/\/ é$/;"	f	class:BasicItems
 canConnect	src/mdtnh/energy/MdtEnergySystem.java	/^    public static boolean canConnect(MdtEnergyNode a, MdtEnergyNode b) {$/;"	m	class:MdtEnergySystem
 canConnectToElectricGrid	src/mdtnh/ModDrill.java	/^        public boolean canConnectToElectricGrid() {$/;"	m	class:ModDrill.ModDrillBuilding
 canConnectToElectricGrid	src/mdtnh/RecipeCrafter.java	/^        public boolean canConnectToElectricGrid() {$/;"	m	class:RecipeCrafter.MDTFactoryBuild
@@ -672,8 +673,8 @@ centerTopRegionName	src/mdtnh/transport/MdtItemPipeBlock.java	/^    public Strin
 centerTopRotationOffsetDeg	src/mdtnh/transport/MdtFluidPipeBlock.java	/^    public float centerTopRotationOffsetDeg = 0f;$/;"	f	class:MdtFluidPipeBlock
 centerTopRotationOffsetDeg	src/mdtnh/transport/MdtItemPipeBlock.java	/^    public float centerTopRotationOffsetDeg = 0f;$/;"	f	class:MdtItemPipeBlock
 centrifuge	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry centrifuge;$/;"	f	class:GtProductionMachines
-cerium	src/mdtnh/BasicItems.java	/^    public static Metal cerium; \/\/ 铈$/;"	f	class:BasicItems
-cesium	src/mdtnh/BasicItems.java	/^    public static Metal cesium; \/\/ 铯$/;"	f	class:BasicItems
+cerium	src/mdtnh/BasicItems.java	/^    public static Metal cerium; \/\/ é$/;"	f	class:BasicItems
+cesium	src/mdtnh/BasicItems.java	/^    public static Metal cesium; \/\/ é¯$/;"	f	class:BasicItems
 chargeReactionDamage	src/mdtnh/turret/MdtTurretStatusEffects.java	/^    public static float chargeReactionDamage = 140f;$/;"	f	class:MdtTurretStatusEffects
 check	src/mdtnh/FuelList.java	/^    public Item check(ItemModule items){$/;"	m	class:FuelList
 checkOre	src/mdtnh/GtMinerBlock.java	/^        private Tile checkOre(int x, int y) {$/;"	m	class:GtMinerBlock.GtMinerBuild	file:
@@ -681,7 +682,7 @@ chemicalBath	src/mdtnh/GtProductionMachines.java	/^    public static VoltageReci
 chemicalReactor	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry chemicalReactor;$/;"	f	class:GtProductionMachines
 children	src/mdtnh/modui/buildui/BuildMenuNode.java	/^    public final Seq<BuildMenuNode> children = new Seq<>();$/;"	f	class:BuildMenuNode
 chlorine	src/mdtnh/GtLiquids.java	/^    public static Liquid chlorine;$/;"	f	class:GtLiquids
-chromium	src/mdtnh/BasicItems.java	/^    public static Metal chromium; \/\/ 铬$/;"	f	class:BasicItems
+chromium	src/mdtnh/BasicItems.java	/^    public static Metal chromium; \/\/ é¬$/;"	f	class:BasicItems
 circuitAssembler	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry circuitAssembler;$/;"	f	class:GtProductionMachines
 clampCategoryPage	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private void clampCategoryPage(List<CategoryPage> pages) {$/;"	m	class:RecipeQueryUI	file:
 clampPageTypePage	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private void clampPageTypePage(List<PageEntry> entries) {$/;"	m	class:RecipeQueryUI	file:
@@ -689,8 +690,8 @@ clearHoveredBlock	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    privat
 clearRuntimeData	src/mdtnh/gen/block/OreExplorationController.java	/^    private static void clearRuntimeData(){$/;"	m	class:OreExplorationController	file:
 close	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private void close() {$/;"	m	class:MdtIntroductionUI	file:
 coalBoiler	src/mdtnh/GtUtilityMachines.java	/^    public static GtAutoRecipeCrafter coalBoiler;$/;"	f	class:GtUtilityMachines
-cobalt	src/mdtnh/BasicItems.java	/^    public static Metal cobalt; \/\/ 钴$/;"	f	class:BasicItems
-cobaltBrass	src/mdtnh/BasicItems.java	/^    public static Metal cobaltBrass; \/\/ 钴黄铜$/;"	f	class:BasicItems
+cobalt	src/mdtnh/BasicItems.java	/^    public static Metal cobalt; \/\/ é´$/;"	f	class:BasicItems
+cobaltBrass	src/mdtnh/BasicItems.java	/^    public static Metal cobaltBrass; \/\/ é´é»é$/;"	f	class:BasicItems
 collectArcTargets	src/mdtnh/turret/MdtArcTurret.java	/^        protected Seq<Unit> collectArcTargets() {$/;"	m	class:MdtArcTurret.MdtArcTurretBuild
 collectComponent	src/mdtnh/energy/MdtEnergySystem.java	/^    private static List<MdtEnergyNode> collectComponent(MdtEnergyNode root, Set<MdtEnergyNode> visited) {$/;"	m	class:MdtEnergySystem	file:
 collectContents	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^    private List<UnlockableContent> collectContents() {$/;"	m	class:ContentCatalogPage	file:
@@ -745,8 +746,8 @@ convertRole	src/mdtnh/energy/MdtEnergyBlock.java	/^    private static EnergySpec
 convertSteamToEnergy	src/mdtnh/RecipeCrafter.java	/^        protected void convertSteamToEnergy() {$/;"	m	class:RecipeCrafter.MDTFactoryBuild
 convertSteamToEnergy	src/mdtnh/hatch/SteamInputHatch.java	/^        protected void convertSteamToEnergy() {$/;"	m	class:SteamInputHatch.SteamInputHatchBuild
 conveyor_belt	src/mdtnh/Component.java	/^        conveyor_belt("conveyor-belt"),$/;"	e	enum:Component.ComponentType	file:
-copernicium	src/mdtnh/BasicItems.java	/^    public static Metal copernicium; \/\/ 鿔$/;"	f	class:BasicItems
-copper	src/mdtnh/BasicItems.java	/^    public static Metal copper; \/\/ 铜$/;"	f	class:BasicItems
+copernicium	src/mdtnh/BasicItems.java	/^    public static Metal copernicium; \/\/ é¿$/;"	f	class:BasicItems
+copper	src/mdtnh/BasicItems.java	/^    public static Metal copper; \/\/ é$/;"	f	class:BasicItems
 copperInputHatch	src/mdtnh/ModCrafters.java	/^    public static ItemInputHatch copperInputHatch;$/;"	f	class:ModCrafters
 copy	src/mdtnh/fluidSystem/GT/GTFluidStack.java	/^    public GTFluidStack copy(){$/;"	m	class:GTFluidStack
 copyItems	src/mdtnh/RecipeCrafter.java	/^        private static ItemStack[] copyItems(ItemStack[] source) {$/;"	m	class:RecipeCrafter.Recipe	file:
@@ -764,11 +765,11 @@ created	src/mdtnh/GtGeneratorCrafter.java	/^        public void created() {$/;"	
 created	src/mdtnh/RecipeCrafter.java	/^        public void created() {$/;"	m	class:RecipeCrafter.MDTFactoryBuild
 created	src/mdtnh/energy/MdtEnergyBlock.java	/^        public void created() {$/;"	m	class:MdtEnergyBlock.MdtEnergyBuild
 created	src/mdtnh/turret/MdtEnergyTurret.java	/^        public void created() {$/;"	m	class:MdtEnergyTurret.MdtEnergyTurretBuild
-crudeBronzeAlloy	src/mdtnh/BasicItems.java	/^    public static Metal crudeBronzeAlloy; \/\/ 粗青铜合金$/;"	f	class:BasicItems
-crudePalladium	src/mdtnh/BasicItems.java	/^    public static Metal crudePalladium; \/\/ 粗钯$/;"	f	class:BasicItems
-crudePlatinum	src/mdtnh/BasicItems.java	/^    public static Metal crudePlatinum; \/\/ 粗铂$/;"	f	class:BasicItems
-cupronickel	src/mdtnh/BasicItems.java	/^    public static Metal cupronickel; \/\/ 白铜$/;"	f	class:BasicItems
-curium	src/mdtnh/BasicItems.java	/^    public static Metal curium; \/\/ 锔$/;"	f	class:BasicItems
+crudeBronzeAlloy	src/mdtnh/BasicItems.java	/^    public static Metal crudeBronzeAlloy; \/\/ ç²ééåé$/;"	f	class:BasicItems
+crudePalladium	src/mdtnh/BasicItems.java	/^    public static Metal crudePalladium; \/\/ ç²é¯$/;"	f	class:BasicItems
+crudePlatinum	src/mdtnh/BasicItems.java	/^    public static Metal crudePlatinum; \/\/ ç²é$/;"	f	class:BasicItems
+cupronickel	src/mdtnh/BasicItems.java	/^    public static Metal cupronickel; \/\/ ç½é$/;"	f	class:BasicItems
+curium	src/mdtnh/BasicItems.java	/^    public static Metal curium; \/\/ é$/;"	f	class:BasicItems
 current	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private BuildMenuNode current;$/;"	f	class:MdtBuildMenuFragment	file:
 currentA	src/mdtnh/energy/EnergyState.java	/^    public int currentA;$/;"	f	class:EnergyState
 currentEnergyInputs	src/mdtnh/MultiblockStructer.java	/^        public pos[] currentEnergyInputs;$/;"	f	class:MultiblockStructer.MultiblockStructerBuilding
@@ -794,8 +795,8 @@ cuttingMachine	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRe
 cycleSortMode	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private void cycleSortMode() {$/;"	m	class:MdtCoreItemsQuickBar	file:
 damagePerTarget	src/mdtnh/turret/MdtArcTurret.java	/^    public float damagePerTarget = 24f;$/;"	f	class:MdtArcTurret
 damageRetention	src/mdtnh/turret/HalvingPierceBulletType.java	/^    public float damageRetention = 0.5f;$/;"	f	class:HalvingPierceBulletType
-damascusSteel	src/mdtnh/BasicItems.java	/^    public static Metal damascusSteel; \/\/ 大马士革钢$/;"	f	class:BasicItems
-darmstadtium	src/mdtnh/BasicItems.java	/^    public static Metal darmstadtium; \/\/ 𫟼$/;"	f	class:BasicItems
+damascusSteel	src/mdtnh/BasicItems.java	/^    public static Metal damascusSteel; \/\/ å¤§é©¬å£«é©é¢$/;"	f	class:BasicItems
+darmstadtium	src/mdtnh/BasicItems.java	/^    public static Metal darmstadtium; \/\/ ð«¼$/;"	f	class:BasicItems
 debugPreview	src/mdtnh/MultiblockStructer.java	/^    public boolean debugPreview = true;$/;"	f	class:MultiblockStructer
 defaultConfiguredGenerationJPerSecond	src/mdtnh/energy/MdtEnergyBlock.java	/^    public float defaultConfiguredGenerationJPerSecond = -1f;$/;"	f	class:MdtEnergyBlock
 defaultConfiguredMaxOutputA	src/mdtnh/energy/MdtEnergyBlock.java	/^    public int defaultConfiguredMaxOutputA = -1;$/;"	f	class:MdtEnergyBlock
@@ -823,7 +824,7 @@ diesel	src/mdtnh/GtLiquids.java	/^    public static Liquid diesel;$/;"	f	class:G
 diodes	src/mdtnh/GtUtilityMachines.java	/^    public static final EnumMap<VoltageTier, RecipeCrafter> diodes = new EnumMap<>(VoltageTier.class);$/;"	f	class:GtUtilityMachines
 discovered	OreExplorationOverlay.java	/^    private static boolean discovered($/;"	m	class:OreExplorationOverlay	file:
 discovered	src/mdtnh/gen/block/OreExplorationOverlay.java	/^    private static boolean discovered($/;"	m	class:OreExplorationOverlay	file:
-dispersal	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block dispersal;     \/\/ 驱散$/;"	f	class:MdtImplementedTurrets
+dispersal	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block dispersal;     \/\/ é©±æ£$/;"	f	class:MdtImplementedTurrets
 displayAmmoLiquid	src/mdtnh/turret/MdtEnergyLiquidTurret.java	/^        protected Liquid displayAmmoLiquid() {$/;"	m	class:MdtEnergyLiquidTurret.MdtEnergyLiquidTurretBuild
 displayName	src/mdtnh/Component.java	/^        public final String displayName;$/;"	f	class:Component.ComponentType
 displayName	src/mdtnh/VoltageTier.java	/^    public final String displayName;$/;"	f	class:VoltageTier
@@ -835,7 +836,7 @@ distance	src/mdtnh/energy/MdtEnergySystem.java	/^        final float distance;$/
 distilledWater	src/mdtnh/GtLiquids.java	/^    public static Liquid distilledWater;$/;"	f	class:GtLiquids
 distilledWater	src/mdtnh/ModLiquids.java	/^    public static Liquid distilledWater;$/;"	f	class:ModLiquids
 distillery	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry distillery;$/;"	f	class:GtProductionMachines
-doublePlate	src/mdtnh/BasicItems.java	/^    public final Item doublePlate;      \/\/ 2重板$/;"	f	class:BasicItems.Metal
+doublePlate	src/mdtnh/BasicItems.java	/^    public final Item doublePlate;      \/\/ 2éæ¿$/;"	f	class:BasicItems.Metal
 draw	OreExplorationOverlay.java	/^    private static void draw(){$/;"	m	class:OreExplorationOverlay	file:
 draw	src/mdtnh/Boiler.java	/^        public void draw(){$/;"	m	class:Boiler.BoilerBuilding
 draw	src/mdtnh/ModDrill.java	/^        public void draw() {$/;"	m	class:ModDrill.ModDrillBuilding
@@ -870,10 +871,10 @@ drawer	src/mdtnh/Boiler.java	/^    public DrawBlock drawer = new DrawDefault();$
 drawer	src/mdtnh/draw/DrawerManager.java	/^    private DrawBlock drawer;$/;"	f	class:DrawerManager	file:
 drawerManager	src/mdtnh/ModDrill.java	/^    private DrawerManager drawerManager = new DrawerManager();$/;"	f	class:ModDrill	file:
 drawerManager	src/mdtnh/MultiblockStructer.java	/^    private DrawerManager drawerManager = new DrawerManager();$/;"	f	class:MultiblockStructer	file:
-drillTime	src/mdtnh/ModDrill.java	/^    public float drillTime = 60f; \/\/ 每次产出的 tick 数$/;"	f	class:ModDrill
+drillTime	src/mdtnh/ModDrill.java	/^    public float drillTime = 60f; \/\/ æ¯æ¬¡äº§åºç tick æ°$/;"	f	class:ModDrill
 dryBraised	src/mdtnh/Boiler.java	/^        boolean dryBraised;$/;"	f	class:Boiler.BoilerBuilding
-dubnium	src/mdtnh/BasicItems.java	/^    public static Metal dubnium; \/\/ 𬭊$/;"	f	class:BasicItems
-dysprosium	src/mdtnh/BasicItems.java	/^    public static Metal dysprosium; \/\/ 镝$/;"	f	class:BasicItems
+dubnium	src/mdtnh/BasicItems.java	/^    public static Metal dubnium; \/\/ ð¬­$/;"	f	class:BasicItems
+dysprosium	src/mdtnh/BasicItems.java	/^    public static Metal dysprosium; \/\/ é$/;"	f	class:BasicItems
 edge	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^    public FlowChartDefinition edge($/;"	m	class:FlowChartDefinition
 edgeBottomRegion	src/mdtnh/transport/MdtFluidPipeBlock.java	/^    public TextureRegion edgeBottomRegion;$/;"	f	class:MdtFluidPipeBlock
 edgeBottomRegion	src/mdtnh/transport/MdtItemPipeBlock.java	/^    public TextureRegion edgeBottomRegion;$/;"	f	class:MdtItemPipeBlock
@@ -892,16 +893,16 @@ edges	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^    public List<Ed
 effectiveCraftTime	src/mdtnh/MultiblockStructer.java	/^        private float effectiveCraftTime(Recipe recipe) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
 effectiveEnergyPerCraft	src/mdtnh/MultiblockStructer.java	/^        private float effectiveEnergyPerCraft(Recipe recipe) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
 effectiveStructurePreviewLevel	src/mdtnh/MultiblockStructer.java	/^        private int effectiveStructurePreviewLevel() {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
-einsteinium	src/mdtnh/BasicItems.java	/^    public static Metal einsteinium; \/\/ 锿$/;"	f	class:BasicItems
-electricArc	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block electricArc;   \/\/ 电击$/;"	f	class:MdtImplementedTurrets
+einsteinium	src/mdtnh/BasicItems.java	/^    public static Metal einsteinium; \/\/ é¿$/;"	f	class:BasicItems
+electricArc	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block electricArc;   \/\/ çµå»$/;"	f	class:MdtImplementedTurrets
 electricFurnace	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry electricFurnace;$/;"	f	class:GtProductionMachines
 electricGridEnabled	src/mdtnh/hatch/EnergyInputHatch.java	/^    public boolean electricGridEnabled = true;$/;"	f	class:EnergyInputHatch
 electricMachines	src/mdtnh/VoltageRecipeRegistry.java	/^    public final EnumMap<VoltageTier, RecipeCrafter> electricMachines =$/;"	f	class:VoltageRecipeRegistry
 electricVariants	src/mdtnh/VoltageRecipeRegistry.java	/^        public final EnumMap<VoltageTier, RecipeCrafter.Recipe> electricVariants =$/;"	f	class:VoltageRecipeRegistry.RegisteredRecipe
 electricity	src/mdtnh/RecipeCrafter.java	/^        electricity,$/;"	e	enum:RecipeCrafter.EnergySource	file:
-electrode	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block electrode;     \/\/ 电极$/;"	f	class:MdtImplementedTurrets
+electrode	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block electrode;     \/\/ çµæ$/;"	f	class:MdtImplementedTurrets
 electrolyzer	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry electrolyzer;$/;"	f	class:GtProductionMachines
-electrum	src/mdtnh/BasicItems.java	/^    public static Metal electrum; \/\/ 琥珀金$/;"	f	class:BasicItems
+electrum	src/mdtnh/BasicItems.java	/^    public static Metal electrum; \/\/ ç¥çé$/;"	f	class:BasicItems
 emitter	src/mdtnh/Component.java	/^        emitter("emitter"),$/;"	e	enum:Component.ComponentType	file:
 encodeGeneratorConfig	src/mdtnh/energy/MdtEnergyBlock.java	/^        private String encodeGeneratorConfig($/;"	m	class:MdtEnergyBlock.MdtEnergyBuild	file:
 end	gradlew.bat	/^:end$/;"	l
@@ -961,7 +962,7 @@ energyState	src/mdtnh/hatch/EnergyInputHatch.java	/^        public final EnergyS
 energyState	src/mdtnh/turret/MdtEnergyTurret.java	/^        public EnergyState energyState() {$/;"	m	class:MdtEnergyTurret.MdtEnergyTurretBuild
 enoughLiquid	src/mdtnh/turret/MdtEnergyLiquidTurret.java	/^        protected boolean enoughLiquid(Liquid liquid, BulletType type) {$/;"	m	class:MdtEnergyLiquidTurret.MdtEnergyLiquidTurretBuild
 enqueueTransit	src/mdtnh/transport/MdtItemPipeBlock.java	/^        private void enqueueTransit(Item item, int amount, Building source) {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild	file:
-enrichedNaquadahKaijinEuropiumKenguraniumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal enrichedNaquadahKaijinEuropiumKenguraniumAlloy; \/\/ 富集硅岩凯金铕铿铀合金$/;"	f	class:BasicItems
+enrichedNaquadahKaijinEuropiumKenguraniumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal enrichedNaquadahKaijinEuropiumKenguraniumAlloy; \/\/ å¯éç¡å²©å¯ééé¿éåé$/;"	f	class:BasicItems
 ensureBuiltIns	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private void ensureBuiltIns() {$/;"	m	class:MdtIntroductionUI	file:
 ensureCreditArray	src/mdtnh/transport/MdtFluidPipeBlock.java	/^        private void ensureCreditArray() {$/;"	m	class:MdtFluidPipeBlock.MdtFluidPipeBuild	file:
 ensureCurrentPage	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private void ensureCurrentPage() {$/;"	m	class:MdtIntroductionUI	file:
@@ -980,14 +981,14 @@ epsilon	src/mdtnh/energy/MdtEnergySystem.java	/^    private static final float e
 equals	src/mdtnh/MultiblockStructer.java	/^        public boolean equals(Object o) {$/;"	m	class:MultiblockStructer.pos
 equals	src/mdtnh/fluidSystem/GT/GTFluidStack.java	/^    public boolean equals(GTFluidStack other){$/;"	m	class:GTFluidStack
 equals	src/mdtnh/fluidSystem/GT/GTFluidStack.java	/^    public boolean equals(Object o){$/;"	m	class:GTFluidStack
-erbium	src/mdtnh/BasicItems.java	/^    public static Metal erbium; \/\/ 铒$/;"	f	class:BasicItems
+erbium	src/mdtnh/BasicItems.java	/^    public static Metal erbium; \/\/ é$/;"	f	class:BasicItems
 ethylene	src/mdtnh/GtLiquids.java	/^    public static Liquid ethylene;$/;"	f	class:GtLiquids
-europium	src/mdtnh/BasicItems.java	/^    public static Metal europium; \/\/ 铕$/;"	f	class:BasicItems
+europium	src/mdtnh/BasicItems.java	/^    public static Metal europium; \/\/ é$/;"	f	class:BasicItems
 exampleBattery	src/mdtnh/energy/MdtEnergyBlocks.java	/^    public static MdtEnergyBlock exampleBattery;$/;"	f	class:MdtEnergyBlocks
 exampleConsumer	src/mdtnh/energy/MdtEnergyBlocks.java	/^    public static MdtEnergyBlock exampleConsumer;$/;"	f	class:MdtEnergyBlocks
 exampleGenerator	src/mdtnh/energy/MdtEnergyBlocks.java	/^    public static MdtEnergyBlock exampleGenerator;$/;"	f	class:MdtEnergyBlocks
 exampleWire	src/mdtnh/energy/MdtEnergyBlocks.java	/^    public static MdtEnergyBlock exampleWire;$/;"	f	class:MdtEnergyBlocks
-excitation	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block excitation;    \/\/ 激发$/;"	f	class:MdtImplementedTurrets
+excitation	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block excitation;    \/\/ æ¿å$/;"	f	class:MdtImplementedTurrets
 execute	gradlew.bat	/^:execute$/;"	l
 executionVoltageTier	src/mdtnh/RecipeCrafter.java	/^        public VoltageTier executionVoltageTier;$/;"	f	class:RecipeCrafter.Recipe
 explored	src/mdtnh/gen/block/OreExplorationController.java	/^    private static final IntMap<IntSet> explored =$/;"	f	class:OreExplorationController	file:
@@ -1005,7 +1006,7 @@ fallbackRegion	src/mdtnh/transport/MdtFluidPipeBlock.java	/^    public String fa
 fallbackRegion	src/mdtnh/transport/MdtItemPipeBlock.java	/^    public String fallbackRegion;$/;"	f	class:MdtItemPipeBlock
 falloffEnd	src/mdtnh/turret/TrackingContinuousLaserBulletType.java	/^    public float falloffEnd = 520f;$/;"	f	class:TrackingContinuousLaserBulletType
 falloffStart	src/mdtnh/turret/TrackingContinuousLaserBulletType.java	/^    public float falloffStart = 120f;$/;"	f	class:TrackingContinuousLaserBulletType
-fermium	src/mdtnh/BasicItems.java	/^    public static Metal fermium; \/\/ 镄$/;"	f	class:BasicItems
+fermium	src/mdtnh/BasicItems.java	/^    public static Metal fermium; \/\/ é$/;"	f	class:BasicItems
 fillAlpha	OreExplorationOverlay.java	/^    public static float fillAlpha = 0.10f;$/;"	f	class:OreExplorationOverlay
 fillAlpha	src/mdtnh/gen/block/OreExplorationOverlay.java	/^    public static float fillAlpha = 0.10f;$/;"	f	class:OreExplorationOverlay
 find	src/mdtnh/transport/MdtFluidPipeBlock.java	/^    private static TextureRegion find(String contentName, String explicitName, String suffix) {$/;"	m	class:MdtFluidPipeBlock	file:
@@ -1025,7 +1026,7 @@ findUsing	src/mdtnh/VoltageRecipeRegistry.java	/^    public static List<Register
 findVanillaCategoryTable	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private Table findVanillaCategoryTable() {$/;"	m	class:MdtBuildMenuFragment	file:
 findWireRegion	src/mdtnh/energy/MdtEnergyBlock.java	/^    private TextureRegion findWireRegion(String explicitName, String defaultName) {$/;"	m	class:MdtEnergyBlock	file:
 fineWire	src/mdtnh/BasicItems.java	/^    public final Item fineWire;$/;"	f	class:BasicItems.Metal
-flerovium	src/mdtnh/BasicItems.java	/^    public static Metal flerovium; \/\/ 𫓧$/;"	f	class:BasicItems
+flerovium	src/mdtnh/BasicItems.java	/^    public static Metal flerovium; \/\/ ð«§$/;"	f	class:BasicItems
 fluid	src/mdtnh/fluidSystem/GT/GTFluidStack.java	/^    public GTFluid fluid;$/;"	f	class:GTFluidStack
 fluid	src/mdtnh/fluidSystem/GT/conduit.java	/^        GTFluidStack fluid;$/;"	f	class:conduit.conduitBuilding
 fluidExtractor	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry fluidExtractor;$/;"	f	class:GtProductionMachines
@@ -1046,8 +1047,8 @@ forms	src/mdtnh/MaterialDefinition.java	/^    private final Set<String> forms = 
 fraction	src/mdtnh/energy/EnergyState.java	/^    public float fraction(EnergySpec spec) {$/;"	m	class:EnergyState
 fragmentShader	src/mdtnh/graphics/GrayMaterialShader.java	/^    private static final String fragmentShader =$/;"	f	class:GrayMaterialShader	file:
 frame	src/mdtnh/BasicItems.java	/^    public final Item frame;$/;"	f	class:BasicItems.Metal
-frame	src/mdtnh/Boiler.java	/^    public int frame = 3;\/\/工作动画帧数$/;"	f	class:Boiler
-francium	src/mdtnh/BasicItems.java	/^    public static Metal francium; \/\/ 钫$/;"	f	class:BasicItems
+frame	src/mdtnh/Boiler.java	/^    public int frame = 3;\/\/å·¥ä½å¨ç»å¸§æ°$/;"	f	class:Boiler
+francium	src/mdtnh/BasicItems.java	/^    public static Metal francium; \/\/ é«$/;"	f	class:BasicItems
 fromId	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^        public final String fromId;$/;"	f	class:FlowChartDefinition.Edge
 fromVoltageCeil	src/mdtnh/VoltageTier.java	/^    public static VoltageTier fromVoltageCeil(float voltageV) {$/;"	m	class:VoltageTier
 fuel	src/mdtnh/energy/MdtLiquidFuelGeneratorBlock.java	/^    public MdtLiquidFuelGeneratorBlock fuel(Liquid liquid, float joulesPerUnit) {$/;"	m	class:MdtLiquidFuelGeneratorBlock
@@ -1055,8 +1056,8 @@ fuelJoulesPerUnit	src/mdtnh/energy/MdtLiquidFuelGeneratorBlock.java	/^    public
 fuelList	src/mdtnh/Boiler.java	/^    public FuelList fuelList;$/;"	f	class:Boiler
 full	src/mdtnh/MaterialDefinition.java	/^    public static MaterialDefinition full(String id, Color color) {$/;"	m	class:MaterialDefinition
 furnace	src/mdtnh/VoltageExampleMachines.java	/^    public static VoltageRecipeRegistry furnace;$/;"	f	class:VoltageExampleMachines
-gadolinium	src/mdtnh/BasicItems.java	/^    public static Metal gadolinium; \/\/ 钆$/;"	f	class:BasicItems
-gallium	src/mdtnh/BasicItems.java	/^    public static Metal gallium; \/\/ 镓$/;"	f	class:BasicItems
+gadolinium	src/mdtnh/BasicItems.java	/^    public static Metal gadolinium; \/\/ é$/;"	f	class:BasicItems
+gallium	src/mdtnh/BasicItems.java	/^    public static Metal gallium; \/\/ é$/;"	f	class:BasicItems
 gasTurbine	src/mdtnh/GtUtilityMachines.java	/^    public static GtGeneratorCrafter gasTurbine;$/;"	f	class:GtUtilityMachines
 gear	src/mdtnh/BasicItems.java	/^    public final Item gear;$/;"	f	class:BasicItems.Metal
 genTile	src/mdtnh/gen/MyPlanetGenerator.java	/^    protected void genTile(Vec3 position, TileGen tile) {$/;"	m	class:MyPlanetGenerator
@@ -1111,7 +1112,7 @@ getString	src/mdtnh/modui/introduction/IntroductionContext.java	/^    public Str
 getString	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        public String getString(String key, String fallback) {$/;"	m	class:RecipeQueryUI.PageContext
 getSurface	src/mdtnh/gen/MyPlanetGenerator.java	/^    private Block getSurface(Vec3 position) {$/;"	m	class:MyPlanetGenerator	file:
 getTeamSet	src/mdtnh/gen/block/OreExplorationController.java	/^    private static IntSet getTeamSet($/;"	m	class:OreExplorationController	file:
-gold	src/mdtnh/BasicItems.java	/^    public static Metal gold; \/\/ 金$/;"	f	class:BasicItems
+gold	src/mdtnh/BasicItems.java	/^    public static Metal gold; \/\/ é$/;"	f	class:BasicItems
 grayRegion	src/mdtnh/graphics/GrayMaterialShader.java	/^    private TextureRegion grayRegion;$/;"	f	class:GrayMaterialShader	file:
 group	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^    public FlowChartDefinition group($/;"	m	class:FlowChartDefinition
 groupId	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^        public final String groupId;$/;"	f	class:FlowChartDefinition.Node
@@ -1122,7 +1123,7 @@ groups	src/mdtnh/RecipeCrafter.java	/^    public RecipeGroup[] groups = new Reci
 groups	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^    private final List<Group> groups =$/;"	f	class:FlowChartDefinition	file:
 groups	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^    public List<Group> groups() {$/;"	m	class:FlowChartDefinition
 gtNhLegacyVoltageAggregation	src/mdtnh/MultiblockStructer.java	/^    public boolean gtNhLegacyVoltageAggregation = true;$/;"	f	class:MultiblockStructer
-hafnium	src/mdtnh/BasicItems.java	/^    public static Metal hafnium; \/\/ 铪$/;"	f	class:BasicItems
+hafnium	src/mdtnh/BasicItems.java	/^    public static Metal hafnium; \/\/ éª$/;"	f	class:BasicItems
 handleItem	src/mdtnh/transport/MdtItemPipeBlock.java	/^        public void handleItem(Building source, Item item) {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild
 handleItem	src/mdtnh/turret/MdtEnergyItemTurret.java	/^        public void handleItem(Building source, Item item) {$/;"	m	class:MdtEnergyItemTurret.MdtEnergyItemTurretBuild
 handleLiquid	src/mdtnh/Boiler.java	/^        public void handleLiquid(Building source,Liquid liquid,float amount){$/;"	m	class:Boiler.BoilerBuilding
@@ -1148,26 +1149,26 @@ hasItemAmmoOnly	src/mdtnh/turret/MdtEnergyItemTurret.java	/^        protected bo
 hasLiquidAmmoOnly	src/mdtnh/turret/MdtEnergyLiquidTurret.java	/^        protected boolean hasLiquidAmmoOnly() {$/;"	m	class:MdtEnergyLiquidTurret.MdtEnergyLiquidTurretBuild
 hasTag	src/mdtnh/TagItem.java	/^    public boolean hasTag(ItemTag t){$/;"	m	class:TagItem
 hashCode	src/mdtnh/MultiblockStructer.java	/^        public int hashCode() {$/;"	m	class:MultiblockStructer.pos
-hassium	src/mdtnh/BasicItems.java	/^    public static Metal hassium; \/\/ 𬭶$/;"	f	class:BasicItems
-hastelloy	src/mdtnh/BasicItems.java	/^    public static Metal hastelloy; \/\/ 哈氏合金$/;"	f	class:BasicItems
-hastelloyC276	src/mdtnh/BasicItems.java	/^    public static Metal hastelloyC276; \/\/ 哈斯特洛依合金_C_276$/;"	f	class:BasicItems
-hastelloyX	src/mdtnh/BasicItems.java	/^    public static Metal hastelloyX; \/\/ 哈斯特洛依合金_X$/;"	f	class:BasicItems
+hassium	src/mdtnh/BasicItems.java	/^    public static Metal hassium; \/\/ ð¬­¶$/;"	f	class:BasicItems
+hastelloy	src/mdtnh/BasicItems.java	/^    public static Metal hastelloy; \/\/ åæ°åé$/;"	f	class:BasicItems
+hastelloyC276	src/mdtnh/BasicItems.java	/^    public static Metal hastelloyC276; \/\/ åæ¯ç¹æ´ä¾åé_C_276$/;"	f	class:BasicItems
+hastelloyX	src/mdtnh/BasicItems.java	/^    public static Metal hastelloyX; \/\/ åæ¯ç¹æ´ä¾åé_X$/;"	f	class:BasicItems
 heat	src/mdtnh/Boiler.java	/^        public float heat,steamAmount,burnTime;$/;"	f	class:Boiler.BoilerBuilding
 heat	src/mdtnh/fluidSystem/GT/GTFluid.java	/^    public int heat;$/;"	f	class:GTFluid
 heatLoseSpeed	src/mdtnh/Boiler.java	/^    public float maxHeat,maxWaterAmount,maxSteamAmount,heatSpeed,heatLoseSpeed,productSpeed;$/;"	f	class:Boiler
-heatResistantChromiumIronAlloyMa956	src/mdtnh/BasicItems.java	/^    public static Metal heatResistantChromiumIronAlloyMa956; \/\/ 耐热铬铁合金_MA_956$/;"	f	class:BasicItems
+heatResistantChromiumIronAlloyMa956	src/mdtnh/BasicItems.java	/^    public static Metal heatResistantChromiumIronAlloyMa956; \/\/ èç­é¬éåé_MA_956$/;"	f	class:BasicItems
 heatSpeed	src/mdtnh/Boiler.java	/^    public float maxHeat,maxWaterAmount,maxSteamAmount,heatSpeed,heatLoseSpeed,productSpeed;$/;"	f	class:Boiler
 highMinVoltageV	src/mdtnh/energy/MdtTransformerBlock.java	/^    public float highMinVoltageV = 8.0001f;$/;"	f	class:MdtTransformerBlock
 highSideAmperage	src/mdtnh/energy/MdtTransformerBlock.java	/^    public int highSideAmperage = 1;$/;"	f	class:MdtTransformerBlock
-highSpeedSteelE	src/mdtnh/BasicItems.java	/^    public static Metal highSpeedSteelE; \/\/ 高速钢-E$/;"	f	class:BasicItems
-highSpeedSteelG	src/mdtnh/BasicItems.java	/^    public static Metal highSpeedSteelG; \/\/ 高速钢-G$/;"	f	class:BasicItems
-highSpeedSteelS	src/mdtnh/BasicItems.java	/^    public static Metal highSpeedSteelS; \/\/ 高速钢-S$/;"	f	class:BasicItems
+highSpeedSteelE	src/mdtnh/BasicItems.java	/^    public static Metal highSpeedSteelE; \/\/ é«éé¢-E$/;"	f	class:BasicItems
+highSpeedSteelG	src/mdtnh/BasicItems.java	/^    public static Metal highSpeedSteelG; \/\/ é«éé¢-G$/;"	f	class:BasicItems
+highSpeedSteelS	src/mdtnh/BasicItems.java	/^    public static Metal highSpeedSteelS; \/\/ é«éé¢-S$/;"	f	class:BasicItems
 highVoltageV	src/mdtnh/energy/MdtTransformerBlock.java	/^    public float highVoltageV = 32f;$/;"	f	class:MdtTransformerBlock
 highlightGroup	src/mdtnh/modui/introduction/FlowChartIntroductionPage.java	/^    private void highlightGroup($/;"	m	class:FlowChartIntroductionPage	file:
 history	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private final Deque<NavigationState> history =$/;"	f	class:MdtIntroductionUI	file:
 history	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private final Deque<NavigationState> history = new ArrayDeque<>();$/;"	f	class:RecipeQueryUI	file:
 hitEntity	src/mdtnh/turret/WindBulletType.java	/^    public void hitEntity(Bullet b, Hitboxc entity, float health) {$/;"	m	class:WindBulletType
-holmium	src/mdtnh/BasicItems.java	/^    public static Metal holmium; \/\/ 钬$/;"	f	class:BasicItems
+holmium	src/mdtnh/BasicItems.java	/^    public static Metal holmium; \/\/ é¬$/;"	f	class:BasicItems
 horizontalConnector	src/mdtnh/modui/introduction/FlowChartIntroductionPage.java	/^    private String horizontalConnector($/;"	m	class:FlowChartIntroductionPage	file:
 host	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private CoreItemsDisplay host;$/;"	f	class:MdtCoreItemsQuickBar	file:
 hotIngot	src/mdtnh/BasicItems.java	/^    public final Item hotIngot;$/;"	f	class:BasicItems.Metal
@@ -1180,7 +1181,7 @@ hoverPreviewWidth	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private
 hoveredBlock	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private Block hoveredBlock;$/;"	f	class:MdtBuildMenuFragment	file:
 hoveredContent	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private static UnlockableContent hoveredContent;$/;"	f	class:RecipeQueryUI	file:
 hoveredItem	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private Item hoveredItem;$/;"	f	class:MdtCoreItemsQuickBar	file:
-hslaSteel	src/mdtnh/BasicItems.java	/^    public static Metal hslaSteel; \/\/ HSLA钢$/;"	f	class:BasicItems
+hslaSteel	src/mdtnh/BasicItems.java	/^    public static Metal hslaSteel; \/\/ HSLAé¢$/;"	f	class:BasicItems
 hydrochloricAcid	src/mdtnh/GtLiquids.java	/^    public static Liquid hydrochloricAcid;$/;"	f	class:GtLiquids
 hydrogen	src/mdtnh/GtLiquids.java	/^    public static Liquid hydrogen;$/;"	f	class:GtLiquids
 icon	src/mdtnh/MultiblockStructer.java	/^        public TextureRegion icon;$/;"	f	class:MultiblockStructer.RecipeGroup
@@ -1218,9 +1219,9 @@ id	src/mdtnh/transport/GtTransportData.java	/^        public final String id;$/;
 id	src/mdtnh/transport/GtTransportData.java	/^        public final String id;$/;"	f	class:GtTransportData.ItemPipeMaterial
 id	src/mdtnh/transport/GtTransportData.java	/^        public final String id;$/;"	f	class:GtTransportData.WireMaterial
 ignoredInputA	src/mdtnh/energy/EnergyState.java	/^    public int ignoredInputA;$/;"	f	class:EnergyState
-indium	src/mdtnh/BasicItems.java	/^    public static Metal indium; \/\/ 铟$/;"	f	class:BasicItems
-indiumTinBariumTitaniumCopperOxideAlloy	src/mdtnh/BasicItems.java	/^    public static Metal indiumTinBariumTitaniumCopperOxideAlloy; \/\/ 铟锡钡钛铜氧合金$/;"	f	class:BasicItems
-inertMetalMixture	src/mdtnh/BasicItems.java	/^    public static Metal inertMetalMixture; \/\/ 惰性金属混合物$/;"	f	class:BasicItems
+indium	src/mdtnh/BasicItems.java	/^    public static Metal indium; \/\/ é$/;"	f	class:BasicItems
+indiumTinBariumTitaniumCopperOxideAlloy	src/mdtnh/BasicItems.java	/^    public static Metal indiumTinBariumTitaniumCopperOxideAlloy; \/\/ éé¡é¡ééæ°§åé$/;"	f	class:BasicItems
+inertMetalMixture	src/mdtnh/BasicItems.java	/^    public static Metal inertMetalMixture; \/\/ æ°æ§éå±æ··åç©$/;"	f	class:BasicItems
 ingot	src/mdtnh/BasicItems.java	/^    public final Item ingot;$/;"	f	class:BasicItems.Metal
 ingredient	src/mdtnh/fluidSystem/GT/conduit.java	/^    public String ingredient;$/;"	f	class:conduit
 init	src/mdtnh/energy/MdtEnergyBlock.java	/^    public void init() {$/;"	m	class:MdtEnergyBlock
@@ -1262,12 +1263,12 @@ instance	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private stati
 instance	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private static final RecipeQueryUI instance = new RecipeQueryUI();$/;"	f	class:RecipeQueryUI	file:
 introductionEntryButton	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private ImageButton introductionEntryButton;$/;"	f	class:MdtBuildMenuFragment	file:
 introductionEntryName	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private static final String introductionEntryName =$/;"	f	class:MdtBuildMenuFragment	file:
-invar	src/mdtnh/BasicItems.java	/^    public static Metal invar; \/\/ 殷钢$/;"	f	class:BasicItems
-iridium	src/mdtnh/BasicItems.java	/^    public static Metal iridium; \/\/ 铱$/;"	f	class:BasicItems
-iridiumOsmiumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal iridiumOsmiumAlloy; \/\/ 铱锇合金$/;"	f	class:BasicItems
-iridiumSlag	src/mdtnh/BasicItems.java	/^    public static Metal iridiumSlag; \/\/ 铱金属渣$/;"	f	class:BasicItems
-iron	src/mdtnh/BasicItems.java	/^    public static Metal iron; \/\/ 铁$/;"	f	class:BasicItems
-ironWave	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block ironWave;      \/\/ 铁浪$/;"	f	class:MdtImplementedTurrets
+invar	src/mdtnh/BasicItems.java	/^    public static Metal invar; \/\/ æ®·é¢$/;"	f	class:BasicItems
+iridium	src/mdtnh/BasicItems.java	/^    public static Metal iridium; \/\/ é±$/;"	f	class:BasicItems
+iridiumOsmiumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal iridiumOsmiumAlloy; \/\/ é±éåé$/;"	f	class:BasicItems
+iridiumSlag	src/mdtnh/BasicItems.java	/^    public static Metal iridiumSlag; \/\/ é±éå±æ¸£$/;"	f	class:BasicItems
+iron	src/mdtnh/BasicItems.java	/^    public static Metal iron; \/\/ é$/;"	f	class:BasicItems
+ironWave	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block ironWave;      \/\/ éæµª$/;"	f	class:MdtImplementedTurrets
 isBuiltIn	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        boolean isBuiltIn() {$/;"	m	class:RecipeQueryUI.PageEntry
 isConfigurableGenerator	src/mdtnh/energy/MdtEnergyBlock.java	/^    public boolean isConfigurableGenerator() {$/;"	m	class:MdtEnergyBlock
 isDiscovered	src/mdtnh/gen/block/OreExplorationController.java	/^    public static boolean isDiscovered($/;"	m	class:OreExplorationController
@@ -1300,12 +1301,12 @@ joulesPerSteamUnit	src/mdtnh/hatch/SteamInputHatch.java	/^    public float joule
 joulesPerSteamUnit	src/mdtnh/turret/MdtSteamItemTurret.java	/^    public float joulesPerSteamUnit = 60f;$/;"	f	class:MdtSteamItemTurret
 joulesPerSteamUnit	src/mdtnh/turret/MdtSteamLiquidTurret.java	/^    public float joulesPerSteamUnit = 60f;$/;"	f	class:MdtSteamLiquidTurret
 joulesPerSteamUnit	src/mdtnh/turret/MdtSteamTurret.java	/^    public float joulesPerSteamUnit = 60f;$/;"	f	class:MdtSteamTurret
-kanthal	src/mdtnh/BasicItems.java	/^    public static Metal kanthal; \/\/ 坎塔尔合金$/;"	f	class:BasicItems
+kanthal	src/mdtnh/BasicItems.java	/^    public static Metal kanthal; \/\/ åå¡å°åé$/;"	f	class:BasicItems
 keyName	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private String keyName(KeyBind bind) {$/;"	m	class:RecipeQueryUI	file:
 kind	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^    private final Kind kind;$/;"	f	class:ContentCatalogPage	file:
 labelKey	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^        public final String labelKey;$/;"	f	class:FlowChartDefinition.Edge
 landing	src/mdtnh/gen/ModSectors.java	/^    public static SectorPreset landing;$/;"	f	class:ModSectors
-lanthanum	src/mdtnh/BasicItems.java	/^    public static Metal lanthanum; \/\/ 镧$/;"	f	class:BasicItems
+lanthanum	src/mdtnh/BasicItems.java	/^    public static Metal lanthanum; \/\/ é§$/;"	f	class:BasicItems
 laserEngraver	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry laserEngraver;$/;"	f	class:GtProductionMachines
 lastCheckedRotation	src/mdtnh/MultiblockStructer.java	/^        private int lastCheckedRotation = -1;$/;"	f	class:MultiblockStructer.MultiblockStructerBuilding	file:
 lastInputVoltageV	src/mdtnh/energy/EnergyState.java	/^    public float lastInputVoltageV;$/;"	f	class:EnergyState
@@ -1316,8 +1317,8 @@ lastSelected	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private Blo
 lastTeam	src/mdtnh/gen/block/SurveyRadarBlock.java	/^        private int lastTeam = -1;$/;"	f	class:SurveyRadarBlock.SurveyRadarBuild	file:
 lastUnitTiles	src/mdtnh/gen/block/OreExplorationController.java	/^    private static final IntIntMap lastUnitTiles =$/;"	f	class:OreExplorationController	file:
 lathe	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry lathe;$/;"	f	class:GtProductionMachines
-lawrencium	src/mdtnh/BasicItems.java	/^    public static Metal lawrencium; \/\/ 铹$/;"	f	class:BasicItems
-lead	src/mdtnh/BasicItems.java	/^    public static Metal lead; \/\/ 铅$/;"	f	class:BasicItems
+lawrencium	src/mdtnh/BasicItems.java	/^    public static Metal lawrencium; \/\/ é¹$/;"	f	class:BasicItems
+lead	src/mdtnh/BasicItems.java	/^    public static Metal lead; \/\/ é$/;"	f	class:BasicItems
 left	src/mdtnh/ModDrill.java	/^    public int top = 1, button = 1, left = 1, right = 1;$/;"	f	class:ModDrill
 level	src/mdtnh/MultiblockStructer.java	/^        public int level;$/;"	f	class:MultiblockStructer.MultiblockStructerBuilding
 levels	src/mdtnh/MultiblockStructer.java	/^    public List<LevelStruct> levels = new ArrayList<>();$/;"	f	class:MultiblockStructer
@@ -1336,8 +1337,8 @@ list	src/mdtnh/FuelList.java	/^    public ObjectMap<Item,FuelProp> list = new Ob
 list	src/mdtnh/fluidSystem/GT/GTFluidStack.java	/^    public static Seq<GTFluidStack> list(Object... items){$/;"	m	class:GTFluidStack
 litersPerSecond	src/mdtnh/transport/GtTransportData.java	/^        public final float[] litersPerSecond;$/;"	f	class:GtTransportData.FluidPipeMaterial
 litersPerSecond	src/mdtnh/transport/MdtFluidPipeBlock.java	/^    public final float litersPerSecond;$/;"	f	class:MdtFluidPipeBlock
-lithium	src/mdtnh/BasicItems.java	/^    public static Metal lithium; \/\/ 锂$/;"	f	class:BasicItems
-livermorium	src/mdtnh/BasicItems.java	/^    public static Metal livermorium; \/\/ 𫟷$/;"	f	class:BasicItems
+lithium	src/mdtnh/BasicItems.java	/^    public static Metal lithium; \/\/ é$/;"	f	class:BasicItems
+livermorium	src/mdtnh/BasicItems.java	/^    public static Metal livermorium; \/\/ ð«·$/;"	f	class:BasicItems
 load	src/mdtnh/BasicItems.java	/^    public static void load() {$/;"	m	class:BasicItems
 load	src/mdtnh/Boiler.java	/^    public void load(){$/;"	m	class:Boiler
 load	src/mdtnh/Component.java	/^    public static void load(){$/;"	m	class:Component
@@ -1397,22 +1398,22 @@ lowMinVoltageV	src/mdtnh/energy/MdtTransformerBlock.java	/^    public float lowM
 lowSideAmperage	src/mdtnh/energy/MdtTransformerBlock.java	/^    public int lowSideAmperage = 4;$/;"	f	class:MdtTransformerBlock
 lowVoltageV	src/mdtnh/energy/MdtTransformerBlock.java	/^    public float lowVoltageV = 8f;$/;"	f	class:MdtTransformerBlock
 lubricant	src/mdtnh/GtLiquids.java	/^    public static Liquid lubricant;$/;"	f	class:GtLiquids
-lutetium	src/mdtnh/BasicItems.java	/^    public static Metal lutetium; \/\/ 镥$/;"	f	class:BasicItems
+lutetium	src/mdtnh/BasicItems.java	/^    public static Metal lutetium; \/\/ é¥$/;"	f	class:BasicItems
 macerator	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry macerator;$/;"	f	class:GtProductionMachines
 machine	src/mdtnh/VoltageRecipeRegistry.java	/^    public RecipeCrafter machine(VoltageTier tier) {$/;"	m	class:VoltageRecipeRegistry
-magnesium	src/mdtnh/BasicItems.java	/^    public static Metal magnesium; \/\/ 镁$/;"	f	class:BasicItems
-magnesiumAluminumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal magnesiumAluminumAlloy; \/\/ 镁铝合金$/;"	f	class:BasicItems
-magneticRail	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block magneticRail;  \/\/ 磁轨$/;"	f	class:MdtImplementedTurrets
-magnetizedIron	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedIron; \/\/ 磁化铁$/;"	f	class:BasicItems
-magnetizedNeodymium	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedNeodymium; \/\/ 磁化钕$/;"	f	class:BasicItems
-magnetizedSamarium	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedSamarium; \/\/ 磁化钐$/;"	f	class:BasicItems
-magnetizedSteel	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedSteel; \/\/ 磁化钢$/;"	f	class:BasicItems
+magnesium	src/mdtnh/BasicItems.java	/^    public static Metal magnesium; \/\/ é$/;"	f	class:BasicItems
+magnesiumAluminumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal magnesiumAluminumAlloy; \/\/ ééåé$/;"	f	class:BasicItems
+magneticRail	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block magneticRail;  \/\/ ç£è½¨$/;"	f	class:MdtImplementedTurrets
+magnetizedIron	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedIron; \/\/ ç£åé$/;"	f	class:BasicItems
+magnetizedNeodymium	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedNeodymium; \/\/ ç£åé$/;"	f	class:BasicItems
+magnetizedSamarium	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedSamarium; \/\/ ç£åé$/;"	f	class:BasicItems
+magnetizedSteel	src/mdtnh/BasicItems.java	/^    public static Metal magnetizedSteel; \/\/ ç£åé¢$/;"	f	class:BasicItems
 mainEnd	gradlew.bat	/^:mainEnd$/;"	l
 makePump	src/mdtnh/GtUtilityMachines.java	/^    private static GtAutoRecipeCrafter makePump(String name, VoltageTier tier, float ticks, float waterAmount) {$/;"	m	class:GtUtilityMachines	file:
-manganese	src/mdtnh/BasicItems.java	/^    public static Metal manganese; \/\/ 锰$/;"	f	class:BasicItems
+manganese	src/mdtnh/BasicItems.java	/^    public static Metal manganese; \/\/ é°$/;"	f	class:BasicItems
 manual	src/mdtnh/RecipeCrafter.java	/^        manual$/;"	e	enum:RecipeCrafter.EnergySource	file:
 manualVariant	src/mdtnh/VoltageRecipeRegistry.java	/^        public RecipeCrafter.Recipe manualVariant;$/;"	f	class:VoltageRecipeRegistry.RegisteredRecipe
-maragingSteel300	src/mdtnh/BasicItems.java	/^    public static Metal maragingSteel300; \/\/ 马氏体时效钢_300$/;"	f	class:BasicItems
+maragingSteel300	src/mdtnh/BasicItems.java	/^    public static Metal maragingSteel300; \/\/ é©¬æ°ä½æ¶æé¢_300$/;"	f	class:BasicItems
 matchesSearch	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private boolean matchesSearch(Item item, String normalizedQuery) {$/;"	m	class:MdtCoreItemsQuickBar	file:
 materialColors	src/mdtnh/ModItems.java	/^    public static Map<String, Color> materialColors = new HashMap<>();$/;"	f	class:ModItems
 materialRegion	src/mdtnh/graphics/GrayMaterialShader.java	/^    private TextureRegion materialRegion;$/;"	f	class:GrayMaterialShader	file:
@@ -1560,11 +1561,11 @@ mdtnh.turret	src/mdtnh/turret/MdtTurretStatusEffects.java	/^package mdtnh.turret
 mdtnh.turret	src/mdtnh/turret/TrackingContinuousLaserBulletType.java	/^package mdtnh.turret;$/;"	p
 mdtnh.turret	src/mdtnh/turret/WindBulletType.java	/^package mdtnh.turret;$/;"	p
 mechanical	src/mdtnh/MaterialDefinition.java	/^    public static MaterialDefinition mechanical(String id, Color color) {$/;"	m	class:MaterialDefinition
-meitnerium	src/mdtnh/BasicItems.java	/^    public static Metal meitnerium; \/\/ 鿏$/;"	f	class:BasicItems
-mendelevium	src/mdtnh/BasicItems.java	/^    public static Metal mendelevium; \/\/ 钔$/;"	f	class:BasicItems
-mercury	src/mdtnh/BasicItems.java	/^    public static Metal mercury; \/\/ 汞$/;"	f	class:BasicItems
+meitnerium	src/mdtnh/BasicItems.java	/^    public static Metal meitnerium; \/\/ é¿$/;"	f	class:BasicItems
+mendelevium	src/mdtnh/BasicItems.java	/^    public static Metal mendelevium; \/\/ é$/;"	f	class:BasicItems
+mercury	src/mdtnh/BasicItems.java	/^    public static Metal mercury; \/\/ æ±$/;"	f	class:BasicItems
 mercury	src/mdtnh/GtLiquids.java	/^    public static Liquid mercury;$/;"	f	class:GtLiquids
-metalMixture	src/mdtnh/BasicItems.java	/^    public static Metal metalMixture; \/\/ 金属混合物$/;"	f	class:BasicItems
+metalMixture	src/mdtnh/BasicItems.java	/^    public static Metal metalMixture; \/\/ éå±æ··åç©$/;"	f	class:BasicItems
 methane	src/mdtnh/GtLiquids.java	/^    public static Liquid methane;$/;"	f	class:GtLiquids
 minDamage	src/mdtnh/turret/HalvingPierceBulletType.java	/^    public float minDamage = 1f;$/;"	f	class:HalvingPierceBulletType
 minDamageMultiplier	src/mdtnh/turret/TrackingContinuousLaserBulletType.java	/^    public float minDamageMultiplier = 0.30f;$/;"	f	class:TrackingContinuousLaserBulletType
@@ -1591,8 +1592,8 @@ mixed	src/mdtnh/GtProductionMachines.java	/^    private static RecipeCrafter.Rec
 mixer	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry mixer;$/;"	f	class:GtProductionMachines
 moistScl	src/mdtnh/gen/MyPlanetGenerator.java	/^    public float moistScl = 0.6f;$/;"	f	class:MyPlanetGenerator
 moltenRubber	src/mdtnh/GtLiquids.java	/^    public static Liquid moltenRubber;$/;"	f	class:GtLiquids
-molybdenum	src/mdtnh/BasicItems.java	/^    public static Metal molybdenum; \/\/ 钼$/;"	f	class:BasicItems
-moscovium	src/mdtnh/BasicItems.java	/^    public static Metal moscovium; \/\/ 镆$/;"	f	class:BasicItems
+molybdenum	src/mdtnh/BasicItems.java	/^    public static Metal molybdenum; \/\/ é¼$/;"	f	class:BasicItems
+moscovium	src/mdtnh/BasicItems.java	/^    public static Metal moscovium; \/\/ é$/;"	f	class:BasicItems
 motor	src/mdtnh/Component.java	/^        motor("motor"),$/;"	e	enum:Component.ComponentType	file:
 mouseHoveredOverCore	src/mdtnh/MultiblockStructer.java	/^        private boolean mouseHoveredOverCore() {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
 movePackageToTarget	src/mdtnh/transport/MdtItemPipeBlock.java	/^        private int movePackageToTarget(Building target, Item item, int requested) {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild	file:
@@ -1607,7 +1608,7 @@ name	src/mdtnh/RecipeCrafter.java	/^        public String name;$/;"	f	class:Reci
 name	src/mdtnh/gen/MineralVein.java	/^    String name;$/;"	f	class:MineralVein
 nanoSwarm	src/mdtnh/BasicItems.java	/^    public final Item nanoSwarm;$/;"	f	class:BasicItems.Metal
 nanoSwarm	src/mdtnh/BasicItems.java	/^    public static Item nanoSwarm;$/;"	f	class:BasicItems
-naquadahAlloy	src/mdtnh/BasicItems.java	/^    public static Metal naquadahAlloy; \/\/ 硅岩合金$/;"	f	class:BasicItems
+naquadahAlloy	src/mdtnh/BasicItems.java	/^    public static Metal naquadahAlloy; \/\/ ç¡å²©åé$/;"	f	class:BasicItems
 nasaWorkbench	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry nasaWorkbench;$/;"	f	class:GtProductionMachines
 navigateBack	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private void navigateBack() {$/;"	m	class:MdtIntroductionUI	file:
 navigateBack	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private void navigateBack() {$/;"	m	class:RecipeQueryUI	file:
@@ -1616,15 +1617,15 @@ navigateTo	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private void naviga
 navigateToContent	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    void navigateToContent($/;"	m	class:MdtIntroductionUI
 navigateToPage	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    void navigateToPage($/;"	m	class:MdtIntroductionUI
 negativeCharge	src/mdtnh/turret/MdtTurretStatusEffects.java	/^    public static StatusEffect negativeCharge;$/;"	f	class:MdtTurretStatusEffects
-neodymium	src/mdtnh/BasicItems.java	/^    public static Metal neodymium; \/\/ 钕$/;"	f	class:BasicItems
-neptunium	src/mdtnh/BasicItems.java	/^    public static Metal neptunium; \/\/ 镎$/;"	f	class:BasicItems
+neodymium	src/mdtnh/BasicItems.java	/^    public static Metal neodymium; \/\/ é$/;"	f	class:BasicItems
+neptunium	src/mdtnh/BasicItems.java	/^    public static Metal neptunium; \/\/ é$/;"	f	class:BasicItems
 nextAmperage	src/mdtnh/energy/MdtDiodeBlock.java	/^        private int nextAmperage() {$/;"	m	class:MdtDiodeBlock.MdtDiodeBuild	file:
 nextEnergyCost	src/mdtnh/turret/MdtEnergyTurret.java	/^        protected float nextEnergyCost(BulletType type) {$/;"	m	class:MdtEnergyTurret.MdtEnergyTurretBuild
-nichrome	src/mdtnh/BasicItems.java	/^    public static Metal nichrome; \/\/ 镍铬合金$/;"	f	class:BasicItems
-nickel	src/mdtnh/BasicItems.java	/^    public static Metal nickel; \/\/ 镍$/;"	f	class:BasicItems
-niobium	src/mdtnh/BasicItems.java	/^    public static Metal niobium; \/\/ 铌$/;"	f	class:BasicItems
-niobiumTitaniumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal niobiumTitaniumAlloy; \/\/ 铌钛合金$/;"	f	class:BasicItems
-nobelium	src/mdtnh/BasicItems.java	/^    public static Metal nobelium; \/\/ 锘$/;"	f	class:BasicItems
+nichrome	src/mdtnh/BasicItems.java	/^    public static Metal nichrome; \/\/ éé¬åé$/;"	f	class:BasicItems
+nickel	src/mdtnh/BasicItems.java	/^    public static Metal nickel; \/\/ é$/;"	f	class:BasicItems
+niobium	src/mdtnh/BasicItems.java	/^    public static Metal niobium; \/\/ é$/;"	f	class:BasicItems
+niobiumTitaniumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal niobiumTitaniumAlloy; \/\/ ééåé$/;"	f	class:BasicItems
+nobelium	src/mdtnh/BasicItems.java	/^    public static Metal nobelium; \/\/ é$/;"	f	class:BasicItems
 node	src/mdtnh/energy/MdtEnergySystem.java	/^        final MdtEnergyNode node;$/;"	f	class:MdtEnergySystem.PathState
 node	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^    public FlowChartDefinition node($/;"	m	class:FlowChartDefinition
 nodeAt	src/mdtnh/modui/introduction/FlowChartIntroductionPage.java	/^    private FlowChartDefinition.Node nodeAt($/;"	m	class:FlowChartIntroductionPage	file:
@@ -1683,7 +1684,7 @@ oreSlots	src/mdtnh/ModDrill.java	/^        private List<OreSlot> oreSlots = new 
 oreTiles	src/mdtnh/gen/block/OreExplorationController.java	/^    private static final Seq<Tile> oreTiles =$/;"	f	class:OreExplorationController	file:
 oreWasher	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry oreWasher;$/;"	f	class:GtProductionMachines
 oreweight	src/mdtnh/gen/MineralVein.java	/^    List<Integer>oreweight=new ArrayList<>();$/;"	f	class:MineralVein
-osmium	src/mdtnh/BasicItems.java	/^    public static Metal osmium; \/\/ 锇$/;"	f	class:BasicItems
+osmium	src/mdtnh/BasicItems.java	/^    public static Metal osmium; \/\/ é$/;"	f	class:BasicItems
 outputA	src/mdtnh/energy/EnergyState.java	/^    public int outputA;$/;"	f	class:EnergyState
 outputFull	src/mdtnh/RecipeCrafter.java	/^        private boolean outputFull(Recipe r) {$/;"	m	class:RecipeCrafter.MDTFactoryBuild	file:
 outputItems	src/mdtnh/MultiblockStructer.java	/^        public ItemStack[] outputItems;$/;"	f	class:MultiblockStructer.Recipe
@@ -1718,7 +1719,7 @@ pageTypePageIndex	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        final in
 pageTypePageIndex	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private int pageTypePageIndex;$/;"	f	class:RecipeQueryUI	file:
 pages	src/mdtnh/modui/introduction/IntroductionRegistry.java	/^    private final Map<String, IntroductionPage> pages =$/;"	f	class:IntroductionRegistry	file:
 pagesForSection	src/mdtnh/modui/introduction/IntroductionRegistry.java	/^    public synchronized List<IntroductionPage> pagesForSection($/;"	m	class:IntroductionRegistry
-palladium	src/mdtnh/BasicItems.java	/^    public static Metal palladium; \/\/ 钯$/;"	f	class:BasicItems
+palladium	src/mdtnh/BasicItems.java	/^    public static Metal palladium; \/\/ é¯$/;"	f	class:BasicItems
 parallel	src/mdtnh/MultiblockStructer.java	/^    public int parallel=8;$/;"	f	class:MultiblockStructer
 parallelAmount	src/mdtnh/MultiblockStructer.java	/^        private int parallelAmount(int amount, int parallelCount) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
 parent	src/mdtnh/modui/buildui/BuildMenuNode.java	/^    public BuildMenuNode parent;$/;"	f	class:BuildMenuNode
@@ -1738,10 +1739,10 @@ pipe	src/mdtnh/MaterialDefinition.java	/^    public static MaterialDefinition pi
 piston	src/mdtnh/Component.java	/^        piston("piston"),$/;"	e	enum:Component.ComponentType	file:
 placed	src/mdtnh/ModDrill.java	/^        public void placed() {$/;"	m	class:ModDrill.ModDrillBuilding
 plate	src/mdtnh/BasicItems.java	/^    public final Item plate;$/;"	f	class:BasicItems.Metal
-platinum	src/mdtnh/BasicItems.java	/^    public static Metal platinum; \/\/ 铂$/;"	f	class:BasicItems
-plutonium	src/mdtnh/BasicItems.java	/^    public static Metal plutonium; \/\/ 钚$/;"	f	class:BasicItems
+platinum	src/mdtnh/BasicItems.java	/^    public static Metal platinum; \/\/ é$/;"	f	class:BasicItems
+plutonium	src/mdtnh/BasicItems.java	/^    public static Metal plutonium; \/\/ é$/;"	f	class:BasicItems
 polarizer	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry polarizer;$/;"	f	class:GtProductionMachines
-polonium	src/mdtnh/BasicItems.java	/^    public static Metal polonium; \/\/ 钋$/;"	f	class:BasicItems
+polonium	src/mdtnh/BasicItems.java	/^    public static Metal polonium; \/\/ é$/;"	f	class:BasicItems
 polyethylene	src/mdtnh/GtLiquids.java	/^    public static Liquid polyethylene;$/;"	f	class:GtLiquids
 pomp	src/mdtnh/Component.java	/^        pomp("pomp"),$/;"	e	enum:Component.ComponentType	file:
 popup	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private Table popup;$/;"	f	class:MdtBuildMenuFragment	file:
@@ -1750,11 +1751,11 @@ pos	src/mdtnh/MultiblockStructer.java	/^        public pos(int x, int y) {$/;"	m
 pos	src/mdtnh/MultiblockStructer.java	/^    public static class pos {$/;"	c	class:MultiblockStructer
 position	src/mdtnh/gen/block/OreExplorationController.java	/^    private static int position($/;"	m	class:OreExplorationController	file:
 positiveCharge	src/mdtnh/turret/MdtTurretStatusEffects.java	/^    public static StatusEffect positiveCharge;$/;"	f	class:MdtTurretStatusEffects
-potassium	src/mdtnh/BasicItems.java	/^    public static Metal potassium; \/\/ 钾$/;"	f	class:BasicItems
+potassium	src/mdtnh/BasicItems.java	/^    public static Metal potassium; \/\/ é¾$/;"	f	class:BasicItems
 powder	src/mdtnh/BasicItems.java	/^    public final Item powder;$/;"	f	class:BasicItems.Metal
 power	src/mdtnh/GtProductionMachines.java	/^    private static float power(VoltageTier tier, float ticks, float amps) {$/;"	m	class:GtProductionMachines	file:
 poweredAltar	src/mdtnh/ModCrafters.java	/^    public static MultiblockStructer poweredAltar;$/;"	f	class:ModCrafters
-praseodymium	src/mdtnh/BasicItems.java	/^    public static Metal praseodymium; \/\/ 镨$/;"	f	class:BasicItems
+praseodymium	src/mdtnh/BasicItems.java	/^    public static Metal praseodymium; \/\/ é¨$/;"	f	class:BasicItems
 preferredAmmoLiquid	src/mdtnh/turret/MdtEnergyLiquidTurret.java	/^        protected Liquid preferredAmmoLiquid;$/;"	f	class:MdtEnergyLiquidTurret.MdtEnergyLiquidTurretBuild
 previewAlpha	src/mdtnh/MultiblockStructer.java	/^    public float previewAlpha = 0.55f;$/;"	f	class:MultiblockStructer
 previewDrawHookRegistered	src/mdtnh/MultiblockStructer.java	/^    private static boolean previewDrawHookRegistered;$/;"	f	class:MultiblockStructer	file:
@@ -1775,8 +1776,8 @@ profile	src/mdtnh/ModLiquids.java	/^        final Profile profile;$/;"	f	class:M
 progress	src/mdtnh/ModDrill.java	/^        private float progress = 0f;$/;"	f	class:ModDrill.ModDrillBuilding	file:
 progress	src/mdtnh/MultiblockStructer.java	/^        public float progress;$/;"	f	class:MultiblockStructer.MultiblockStructerBuilding
 progress	src/mdtnh/transport/MdtItemPipeBlock.java	/^        public float progress;$/;"	f	class:MdtItemPipeBlock.TransitItem
-promethium	src/mdtnh/BasicItems.java	/^    public static Metal promethium; \/\/ 钷$/;"	f	class:BasicItems
-protactinium	src/mdtnh/BasicItems.java	/^    public static Metal protactinium; \/\/ 镤$/;"	f	class:BasicItems
+promethium	src/mdtnh/BasicItems.java	/^    public static Metal promethium; \/\/ é·$/;"	f	class:BasicItems
+protactinium	src/mdtnh/BasicItems.java	/^    public static Metal protactinium; \/\/ é¤$/;"	f	class:BasicItems
 pumpHV	src/mdtnh/GtUtilityMachines.java	/^    public static GtAutoRecipeCrafter pumpHV;$/;"	f	class:GtUtilityMachines
 pumpLV	src/mdtnh/GtUtilityMachines.java	/^    public static GtAutoRecipeCrafter pumpLV;$/;"	f	class:GtUtilityMachines
 pumpMV	src/mdtnh/GtUtilityMachines.java	/^    public static GtAutoRecipeCrafter pumpMV;$/;"	f	class:GtUtilityMachines
@@ -1785,18 +1786,18 @@ putPageState	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    void putP
 putState	src/mdtnh/modui/introduction/IntroductionContext.java	/^    public void putState($/;"	m	class:IntroductionContext
 putState	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        public void putState(String key, Object value) {$/;"	m	class:RecipeQueryUI.PageContext
 putToOutputs	src/mdtnh/MultiblockStructer.java	/^        private int putToOutputs(Item item, int amount) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
-quadruplePlate	src/mdtnh/BasicItems.java	/^    public final Item quadruplePlate;   \/\/ 4重板$/;"	f	class:BasicItems.Metal
+quadruplePlate	src/mdtnh/BasicItems.java	/^    public final Item quadruplePlate;   \/\/ 4éæ¿$/;"	f	class:BasicItems.Metal
 queryMode	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        final QueryMode queryMode;$/;"	f	class:RecipeQueryUI.NavigationState
 queryMode	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private QueryMode queryMode = QueryMode.recipe;$/;"	f	class:RecipeQueryUI	file:
 queuedAmount	src/mdtnh/transport/MdtItemPipeBlock.java	/^        private int queuedAmount(Item item) {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild	file:
 queuedTotal	src/mdtnh/transport/MdtItemPipeBlock.java	/^        private int queuedTotal() {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild	file:
 quickItems	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private Table quickItems;$/;"	f	class:MdtCoreItemsQuickBar	file:
 quickPane	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private ScrollPane quickPane;$/;"	f	class:MdtCoreItemsQuickBar	file:
-quintuplePlate	src/mdtnh/BasicItems.java	/^    public final Item quintuplePlate;   \/\/ 5重板$/;"	f	class:BasicItems.Metal
+quintuplePlate	src/mdtnh/BasicItems.java	/^    public final Item quintuplePlate;   \/\/ 5éæ¿$/;"	f	class:BasicItems.Metal
 radar	src/mdtnh/ModCrafters.java	/^    public static SurveyRadarBlock radar;$/;"	f	class:ModCrafters
-radium	src/mdtnh/BasicItems.java	/^    public static Metal radium; \/\/ 镭$/;"	f	class:BasicItems
+radium	src/mdtnh/BasicItems.java	/^    public static Metal radium; \/\/ é­$/;"	f	class:BasicItems
 railing	src/mdtnh/BasicItems.java	/^    public final Item railing;$/;"	f	class:BasicItems.Metal
-rareMetalMixture	src/mdtnh/BasicItems.java	/^    public static Metal rareMetalMixture; \/\/ 稀有金属混合物$/;"	f	class:BasicItems
+rareMetalMixture	src/mdtnh/BasicItems.java	/^    public static Metal rareMetalMixture; \/\/ ç¨æéå±æ··åç©$/;"	f	class:BasicItems
 rawOreForDrop	src/mdtnh/GtMaterials.java	/^    public static Item rawOreForDrop(Item drop) {$/;"	m	class:GtMaterials
 reactCharges	src/mdtnh/turret/MdtTurretStatusEffects.java	/^    private static void reactCharges(Unit unit, StatusEntry result, float time) {$/;"	m	class:MdtTurretStatusEffects	file:
 read	src/mdtnh/Boiler.java	/^        public void read(Reads read, byte revision){$/;"	m	class:Boiler.BoilerBuilding
@@ -1835,8 +1836,8 @@ recipes	src/mdtnh/MultiblockStructer.java	/^        public Recipe[] recipes;$/;"
 recipes	src/mdtnh/RecipeCrafter.java	/^        public Recipe[] recipes;$/;"	f	class:RecipeCrafter.RecipeGroup
 recipes	src/mdtnh/RecipeCrafter.java	/^    public Recipe[] recipes = new Recipe[]{};$/;"	f	class:RecipeCrafter
 recipes	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        final List<VoltageRecipeRegistry.RegisteredRecipe> recipes = new ArrayList<>();$/;"	f	class:RecipeQueryUI.CategoryPage
-redAlloy	src/mdtnh/BasicItems.java	/^    public static Metal redAlloy; \/\/ 红色合金$/;"	f	class:BasicItems
-redSteel	src/mdtnh/BasicItems.java	/^    public static Metal redSteel; \/\/ 红钢$/;"	f	class:BasicItems
+redAlloy	src/mdtnh/BasicItems.java	/^    public static Metal redAlloy; \/\/ çº¢è²åé$/;"	f	class:BasicItems
+redSteel	src/mdtnh/BasicItems.java	/^    public static Metal redSteel; \/\/ çº¢é¢$/;"	f	class:BasicItems
 refreshRuntimeSpec	src/mdtnh/energy/MdtEnergyBlock.java	/^        private void refreshRuntimeSpec() {$/;"	m	class:MdtEnergyBlock.MdtEnergyBuild	file:
 refreshSpec	src/mdtnh/energy/MdtDiodeBlock.java	/^        private void refreshSpec() {$/;"	m	class:MdtDiodeBlock.MdtDiodeBuild	file:
 refreshSpec	src/mdtnh/energy/MdtTransformerBlock.java	/^        private void refreshSpec() {$/;"	m	class:MdtTransformerBlock.MdtTransformerBuild	file:
@@ -1894,45 +1895,45 @@ resultCountLabel	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private 
 returnToInventory	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private void returnToInventory() {$/;"	m	class:RecipeQueryUI	file:
 reveal	src/mdtnh/gen/block/OreExplorationController.java	/^    public static void reveal($/;"	m	class:OreExplorationController
 reverse	src/mdtnh/modui/buildui/BuildMenuRegistry.java	/^    private final ObjectMap<Block, Seq<BuildMenuNode>> reverse = new ObjectMap<>();$/;"	f	class:BuildMenuRegistry	file:
-rhodium	src/mdtnh/BasicItems.java	/^    public static Metal rhodium; \/\/ 铑$/;"	f	class:BasicItems
-rhodiumPlatedPalladium	src/mdtnh/BasicItems.java	/^    public static Metal rhodiumPlatedPalladium; \/\/ 镀铑钯$/;"	f	class:BasicItems
+rhodium	src/mdtnh/BasicItems.java	/^    public static Metal rhodium; \/\/ é$/;"	f	class:BasicItems
+rhodiumPlatedPalladium	src/mdtnh/BasicItems.java	/^    public static Metal rhodiumPlatedPalladium; \/\/ ééé¯$/;"	f	class:BasicItems
 right	src/mdtnh/ModDrill.java	/^    public int top = 1, button = 1, left = 1, right = 1;$/;"	f	class:ModDrill
 ring	src/mdtnh/BasicItems.java	/^    public final Item ring;$/;"	f	class:BasicItems.Metal
 robotic_arm	src/mdtnh/Component.java	/^        robotic_arm("robotic-arm"),$/;"	e	enum:Component.ComponentType	file:
 rod	src/mdtnh/BasicItems.java	/^    public final Item rod;$/;"	f	class:BasicItems.Metal
-rodium	src/mdtnh/BasicItems.java	/^    public static Metal rodium; \/\/ 钡$/;"	f	class:BasicItems
-roentgenium	src/mdtnh/BasicItems.java	/^    public static Metal roentgenium; \/\/ 𬬭$/;"	f	class:BasicItems
+rodium	src/mdtnh/BasicItems.java	/^    public static Metal rodium; \/\/ é¡$/;"	f	class:BasicItems
+roentgenium	src/mdtnh/BasicItems.java	/^    public static Metal roentgenium; \/\/ ð¬¬­$/;"	f	class:BasicItems
 role	src/mdtnh/energy/EnergySpec.java	/^    public Role role = Role.consumer;$/;"	f	class:EnergySpec
 role	src/mdtnh/energy/MdtEnergyBlock.java	/^    public EnergyRole role = EnergyRole.battery;$/;"	f	class:MdtEnergyBlock
 root	src/mdtnh/modui/buildui/BuildMenuRegistry.java	/^    public final BuildMenuNode root;$/;"	f	class:BuildMenuRegistry
 root	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private Table root;$/;"	f	class:MdtCoreItemsQuickBar	file:
-roseGold	src/mdtnh/BasicItems.java	/^    public static Metal roseGold; \/\/ 玫瑰金$/;"	f	class:BasicItems
+roseGold	src/mdtnh/BasicItems.java	/^    public static Metal roseGold; \/\/ ç«ç°é$/;"	f	class:BasicItems
 rotateOffset	src/mdtnh/MultiblockStructer.java	/^        private pos rotateOffset(pos offset) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
 rotor	src/mdtnh/BasicItems.java	/^    public final Item rotor;$/;"	f	class:BasicItems.Metal
 round	src/mdtnh/BasicItems.java	/^    public final Item round;$/;"	f	class:BasicItems.Metal
 routePackets	src/mdtnh/energy/MdtEnergySystem.java	/^    private static void routePackets(List<MdtEnergyNode> component) {$/;"	m	class:MdtEnergySystem	file:
 row	src/mdtnh/modui/introduction/FlowChartDefinition.java	/^        public final int row;$/;"	f	class:FlowChartDefinition.Node
-rubidium	src/mdtnh/BasicItems.java	/^    public static Metal rubidium; \/\/ 铷$/;"	f	class:BasicItems
+rubidium	src/mdtnh/BasicItems.java	/^    public static Metal rubidium; \/\/ é·$/;"	f	class:BasicItems
 runtimeSpec	src/mdtnh/energy/MdtDiodeBlock.java	/^        private final EnergySpec runtimeSpec = new EnergySpec();$/;"	f	class:MdtDiodeBlock.MdtDiodeBuild	file:
 runtimeSpec	src/mdtnh/energy/MdtEnergyBlock.java	/^        private final EnergySpec runtimeSpec = new EnergySpec();$/;"	f	class:MdtEnergyBlock.MdtEnergyBuild	file:
 runtimeSpec	src/mdtnh/energy/MdtTransformerBlock.java	/^        private final EnergySpec runtimeSpec = new EnergySpec();$/;"	f	class:MdtTransformerBlock.MdtTransformerBuild	file:
-ruthenium	src/mdtnh/BasicItems.java	/^    public static Metal ruthenium; \/\/ 钌$/;"	f	class:BasicItems
-rutheniumIridiumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal rutheniumIridiumAlloy; \/\/ 钌铱合金$/;"	f	class:BasicItems
-rutheniumTungstenMolybdenumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal rutheniumTungstenMolybdenumAlloy; \/\/ 钌钨钼合金$/;"	f	class:BasicItems
-rutherfordium	src/mdtnh/BasicItems.java	/^    public static Metal rutherfordium; \/\/ 𬬻$/;"	f	class:BasicItems
+ruthenium	src/mdtnh/BasicItems.java	/^    public static Metal ruthenium; \/\/ é$/;"	f	class:BasicItems
+rutheniumIridiumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal rutheniumIridiumAlloy; \/\/ éé±åé$/;"	f	class:BasicItems
+rutheniumTungstenMolybdenumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal rutheniumTungstenMolybdenumAlloy; \/\/ éé¨é¼åé$/;"	f	class:BasicItems
+rutherfordium	src/mdtnh/BasicItems.java	/^    public static Metal rutherfordium; \/\/ ð¬¬»$/;"	f	class:BasicItems
 safeMultiply	src/mdtnh/MultiblockStructer.java	/^        private static int safeMultiply(int amount, int multiplier) {$/;"	m	class:MultiblockStructer.Recipe	file:
-samarium	src/mdtnh/BasicItems.java	/^    public static Metal samarium; \/\/ 钐$/;"	f	class:BasicItems
+samarium	src/mdtnh/BasicItems.java	/^    public static Metal samarium; \/\/ é$/;"	f	class:BasicItems
 sanitizeAmperage	src/mdtnh/energy/MdtDiodeBlock.java	/^        private int sanitizeAmperage(int value) {$/;"	m	class:MdtDiodeBlock.MdtDiodeBuild	file:
 saveChunkName	src/mdtnh/gen/block/OreExplorationController.java	/^    private static final String saveChunkName =$/;"	f	class:OreExplorationController	file:
 saveSettings	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private void saveSettings() {$/;"	m	class:MdtCoreItemsQuickBar	file:
 saveVersion	src/mdtnh/gen/block/OreExplorationController.java	/^    private static final int saveVersion = 1;$/;"	f	class:OreExplorationController	file:
 scaleItems	src/mdtnh/MultiblockStructer.java	/^        private static ItemStack[] scaleItems(ItemStack[] stacks, int multiplier) {$/;"	m	class:MultiblockStructer.Recipe	file:
 scaleLiquids	src/mdtnh/MultiblockStructer.java	/^        private static LiquidStack[] scaleLiquids(LiquidStack[] stacks, int multiplier) {$/;"	m	class:MultiblockStructer.Recipe	file:
-scandium	src/mdtnh/BasicItems.java	/^    public static Metal scandium; \/\/ 钪$/;"	f	class:BasicItems
+scandium	src/mdtnh/BasicItems.java	/^    public static Metal scandium; \/\/ éª$/;"	f	class:BasicItems
 scl	src/mdtnh/gen/MyPlanetGenerator.java	/^    public float scl = 1.2f;$/;"	f	class:MyPlanetGenerator
 screenForPage	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private int screenForPage($/;"	m	class:MdtIntroductionUI	file:
 screw	src/mdtnh/BasicItems.java	/^    public final Item screw;$/;"	f	class:BasicItems.Metal
-seaborgium	src/mdtnh/BasicItems.java	/^    public static Metal seaborgium; \/\/ 𬭳$/;"	f	class:BasicItems
+seaborgium	src/mdtnh/BasicItems.java	/^    public static Metal seaborgium; \/\/ ð¬­³$/;"	f	class:BasicItems
 searchField	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private TextField searchField;$/;"	f	class:MdtCoreItemsQuickBar	file:
 searchIndexCache	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private final ObjectMap<Item, String> searchIndexCache = new ObjectMap<>();$/;"	f	class:MdtCoreItemsQuickBar	file:
 searchText	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private String searchText = "";$/;"	f	class:MdtCoreItemsQuickBar	file:
@@ -2024,7 +2025,7 @@ showUsage	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    public static void s
 sideOf	src/mdtnh/energy/MdtDiodeBlock.java	/^        private int sideOf(MdtEnergyNode neighbor) {$/;"	m	class:MdtDiodeBlock.MdtDiodeBuild	file:
 sideOf	src/mdtnh/energy/MdtTransformerBlock.java	/^        private int sideOf(MdtEnergyNode neighbor) {$/;"	m	class:MdtTransformerBlock.MdtTransformerBuild	file:
 sifter	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry sifter;$/;"	f	class:GtProductionMachines
-silver	src/mdtnh/BasicItems.java	/^    public static Metal silver; \/\/ 银$/;"	f	class:BasicItems
+silver	src/mdtnh/BasicItems.java	/^    public static Metal silver; \/\/ é¶$/;"	f	class:BasicItems
 slag	src/mdtnh/FuelList.java	/^        ItemStack slag;$/;"	f	class:FuelList.FuelProp
 slagBoiler	src/mdtnh/GtUtilityMachines.java	/^    public static GtAutoRecipeCrafter slagBoiler;$/;"	f	class:GtUtilityMachines
 slagProductChance	src/mdtnh/FuelList.java	/^        float slagProductChance;$/;"	f	class:FuelList.FuelProp
@@ -2035,12 +2036,12 @@ smallSpring	src/mdtnh/BasicItems.java	/^    public final Item smallSpring;$/;"	f
 snapshot	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private NavigationState snapshot() {$/;"	m	class:MdtIntroductionUI	file:
 snapshot	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private NavigationState snapshot() {$/;"	m	class:RecipeQueryUI	file:
 soc	src/mdtnh/energy/MdtEnergyBlock.java	/^        public float soc() {$/;"	m	class:MdtEnergyBlock.MdtEnergyBuild
-sodium	src/mdtnh/BasicItems.java	/^    public static Metal sodium; \/\/ 钠$/;"	f	class:BasicItems
+sodium	src/mdtnh/BasicItems.java	/^    public static Metal sodium; \/\/ é $/;"	f	class:BasicItems
 sodiumPersulfate	src/mdtnh/GtLiquids.java	/^    public static Liquid sodiumPersulfate;$/;"	f	class:GtLiquids
-sodiumPotassiumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal sodiumPotassiumAlloy; \/\/ 钠钾合金$/;"	f	class:BasicItems
+sodiumPotassiumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal sodiumPotassiumAlloy; \/\/ é é¾åé$/;"	f	class:BasicItems
 solarBoiler	src/mdtnh/GtUtilityMachines.java	/^    public static GtAutoRecipeCrafter solarBoiler;$/;"	f	class:GtUtilityMachines
 solarPanel	src/mdtnh/GtUtilityMachines.java	/^    public static GtGeneratorCrafter solarPanel;$/;"	f	class:GtUtilityMachines
-solder	src/mdtnh/BasicItems.java	/^    public static Metal solder; \/\/ 焊锡$/;"	f	class:BasicItems
+solder	src/mdtnh/BasicItems.java	/^    public static Metal solder; \/\/ çé¡$/;"	f	class:BasicItems
 sortMode	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private SortMode sortMode = SortMode.defaultOrder;$/;"	f	class:MdtCoreItemsQuickBar	file:
 sortSettingsKey	src/mdtnh/modui/itemui/MdtCoreItemsQuickBar.java	/^    private static final String sortSettingsKey =$/;"	f	class:MdtCoreItemsQuickBar	file:
 spec	src/mdtnh/energy/MdtEnergyBlock.java	/^    private EnergySpec spec;$/;"	f	class:MdtEnergyBlock	file:
@@ -2048,7 +2049,7 @@ speedMultiplierFrom	src/mdtnh/VoltageTier.java	/^    public float speedMultiplie
 spring	src/mdtnh/BasicItems.java	/^    public final Item spring;$/;"	f	class:BasicItems.Metal
 stacks	src/mdtnh/GtProductionMachines.java	/^    private static ItemStack[] stacks(String[] keys) {$/;"	m	class:GtProductionMachines	file:
 stacksPerSecond	src/mdtnh/transport/GtTransportData.java	/^        public final float[] stacksPerSecond;$/;"	f	class:GtTransportData.ItemPipeMaterial
-stainlessSteel	src/mdtnh/BasicItems.java	/^    public static Metal stainlessSteel; \/\/ 不锈钢$/;"	f	class:BasicItems
+stainlessSteel	src/mdtnh/BasicItems.java	/^    public static Metal stainlessSteel; \/\/ ä¸éé¢$/;"	f	class:BasicItems
 status	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^        status$/;"	e	enum:ContentCatalogPage.Kind	file:
 steam	src/mdtnh/ModLiquids.java	/^    public static Liquid steam;$/;"	f	class:ModLiquids
 steam	src/mdtnh/RecipeCrafter.java	/^        steam,$/;"	e	enum:RecipeCrafter.EnergySource	file:
@@ -2071,16 +2072,16 @@ steamTurbineHV	src/mdtnh/GtUtilityMachines.java	/^    public static GtGeneratorC
 steamTurbineLV	src/mdtnh/GtUtilityMachines.java	/^    public static GtGeneratorCrafter steamTurbineLV;$/;"	f	class:GtUtilityMachines
 steamTurbineMV	src/mdtnh/GtUtilityMachines.java	/^    public static GtGeneratorCrafter steamTurbineMV;$/;"	f	class:GtUtilityMachines
 steamVariant	src/mdtnh/VoltageRecipeRegistry.java	/^        public RecipeCrafter.Recipe steamVariant;$/;"	f	class:VoltageRecipeRegistry.RegisteredRecipe
-steamWhistle	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block steamWhistle;    \/\/ 气鸣$/;"	f	class:MdtImplementedTurrets
-steel	src/mdtnh/BasicItems.java	/^    public static Metal steel; \/\/ 钢$/;"	f	class:BasicItems
-stellite100	src/mdtnh/BasicItems.java	/^    public static Metal stellite100; \/\/ 司太立_100$/;"	f	class:BasicItems
+steamWhistle	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block steamWhistle;    \/\/ æ°é¸£$/;"	f	class:MdtImplementedTurrets
+steel	src/mdtnh/BasicItems.java	/^    public static Metal steel; \/\/ é¢$/;"	f	class:BasicItems
+stellite100	src/mdtnh/BasicItems.java	/^    public static Metal stellite100; \/\/ å¸å¤ªç«_100$/;"	f	class:BasicItems
 stepDownTransformers	src/mdtnh/GtUtilityMachines.java	/^    public static final EnumMap<VoltageTier, RecipeCrafter> stepDownTransformers = new EnumMap<>(VoltageTier.class);$/;"	f	class:GtUtilityMachines
 stepOneSecond	src/mdtnh/energy/MdtEnergySystem.java	/^    public static void stepOneSecond() {$/;"	m	class:MdtEnergySystem
 stepUp	src/mdtnh/energy/MdtTransformerBlock.java	/^        public boolean stepUp;$/;"	f	class:MdtTransformerBlock.MdtTransformerBuild
 stepUpTransformers	src/mdtnh/GtUtilityMachines.java	/^    public static final EnumMap<VoltageTier, RecipeCrafter> stepUpTransformers = new EnumMap<>(VoltageTier.class);$/;"	f	class:GtUtilityMachines
 stepsAbove	src/mdtnh/VoltageTier.java	/^    public int stepsAbove(VoltageTier minimumTier) {$/;"	m	class:VoltageTier
-sterlingSilver	src/mdtnh/BasicItems.java	/^    public static Metal sterlingSilver; \/\/ 标准纯银$/;"	f	class:BasicItems
-strontium	src/mdtnh/BasicItems.java	/^    public static Metal strontium; \/\/ 锶$/;"	f	class:BasicItems
+sterlingSilver	src/mdtnh/BasicItems.java	/^    public static Metal sterlingSilver; \/\/ æ åçº¯é¶$/;"	f	class:BasicItems
+strontium	src/mdtnh/BasicItems.java	/^    public static Metal strontium; \/\/ é¶$/;"	f	class:BasicItems
 struct	src/mdtnh/MultiblockStructer.java	/^        public Map<pos, Integer> struct;$/;"	f	class:MultiblockStructer.LevelStruct
 structurePreviewKey	src/mdtnh/MultiblockStructer.java	/^    public static final KeyBind structurePreviewKey =$/;"	f	class:MultiblockStructer
 structurePreviewLevel	src/mdtnh/MultiblockStructer.java	/^        public int structurePreviewLevel = defaultPreviewLevel;$/;"	f	class:MultiblockStructer.MultiblockStructerBuilding
@@ -2099,11 +2100,11 @@ switchSection	src/mdtnh/modui/introduction/MdtIntroductionUI.java	/^    private 
 syncSelectedBlock	src/mdtnh/modui/buildui/MdtBuildMenuFragment.java	/^    private void syncSelectedBlock() {$/;"	m	class:MdtBuildMenuFragment	file:
 takeFromInputs	src/mdtnh/MultiblockStructer.java	/^        private int takeFromInputs(Item item, int amount) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
 takeLiquidFromInputs	src/mdtnh/MultiblockStructer.java	/^        private float takeLiquidFromInputs(Liquid liquid, float amount) {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding	file:
-tantalum	src/mdtnh/BasicItems.java	/^    public static Metal tantalum; \/\/ 钽$/;"	f	class:BasicItems
+tantalum	src/mdtnh/BasicItems.java	/^    public static Metal tantalum; \/\/ é½$/;"	f	class:BasicItems
 targetContent	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        final UnlockableContent targetContent;$/;"	f	class:RecipeQueryUI.NavigationState
 targetContent	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private UnlockableContent targetContent;$/;"	f	class:RecipeQueryUI	file:
-technetium	src/mdtnh/BasicItems.java	/^    public static Metal technetium; \/\/ 锝$/;"	f	class:BasicItems
-terbium	src/mdtnh/BasicItems.java	/^    public static Metal terbium; \/\/ 铽$/;"	f	class:BasicItems
+technetium	src/mdtnh/BasicItems.java	/^    public static Metal technetium; \/\/ é$/;"	f	class:BasicItems
+terbium	src/mdtnh/BasicItems.java	/^    public static Metal terbium; \/\/ é½$/;"	f	class:BasicItems
 test	src/mdtnh/ModCrafters.java	/^    public static RecipeCrafter test;$/;"	f	class:ModCrafters
 test	src/mdtnh/gen/MineralVeins.java	/^    public static MineralVein test;$/;"	f	class:MineralVeins
 testDrill	src/mdtnh/ModCrafters.java	/^    public static ModDrill testDrill;$/;"	f	class:ModCrafters
@@ -2112,12 +2113,12 @@ testOreItem	src/mdtnh/gen/block/ModOre.java	/^    public static Item testOreItem
 text	src/mdtnh/modui/introduction/IntroductionContext.java	/^    public String text(String key) {$/;"	m	class:IntroductionContext
 text	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        public String text(String key) {$/;"	m	class:RecipeQueryUI.PageContext
 textures	src/mdtnh/Boiler.java	/^    public TextureRegion[] textures;$/;"	f	class:Boiler
-thallium	src/mdtnh/BasicItems.java	/^    public static Metal thallium; \/\/ 铊$/;"	f	class:BasicItems
+thallium	src/mdtnh/BasicItems.java	/^    public static Metal thallium; \/\/ é$/;"	f	class:BasicItems
 thermalCentrifuge	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry thermalCentrifuge;$/;"	f	class:GtProductionMachines
-thorium	src/mdtnh/BasicItems.java	/^    public static Metal thorium; \/\/ 钍$/;"	f	class:BasicItems
+thorium	src/mdtnh/BasicItems.java	/^    public static Metal thorium; \/\/ é$/;"	f	class:BasicItems
 throughputItemsPerSecond	src/mdtnh/transport/MdtItemPipeBlock.java	/^    public final float throughputItemsPerSecond;$/;"	f	class:MdtItemPipeBlock
-thrower	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block thrower;       \/\/ 抛掷$/;"	f	class:MdtImplementedTurrets
-thulium	src/mdtnh/BasicItems.java	/^    public static Metal thulium; \/\/ 铥$/;"	f	class:BasicItems
+thrower	src/mdtnh/turret/MdtImplementedTurrets.java	/^    public static Block thrower;       \/\/ ææ·$/;"	f	class:MdtImplementedTurrets
+thulium	src/mdtnh/BasicItems.java	/^    public static Metal thulium; \/\/ é¥$/;"	f	class:BasicItems
 ticker	src/mdtnh/Boiler.java	/^        int animationTick,ticker;$/;"	f	class:Boiler.BoilerBuilding
 ticksPerSecond	src/mdtnh/energy/MdtEnergySystem.java	/^    private static final double ticksPerSecond = 60d;$/;"	f	class:MdtEnergySystem	file:
 tier	src/mdtnh/GtMinerBlock.java	/^    public final VoltageTier tier;$/;"	f	class:GtMinerBlock
@@ -2127,11 +2128,11 @@ tierDiodes	src/mdtnh/energy/MdtEnergyBlocks.java	/^    public static final EnumM
 tierName	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^    private String tierName(VoltageTier tier) {$/;"	m	class:RecipeQueryUI	file:
 tierTransformers	src/mdtnh/energy/MdtEnergyBlocks.java	/^    public static final EnumMap<VoltageTier, MdtTransformerBlock> tierTransformers =$/;"	f	class:MdtEnergyBlocks
 times	src/mdtnh/MultiblockStructer.java	/^        public Recipe times(int count) {$/;"	m	class:MultiblockStructer.Recipe
-tin	src/mdtnh/BasicItems.java	/^    public static Metal tin; \/\/ 锡$/;"	f	class:BasicItems
-tinIronAlloy	src/mdtnh/BasicItems.java	/^    public static Metal tinIronAlloy; \/\/ 锡铁合金$/;"	f	class:BasicItems
+tin	src/mdtnh/BasicItems.java	/^    public static Metal tin; \/\/ é¡$/;"	f	class:BasicItems
+tinIronAlloy	src/mdtnh/BasicItems.java	/^    public static Metal tinIronAlloy; \/\/ é¡éåé$/;"	f	class:BasicItems
 tint	src/mdtnh/graphics/GrayMaterialShader.java	/^    private final Color tint = new Color(Color.white);$/;"	f	class:GrayMaterialShader	file:
 tinyPileOfDarkAsh	src/mdtnh/ModItems.java	/^    public static Item tinyPileOfDarkAsh;$/;"	f	class:ModItems
-titanium	src/mdtnh/BasicItems.java	/^    public static Metal titanium; \/\/ 钛$/;"	f	class:BasicItems
+titanium	src/mdtnh/BasicItems.java	/^    public static Metal titanium; \/\/ é$/;"	f	class:BasicItems
 title	src/mdtnh/modui/buildui/BuildMenuNode.java	/^    public final String title;$/;"	f	class:BuildMenuNode
 titleKey	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^    private final String titleKey;$/;"	f	class:ContentCatalogPage	file:
 titleKey	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^    public String titleKey() {$/;"	m	class:ContentCatalogPage
@@ -2167,9 +2168,9 @@ transitItems	src/mdtnh/transport/MdtItemPipeBlock.java	/^        public final Se
 transportPipeCost	src/mdtnh/ModItems.java	/^    private static float transportPipeCost(String size) {$/;"	m	class:ModItems	file:
 transportSpeedMultiplier	src/mdtnh/transport/MdtFluidPipeBlock.java	/^    public static final float transportSpeedMultiplier = 3f;$/;"	f	class:MdtFluidPipeBlock
 trimTransitFromBack	src/mdtnh/transport/MdtItemPipeBlock.java	/^        private void trimTransitFromBack(Item item, int amount) {$/;"	m	class:MdtItemPipeBlock.MdtItemPipeBuild	file:
-triplePlate	src/mdtnh/BasicItems.java	/^    public final Item triplePlate;      \/\/ 3重板$/;"	f	class:BasicItems.Metal
-tungsten	src/mdtnh/BasicItems.java	/^    public static Metal tungsten; \/\/ 钨$/;"	f	class:BasicItems
-tungstenSteel	src/mdtnh/BasicItems.java	/^    public static Metal tungstenSteel; \/\/ 钨钢$/;"	f	class:BasicItems
+triplePlate	src/mdtnh/BasicItems.java	/^    public final Item triplePlate;      \/\/ 3éæ¿$/;"	f	class:BasicItems.Metal
+tungsten	src/mdtnh/BasicItems.java	/^    public static Metal tungsten; \/\/ é¨$/;"	f	class:BasicItems
+tungstenSteel	src/mdtnh/BasicItems.java	/^    public static Metal tungstenSteel; \/\/ é¨é¢$/;"	f	class:BasicItems
 type	src/mdtnh/turret/MdtEnergyItemTurret.java	/^        public BulletType type() {$/;"	m	class:MdtEnergyItemTurret.ItemEntry
 ultimateWorkbench	src/mdtnh/GtProductionMachines.java	/^    public static VoltageRecipeRegistry ultimateWorkbench;$/;"	f	class:GtProductionMachines
 ulvManualMachine	src/mdtnh/VoltageRecipeRegistry.java	/^    public final ManualRecipeCrafter ulvManualMachine;$/;"	f	class:VoltageRecipeRegistry
@@ -2210,8 +2211,8 @@ updateTile	src/mdtnh/transport/MdtItemPipeBlock.java	/^        public void updat
 updateTile	src/mdtnh/turret/MdtSteamItemTurret.java	/^        public void updateTile() {$/;"	m	class:MdtSteamItemTurret.MdtSteamItemTurretBuild
 updateTile	src/mdtnh/turret/MdtSteamLiquidTurret.java	/^        public void updateTile() {$/;"	m	class:MdtSteamLiquidTurret.MdtSteamLiquidTurretBuild
 updateTile	src/mdtnh/turret/MdtSteamTurret.java	/^        public void updateTile() {$/;"	m	class:MdtSteamTurret.MdtSteamTurretBuild
-uranium	src/mdtnh/BasicItems.java	/^    public static Metal uranium; \/\/ 铀$/;"	f	class:BasicItems
-uraniumRhodiumNaquadahAlloy	src/mdtnh/BasicItems.java	/^    public static Metal uraniumRhodiumNaquadahAlloy; \/\/ 铀铑硅岩合金$/;"	f	class:BasicItems
+uranium	src/mdtnh/BasicItems.java	/^    public static Metal uranium; \/\/ é$/;"	f	class:BasicItems
+uraniumRhodiumNaquadahAlloy	src/mdtnh/BasicItems.java	/^    public static Metal uraniumRhodiumNaquadahAlloy; \/\/ ééç¡å²©åé$/;"	f	class:BasicItems
 usable	src/mdtnh/modui/introduction/ContentCatalogPage.java	/^    private boolean usable(String value) {$/;"	m	class:ContentCatalogPage	file:
 usableText	src/mdtnh/modui/recipeui/ItemIntroductionPage.java	/^    private boolean usableText(String value) {$/;"	m	class:ItemIntroductionPage	file:
 usage	src/mdtnh/modui/recipeui/RecipeQueryUI.java	/^        usage$/;"	e	enum:RecipeQueryUI.QueryMode	file:
@@ -2227,9 +2228,9 @@ usesManualEnergy	src/mdtnh/RecipeCrafter.java	/^    public boolean usesManualEne
 usesMdtEnergy	src/mdtnh/ModDrill.java	/^    public boolean usesMdtEnergy = false;$/;"	f	class:ModDrill
 usesSteamEnergy	src/mdtnh/RecipeCrafter.java	/^    public boolean usesSteamEnergy() {$/;"	m	class:RecipeCrafter
 validateId	src/mdtnh/modui/introduction/IntroductionRegistry.java	/^    private void validateId(String id) {$/;"	m	class:IntroductionRegistry	file:
-vanadium	src/mdtnh/BasicItems.java	/^    public static Metal vanadium; \/\/ 钒$/;"	f	class:BasicItems
-vanadiumGalliumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal vanadiumGalliumAlloy; \/\/ 钒镓合金$/;"	f	class:BasicItems
-vanadiumSteel	src/mdtnh/BasicItems.java	/^    public static Metal vanadiumSteel; \/\/ 钒钢$/;"	f	class:BasicItems
+vanadium	src/mdtnh/BasicItems.java	/^    public static Metal vanadium; \/\/ é$/;"	f	class:BasicItems
+vanadiumGalliumAlloy	src/mdtnh/BasicItems.java	/^    public static Metal vanadiumGalliumAlloy; \/\/ ééåé$/;"	f	class:BasicItems
+vanadiumSteel	src/mdtnh/BasicItems.java	/^    public static Metal vanadiumSteel; \/\/ éé¢$/;"	f	class:BasicItems
 version	src/mdtnh/ModDrill.java	/^        public byte version() {$/;"	m	class:ModDrill.ModDrillBuilding
 version	src/mdtnh/MultiblockStructer.java	/^        public byte version() {$/;"	m	class:MultiblockStructer.MultiblockStructerBuilding
 version	src/mdtnh/RecipeCrafter.java	/^        public byte version() {$/;"	m	class:RecipeCrafter.MDTFactoryBuild
@@ -2257,7 +2258,7 @@ water	src/mdtnh/Boiler.java	/^        public LiquidStack water = new LiquidStack
 water	src/mdtnh/ModLiquids.java	/^    public static Liquid water;$/;"	f	class:ModLiquids
 water	src/mdtnh/fluidSystem/GT/GTFluid.java	/^    public static GTFluid water;$/;"	f	class:GTFluid
 waterLevel	src/mdtnh/gen/MyPlanetGenerator.java	/^    public float waterLevel = 0.45f;$/;"	f	class:MyPlanetGenerator
-waterproofSteel	src/mdtnh/BasicItems.java	/^    public static Metal waterproofSteel; \/\/ 防水钢$/;"	f	class:BasicItems
+waterproofSteel	src/mdtnh/BasicItems.java	/^    public static Metal waterproofSteel; \/\/ é²æ°´é¢$/;"	f	class:BasicItems
 weight	src/mdtnh/gen/MineralVein.java	/^    int weight=1;$/;"	f	class:MineralVein
 wire	src/mdtnh/MaterialDefinition.java	/^    public static MaterialDefinition wire(String id, Color color) {$/;"	m	class:MaterialDefinition
 wire	src/mdtnh/energy/EnergySpec.java	/^        wire$/;"	e	enum:EnergySpec.Role	file:
@@ -2292,14 +2293,14 @@ write	src/mdtnh/energy/MdtTransformerBlock.java	/^        public void write(Writ
 write	src/mdtnh/hatch/EnergyInputHatch.java	/^        public void write(arc.util.io.Writes write) {$/;"	m	class:EnergyInputHatch.EnergyInputHatchBuild
 write	src/mdtnh/turret/MdtEnergyItemTurret.java	/^        public void write(Writes write) {$/;"	m	class:MdtEnergyItemTurret.MdtEnergyItemTurretBuild
 write	src/mdtnh/turret/MdtEnergyTurret.java	/^        public void write(Writes write) {$/;"	m	class:MdtEnergyTurret.MdtEnergyTurretBuild
-wroughtIron	src/mdtnh/BasicItems.java	/^    public static Metal wroughtIron; \/\/ 锻铁$/;"	f	class:BasicItems
+wroughtIron	src/mdtnh/BasicItems.java	/^    public static Metal wroughtIron; \/\/ é»é$/;"	f	class:BasicItems
 x	src/mdtnh/ModDrill.java	/^            final int x, y;$/;"	f	class:ModDrill.ModDrillBuilding.OreSlot
 x	src/mdtnh/MultiblockStructer.java	/^        public int x, y;$/;"	f	class:MultiblockStructer.pos
 y	src/mdtnh/ModDrill.java	/^            final int x, y;$/;"	f	class:ModDrill.ModDrillBuilding.OreSlot
 y	src/mdtnh/MultiblockStructer.java	/^        public int x, y;$/;"	f	class:MultiblockStructer.pos
-ytterbium	src/mdtnh/BasicItems.java	/^    public static Metal ytterbium; \/\/ 镱$/;"	f	class:BasicItems
-yttrium	src/mdtnh/BasicItems.java	/^    public static Metal yttrium; \/\/ 钇$/;"	f	class:BasicItems
-zinc	src/mdtnh/BasicItems.java	/^    public static Metal zinc; \/\/ 锌$/;"	f	class:BasicItems
-zirconium	src/mdtnh/BasicItems.java	/^    public static Metal zirconium; \/\/ 锆$/;"	f	class:BasicItems
-�	src/mdtnh/ModBlock.java	/^    public static Block 熔炉, 压缩机, 粉碎机, 分解机, 卷扳机;$/;"	f	class:ModBlock
-�	src/mdtnh/ModBlock.java	/^    public static Block 熔炉, 压缩机, 粉碎机, 分解机, 卷扳机;$/;"	f	class:ModBlock
+ytterbium	src/mdtnh/BasicItems.java	/^    public static Metal ytterbium; \/\/ é±$/;"	f	class:BasicItems
+yttrium	src/mdtnh/BasicItems.java	/^    public static Metal yttrium; \/\/ é$/;"	f	class:BasicItems
+zinc	src/mdtnh/BasicItems.java	/^    public static Metal zinc; \/\/ é$/;"	f	class:BasicItems
+zirconium	src/mdtnh/BasicItems.java	/^    public static Metal zirconium; \/\/ é$/;"	f	class:BasicItems
+æ	src/mdtnh/ModBlock.java	/^    public static Block çç, åç¼©æº, ç²ç¢æº, åè§£æº, å·æ³æº;$/;"	f	class:ModBlock
+ç	src/mdtnh/ModBlock.java	/^    public static Block çç, åç¼©æº, ç²ç¢æº, åè§£æº, å·æ³æº;$/;"	f	class:ModBlock
