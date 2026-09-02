@@ -1,11 +1,11 @@
 package mdtnh;
 
+import mdtnh.gen.block.GtEarlyOreBlocks;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.OreBlock;
 
 /** GTNH 小采矿机：LV/MV/HV 分别使用 17/33/49 见方的扫描区域。 */
 public class GtMinerBlock extends GtAutoRecipeCrafter {
@@ -44,11 +44,12 @@ public class GtMinerBlock extends GtAutoRecipeCrafter {
             Tile target = findOreTile();
             if (target == null) return;
 
-            OreBlock ore = target.overlay() instanceof OreBlock ? (OreBlock) target.overlay() : null;
-            if (ore == null || ore.itemDrop == null) return;
+            Item output =
+                    GtEarlyOreBlocks.drillDrop(
+                            target.overlay()
+                    );
 
-            Item output = GtMaterials.rawOreForDrop(ore.itemDrop);
-            if (output == null) output = ore.itemDrop;
+            if (output == null) return;
 
             offload(output);
             target.setOverlay(Blocks.air);
@@ -75,9 +76,20 @@ public class GtMinerBlock extends GtAutoRecipeCrafter {
         }
 
         private Tile checkOre(int x, int y) {
-            Tile t = Vars.world.tile(x, y);
+            Tile t =
+                    Vars.world.tile(
+                            x,
+                            y
+                    );
+
             if (t == null) return null;
-            return t.overlay() instanceof OreBlock ? t : null;
+
+            return GtEarlyOreBlocks
+                    .drillDrop(
+                            t.overlay()
+                    ) != null
+                    ? t
+                    : null;
         }
     }
 }

@@ -34,15 +34,20 @@ public final class GtResourceMachines {
             float secondsPerOre
     ) {
         ModDrill miner = new ModDrill(name);
-        miner.localizedName = Core.bundle.get(
-                "block." + name + ".name",
-                tier.name() + " 矿机"
-        );
-        miner.description = Core.bundle.get(
-                "block." + name + ".description",
-                "扫描 " + (radius * 2 + 1) + "x" + (radius * 2 + 1)
-                        + " 范围，每次开采一个矿格。"
-        );
+        miner.localizedName =
+                Core.bundle.get(
+                        "block." +
+                                name +
+                                ".name"
+                );
+        miner.description =
+                Core.bundle.format(
+                        "block." +
+                                name +
+                                ".description",
+                        radius * 2 + 1,
+                        radius * 2 + 1
+                );
 
         miner.top = radius;
         miner.button = radius;

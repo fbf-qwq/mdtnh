@@ -201,53 +201,145 @@ public final class GtProductionMachines {
     }
 
     private static void registerOreProcessingRecipes() {
-        for (String id : GtMaterials.ORE_METALS) {
-            registerIf(macerator, "ore", VoltageTier.LV,
-                    new String[]{id + "_raw-ore"}, null,
-                    repeat(id + "_crushed-ore", 2), null,
-                    160f, power(VoltageTier.LV, 160f, 1f));
-            registerIf(macerator, "crushed", VoltageTier.LV,
-                    new String[]{id + "_crushed-ore"}, null,
-                    new String[]{id + "_impure-powder"}, null,
-                    120f, power(VoltageTier.LV, 120f, 1f));
-            registerIf(macerator, "purified", VoltageTier.LV,
-                    new String[]{id + "_purified-crushed-ore"}, null,
-                    new String[]{id + "_pure-powder"}, null,
-                    120f, power(VoltageTier.LV, 120f, 1f));
-            registerIf(macerator, "centrifuged", VoltageTier.LV,
-                    new String[]{id + "_centrifuged-crushed-ore"}, null,
-                    new String[]{id + "_powder"}, null,
-                    110f, power(VoltageTier.LV, 110f, 1f));
+        for (String id : GtMaterials.ORE_MATERIALS) {
+            VoltageTier tier =
+                    GtOreCatalog.processingTier(id);
 
-            registerIf(forgeHammer, "ore", VoltageTier.LV,
-                    new String[]{id + "_raw-ore"}, null,
-                    new String[]{id + "_crushed-ore"}, null,
-                    120f, power(VoltageTier.LV, 120f, 1f));
+            registerIf(
+                    macerator,
+                    "ore",
+                    tier,
+                    new String[]{id + "_raw-ore"},
+                    null,
+                    repeat(id + "_crushed-ore", 2),
+                    null,
+                    160f,
+                    power(tier, 160f, 1f)
+            );
 
-            registerIf(oreWasher, "water", VoltageTier.LV,
-                    new String[]{id + "_crushed-ore"}, new LiquidStack[]{new LiquidStack(Liquids.water, 1.0f)},
-                    new String[]{id + "_purified-crushed-ore"}, null,
-                    120f, power(VoltageTier.LV, 120f, 1f));
+            registerIf(
+                    macerator,
+                    "crushed",
+                    tier,
+                    new String[]{id + "_crushed-ore"},
+                    null,
+                    new String[]{id + "_impure-powder"},
+                    null,
+                    120f,
+                    power(tier, 120f, 1f)
+            );
 
-            registerIf(chemicalBath, "persulfate", VoltageTier.LV,
-                    new String[]{id + "_crushed-ore"}, new LiquidStack[]{new LiquidStack(GtLiquids.sodiumPersulfate, 0.25f)},
-                    new String[]{id + "_purified-crushed-ore"}, null,
-                    100f, power(VoltageTier.LV, 100f, 1f));
+            registerIf(
+                    macerator,
+                    "purified",
+                    tier,
+                    new String[]{id + "_purified-crushed-ore"},
+                    null,
+                    new String[]{id + "_pure-powder"},
+                    null,
+                    120f,
+                    power(tier, 120f, 1f)
+            );
 
-            registerIf(thermalCentrifuge, "ore", VoltageTier.LV,
-                    new String[]{id + "_purified-crushed-ore"}, null,
-                    new String[]{id + "_centrifuged-crushed-ore"}, null,
-                    180f, power(VoltageTier.LV, 180f, 1f));
+            registerIf(
+                    macerator,
+                    "centrifuged",
+                    tier,
+                    new String[]{id + "_centrifuged-crushed-ore"},
+                    null,
+                    new String[]{id + "_powder"},
+                    null,
+                    110f,
+                    power(tier, 110f, 1f)
+            );
 
-            registerIf(sifter, "ore", VoltageTier.LV,
-                    new String[]{id + "_purified-crushed-ore"}, null,
-                    new String[]{id + "_pure-powder", id + "_small-pile-powder"}, null,
-                    180f, power(VoltageTier.LV, 180f, 1f));
+            registerIf(
+                    forgeHammer,
+                    "ore",
+                    tier,
+                    new String[]{id + "_raw-ore"},
+                    null,
+                    new String[]{id + "_crushed-ore"},
+                    null,
+                    120f,
+                    power(tier, 120f, 1f)
+            );
 
-            registerIf(centrifuge, "ore-cleaning", VoltageTier.LV,
-                    new String[]{id + "_impure-powder"}, null,
-                    new String[]{id + "_powder", id + "_small-pile-powder"}, null,
-                    140f, power(VoltageTier.LV, 140f, 1f));
+            registerIf(
+                    oreWasher,
+                    "water",
+                    tier,
+                    new String[]{id + "_crushed-ore"},
+                    new LiquidStack[]{
+                            new LiquidStack(
+                                    Liquids.water,
+                                    1.0f
+                            )
+                    },
+                    new String[]{id + "_purified-crushed-ore"},
+                    null,
+                    120f,
+                    power(tier, 120f, 1f)
+            );
+
+            registerIf(
+                    chemicalBath,
+                    "persulfate",
+                    tier,
+                    new String[]{id + "_crushed-ore"},
+                    new LiquidStack[]{
+                            new LiquidStack(
+                                    GtLiquids.sodiumPersulfate,
+                                    0.25f
+                            )
+                    },
+                    new String[]{id + "_purified-crushed-ore"},
+                    null,
+                    100f,
+                    power(tier, 100f, 1f)
+            );
+
+            registerIf(
+                    thermalCentrifuge,
+                    "ore",
+                    tier,
+                    new String[]{id + "_purified-crushed-ore"},
+                    null,
+                    new String[]{id + "_centrifuged-crushed-ore"},
+                    null,
+                    180f,
+                    power(tier, 180f, 1f)
+            );
+
+            registerIf(
+                    sifter,
+                    "ore",
+                    tier,
+                    new String[]{id + "_purified-crushed-ore"},
+                    null,
+                    new String[]{
+                            id + "_pure-powder",
+                            id + "_small-pile-powder"
+                    },
+                    null,
+                    180f,
+                    power(tier, 180f, 1f)
+            );
+
+            registerIf(
+                    centrifuge,
+                    "ore-cleaning",
+                    tier,
+                    new String[]{id + "_impure-powder"},
+                    null,
+                    new String[]{
+                            id + "_powder",
+                            id + "_small-pile-powder"
+                    },
+                    null,
+                    140f,
+                    power(tier, 140f, 1f)
+            );
         }
     }
 

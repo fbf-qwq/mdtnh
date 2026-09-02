@@ -1,6 +1,7 @@
 package mdtnh;
 
 import arc.graphics.Color;
+import mdtnh.gen.block.GtEarlyOreBlocks;
 import mindustry.type.Item;
 
 import java.util.Locale;
@@ -12,18 +13,44 @@ import java.util.Locale;
 public final class GtMaterials {
     private GtMaterials() {}
 
-    public static final String[] ORE_METALS = {
-            "iron", "copper", "tin", "lead", "gold", "silver", "nickel", "zinc", "aluminum"
-    };
+    /**
+     * All ore-processing materials in the Steam/LV/MV/HV catalog.
+     *
+     * <p>ORE_METALS remains as a compatibility alias for older code.</p>
+     */
+    public static final String[] ORE_MATERIALS =
+            GtOreCatalog.processingIds();
+
+    @Deprecated
+    public static final String[] ORE_METALS =
+            ORE_MATERIALS;
 
     public static final String[] EARLY_SMELTABLE_METALS = {
             "iron", "copper", "tin", "lead", "gold", "silver", "nickel", "zinc"
     };
 
     public static void load() {
-        for (String id : ORE_METALS) {
-            Color base = ModItems.materialColors.get(id);
-            if (base == null) base = Color.gray.cpy();
+        for (String id : ORE_MATERIALS) {
+            Color base =
+                    ModItems.materialColors.get(id);
+
+            if (base == null) {
+                GtOreCatalog.OreSpec spec =
+                        GtOreCatalog.spec(id);
+
+                base =
+                        GtOreCatalog.fallbackColor(
+                                id
+                        );
+            } else {
+                base = base.cpy();
+            }
+
+            ensurePowderForms(
+                    id,
+                    base
+            );
+
             add(id + "_raw-ore", id + "-raw-ore", base.cpy().mul(0.82f), 1.1f);
             add(id + "_crushed-ore", id + "-crushed-ore", base.cpy().mul(0.90f), 0.9f);
             add(id + "_purified-crushed-ore", id + "-purified-crushed-ore", base.cpy().mul(1.06f), 1.0f);
@@ -58,6 +85,12 @@ public final class GtMaterials {
         add("electric_piston_lv", "gt-electric-piston-lv", Color.valueOf("9B9B9B"), 2.4f);
         add("robot_arm_lv", "gt-robot-arm-lv", Color.valueOf("A8A8A8"), 3.2f);
         add("workbench_machine_kit", "gt-workbench-machine-kit", Color.valueOf("8E98A0"), 3.0f);
+
+        /*
+         * Raw-ore items must exist before their OreBlock overlays.
+         * This keeps MainMod wiring unchanged.
+         */
+        GtEarlyOreBlocks.load();
     }
 
     public static Item get(String key) {
@@ -71,15 +104,82 @@ public final class GtMaterials {
     }
 
     public static Item rawOreForDrop(Item drop) {
-        if (drop == null || drop.name == null) return null;
-        String name = drop.name.toLowerCase(Locale.ROOT);
-        for (String id : ORE_METALS) {
-            String normalized = id.toLowerCase(Locale.ROOT);
-            boolean matches = name.contains(normalized);
-            if (id.equals("aluminum")) matches |= name.contains("aluminium");
-            if (matches) return get(id + "_raw-ore");
+        if (drop == null || drop.name == null) {
+            return null;
         }
-        return null;
+
+        /*
+         * Identity is checked first so long IDs such as meteoric_iron
+         * cannot be mistaken for shorter IDs such as iron.
+         */
+        for (String id : ORE_MATERIALS) {
+            Item raw =
+                    get(id + "_raw-ore");
+
+            if (drop == raw) {
+                return raw;
+            }
+        }
+
+        String name =
+                drop.name
+                        .toLowerCase(Locale.ROOT)
+                        .replace('-', '_');
+
+        String bestId = null;
+
+        for (String id : ORE_MATERIALS) {
+            String normalized =
+                    id.toLowerCase(Locale.ROOT);
+
+            boolean matches =
+                    name.contains(normalized);
+
+            if (id.equals("aluminum")) {
+                matches |=
+                        name.contains(
+                                "aluminium"
+                        );
+            }
+
+            if (matches &&
+                    (bestId == null ||
+                            normalized.length() >
+                                    bestId.length())) {
+
+                bestId = normalized;
+            }
+        }
+
+        return bestId == null
+                ? null
+                : get(bestId + "_raw-ore");
+    }
+
+    private static void ensurePowderForms(
+            String id,
+            Color base) {
+
+        add(
+                id + "_powder",
+                id + "-powder",
+                base.cpy().mul(0.90f),
+                0.50f
+        );
+
+        add(
+                id + "_small-pile-powder",
+                id + "-small-pile-powder",
+                base.cpy().mul(0.80f),
+                0.15f
+        );
+
+        add(
+                id + "_pinch-powder",
+                id + "-pinch-powder",
+                base.cpy().mul(0.70f),
+                0.08f
+        );
     }
 
     private static void add(String key, String internalName, Color color, float cost) {

@@ -12,6 +12,7 @@ import arc.util.Timer;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mdtnh.draw.DrawerManager;
+import mdtnh.gen.block.GtEarlyOreBlocks;
 import mdtnh.energy.EnergySpec;
 import mdtnh.energy.EnergyState;
 import mdtnh.energy.MdtEnergyNode;
@@ -28,7 +29,6 @@ import mindustry.type.ItemStack;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.meta.BuildVisibility;
 
@@ -131,7 +131,7 @@ public class ModDrill extends Block {
     public void setBars(){
         super.setBars();
         addBar("process", (ModDrillBuilding build) -> new Bar(
-                () -> Core.bundle.get("mdt.process.bar", "进度"),
+                () -> Core.bundle.get("mdt.process.bar"),
                 () -> Color.valueOf("ffd37f"),
                 () -> build.progress / drillTime
         ));
@@ -184,19 +184,36 @@ public class ModDrill extends Block {
                     Tile checkTile = Vars.world.tile(tile.x + dx, tile.y + dy);
                     if (checkTile == null) continue;
 
-                    Block overlay = checkTile.overlay();
-                    if (overlay instanceof OreBlock) {
-                        Item drop = ((OreBlock) overlay).itemDrop;
-                        if (drop != null) {
-                            oreSlots.add(new OreSlot(checkTile.x, checkTile.y, drop));
-                            sumHardness+=drop.hardness;
-                        }
+                    Block overlay =
+                            checkTile.overlay();
+
+                    Item drop =
+                            GtEarlyOreBlocks.drillDrop(
+                                    overlay
+                            );
+
+                    if (drop != null) {
+                        oreSlots.add(
+                                new OreSlot(
+                                        checkTile.x,
+                                        checkTile.y,
+                                        drop
+                                )
+                        );
+
+                        sumHardness +=
+                                drop.hardness;
                     }
                 }
             }
 
-            Log.info("钻头 @ 重新扫描，发现 @ 个矿石格子",
-                    tile.x + "," + tile.y, oreSlots.size());
+            Log.info(
+                    Core.bundle.format(
+                            "mdtnh.log.drill-rescan",
+                            tile.x + "," + tile.y,
+                            oreSlots.size()
+                    )
+            );
         }
 
         @Override
@@ -245,11 +262,24 @@ public class ModDrill extends Block {
 
             for (int i = 0; i < oreSlots.size(); i++) {
                 OreSlot slot = oreSlots.get(i);
-                Tile t = Vars.world.tile(slot.x, slot.y);
-                if (t == null || !(t.overlay() instanceof OreBlock)) continue;
+                Tile t =
+                        Vars.world.tile(
+                                slot.x,
+                                slot.y
+                        );
 
-                Item item = slot.item;
-                if (item == null || items.get(item) >= itemCapacity) continue;
+                if (t == null) continue;
+
+                Item item =
+                        GtEarlyOreBlocks.drillDrop(
+                                t.overlay()
+                        );
+
+                if (item == null ||
+                        items.get(item) >=
+                                itemCapacity) {
+                    continue;
+                }
 
                 items.add(item, 1);
                 if (consumeOreOverlay) {
@@ -263,11 +293,24 @@ public class ModDrill extends Block {
 
         private void mineAllOresOnce() {
             for (OreSlot slot : new ArrayList<>(oreSlots)) {
-                Tile t = Vars.world.tile(slot.x, slot.y);
-                if (t == null || !(t.overlay() instanceof OreBlock)) continue;
+                Tile t =
+                        Vars.world.tile(
+                                slot.x,
+                                slot.y
+                        );
 
-                Item item = slot.item;
-                if (item == null || items.get(item) >= itemCapacity) continue;
+                if (t == null) continue;
+
+                Item item =
+                        GtEarlyOreBlocks.drillDrop(
+                                t.overlay()
+                        );
+
+                if (item == null ||
+                        items.get(item) >=
+                                itemCapacity) {
+                    continue;
+                }
 
                 items.add(item, 1);
                 if (consumeOreOverlay) {

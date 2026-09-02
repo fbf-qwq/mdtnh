@@ -1,5 +1,10 @@
-package mdtnh.gen.block;
+package mdtnh.gen.blocks;
 
+import arc.graphics.g2d.TextureRegion;
+
+import mdtnh.gen.block.ModOreRender;
+import mdtnh.gen.block.OreExplorationController;
+import mindustry.Vars;
 import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.OreBlock;
@@ -14,19 +19,43 @@ public class ToggleOreBlock extends OreBlock{
         super(name, ore);
     }
 
+    private boolean shouldShow(Tile tile){
+        if(
+                Vars.state != null &&
+                        Vars.state.isEditor()
+        ){
+            return true;
+        }
+
+        if(!ModOreRender.renderOres){
+            return false;
+        }
+        return OreExplorationController
+                .isDiscovered(tile);
+    }
     @Override
     public void drawBase(Tile tile){
 
-        // F8 全局关闭矿物渲染
-        if(!ModOreRender.renderOres){
-            return;
-        }
-
-        // 没有被地质勘探过
-        if(!OreExplorationController.isDiscovered(tile)){
+        if(!shouldShow(tile)){
             return;
         }
 
         super.drawBase(tile);
+    }
+    @Override
+    public TextureRegion getDisplayIcon(Tile tile){
+
+        if(shouldShow(tile)){
+            return super.getDisplayIcon(tile);
+        }
+        return tile.floor().getDisplayIcon(tile);
+    }
+    @Override
+    public String getDisplayName(Tile tile){
+
+        if(shouldShow(tile)){
+            return super.getDisplayName(tile);
+        }
+        return tile.floor().getDisplayName(tile);
     }
 }

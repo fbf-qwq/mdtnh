@@ -17,6 +17,7 @@ import mindustry.gen.Groups;
 import mindustry.io.SaveFileReader.CustomChunk;
 import mindustry.io.SaveVersion;
 import mindustry.world.Tile;
+import  mdtnh.gen.blocks.ToggleOreBlock;
 
 /**
  * 独立矿产勘探系统。

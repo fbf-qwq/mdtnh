@@ -1,7 +1,7 @@
 package mdtnh.gen.block;
 
 import mindustry.type.Item;
-
+import mdtnh.gen.blocks.ToggleOreBlock;
 public class ModOre {
     public static ToggleOreBlock testOre;
     public static Item testOreItem;
